@@ -20,7 +20,7 @@ public class OfferService {
     public OfferDto findOffer(Long id) {
         Offer offer = offerRepository.findById(id).orElse(null);
         if (offer == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono książki");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty");
         }
         return mapOfferDto(offer);
     }

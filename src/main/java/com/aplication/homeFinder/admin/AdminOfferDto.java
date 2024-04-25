@@ -1,39 +1,53 @@
-package com.aplication.homeFinder.offer;
+package com.aplication.homeFinder.admin;
 
 import com.aplication.homeFinder.offer.enumClass.*;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 
-@Entity
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Offer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Enumerated(EnumType.STRING)
+public class AdminOfferDto {
+    @NotNull
     private KindOfProperty kindOfProperty;
+    @NotBlank
     private String title;
+    @NotBlank
     private String location;
+    @NotNull
+    @Min(0)
     private double price;
+    @NotNull
+    @Min(0)
     private double area;
+    @NotNull
+    @Min(0)
     private double pricePerMeter;
+    @NotNull
+    @Min(0)
     private int numberOfRooms;
+    @NotNull
     private int floor;
+    @NotNull
+    @Min(0)
     private double rent;
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private OwnershipForm ownershipForm;
+    @NotBlank
     private String description;
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private BuildingType buildingType;
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private Heating heating;
+    @NotNull
+    @Min(0)
     private int yearOfConstruction;
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private FinishLevel finishLevel;
     private String media;
     private String equipment;
+    @NotBlank
     private String contactDetails;
 }

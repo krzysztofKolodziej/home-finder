@@ -1,15 +1,16 @@
-package com.aplication.homeFinder.offer;
+package com.aplication.homeFinder.admin;
 
 import com.aplication.homeFinder.offer.enumClass.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "offer")
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Offer {
+@Builder
+public class AdminOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

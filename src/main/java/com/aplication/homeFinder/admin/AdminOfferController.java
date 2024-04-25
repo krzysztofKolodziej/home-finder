@@ -1,69 +1,49 @@
-package com.aplication.homeFinder.offer;
+package com.aplication.homeFinder.admin;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.HashMap;
-import java.util.Map;
-
-@RestController
 @AllArgsConstructor
-public class OfferController {
+@RestController
+public class AdminOfferController {
 
-    private final OfferService offerService;
+    private final AdminOfferService adminOfferService;
     public static final Long EMPTY_ID = null;
 
-    @GetMapping("/offers")
+    @GetMapping("/admin/offers")
     public ResponseEntity<String> findAllOffer(Pageable pageable) {
         try {
-            offerService.findOffers(pageable);
+            adminOfferService.findOffers(pageable);
             return ResponseEntity.status(HttpStatus.OK).body("znaleziono oferty");
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
-    @GetMapping("/offers/{id}")
+    @GetMapping("/admin/offers/{id}")
     public ResponseEntity<String> findOffer(@PathVariable @Valid Long id) {
         try {
-            offerService.findOffer(id);
+            adminOfferService.findOffer(id);
             return ResponseEntity.status(HttpStatus.OK).body("znaleziono ofertę");
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
-    @PostMapping("/offers")
-    public ResponseEntity<String> addOffer(@RequestBody @Valid OfferDto offerDto) {
+    @PostMapping("/admin/offers")
+    public ResponseEntity<String> saveOffer(@RequestBody @Valid AdminOfferDto adminOfferDto) {
         try {
-            offerService.saveOffer(offerDto, EMPTY_ID);
+            adminOfferService.saveOffer(adminOfferDto, EMPTY_ID);
             return ResponseEntity.status(HttpStatus.OK).body("dodano ofertę");
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
-    @DeleteMapping("/offers/{id}") // tu trzeba zmienić żeby mógł usuwać tylko swoje oferty
+    @DeleteMapping("/admin/offers/{id}")
     public ResponseEntity<String> deleteOffer(@PathVariable @Valid Long id) {
-        offerService.deleteOffer(id);
+        adminOfferService.deleteOffer(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("usunięto ofertę");
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException exception) {
-
-        Map<String, String> errors = new HashMap<>();
-
-        exception.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 }
