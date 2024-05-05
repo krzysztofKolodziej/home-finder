@@ -17,14 +17,16 @@ public class AdminOfferService {
     }
 
     public AdminOfferDto findOffer(Long id) {
-        AdminOffer adminOffer = adminOfferRepository.findById(id).orElse(null);
-        if (adminOffer == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono ofety");
-        }
+        AdminOffer adminOffer = adminOfferRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
         return mapOfferDto(adminOffer);
     }
 
     public AdminOffer saveOffer(AdminOfferDto adminOfferDto, Long id) {
+        return adminOfferRepository.save(mapOffer(adminOfferDto, id));
+    }
+
+    public AdminOffer updateOffer(AdminOfferDto adminOfferDto, Long id) {
         return adminOfferRepository.save(mapOffer(adminOfferDto, id));
     }
 

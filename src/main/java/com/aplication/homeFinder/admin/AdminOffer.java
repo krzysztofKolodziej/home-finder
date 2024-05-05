@@ -1,18 +1,17 @@
 package com.aplication.homeFinder.admin;
-
-import com.aplication.homeFinder.offer.enumClass.*;
+;
+import com.aplication.homeFinder.offer.model.enumClass.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "offer")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class AdminOffer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private KindOfProperty kindOfProperty;

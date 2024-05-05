@@ -41,6 +41,15 @@ public class AdminOfferController {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
+    @PutMapping("/admin/offers/{id}")
+    public ResponseEntity<String> updateOffer(@RequestBody @Valid AdminOfferDto adminOfferDto,@PathVariable @Valid Long id) {
+        try {
+            adminOfferService.saveOffer(adminOfferDto, id);
+            return ResponseEntity.status(HttpStatus.OK).body("zaktualizowano ofertę");
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+        }
+    }
     @DeleteMapping("/admin/offers/{id}")
     public ResponseEntity<String> deleteOffer(@PathVariable @Valid Long id) {
         adminOfferService.deleteOffer(id);
