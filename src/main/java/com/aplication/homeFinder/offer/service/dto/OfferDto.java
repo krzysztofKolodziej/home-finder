@@ -1,5 +1,6 @@
 package com.aplication.homeFinder.offer.service.dto;
 
+import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.model.enumClass.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -29,5 +30,5 @@ public class OfferDto {
     @NotBlank
     @Size(max = 5000, message = "Maksymalna ilość znaków to 5000")
     private String description;
-
+    private OfferDetailsDto offerDetailsDto;
 }

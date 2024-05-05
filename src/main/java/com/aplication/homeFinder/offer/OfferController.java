@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class OfferController {
@@ -20,20 +22,30 @@ public class OfferController {
     public static final Long EMPTY_ID = null;
 
     @GetMapping("/offers")
-    public ResponseEntity<String> findAllOffer() {
+    public ResponseEntity<?> findAllOffer() {
         try {
-            offerService.findOffers();
-            return ResponseEntity.status(HttpStatus.OK).body("znaleziono oferty");
+            List<OfferDto> offers = offerService.findOffers();
+            return ResponseEntity.status(HttpStatus.OK).body(offers);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
 
     @GetMapping("/offers/{id}")
-    public ResponseEntity<String> findOffer(@PathVariable @Valid Long id) {
+    public ResponseEntity<?> findOffer(@PathVariable @Valid Long id) {
         try {
-            offerService.findOffer(id);
-            return ResponseEntity.status(HttpStatus.OK).body("znaleziono ofertę");
+            OfferDto offerDto = offerService.findOffer(id);
+            return ResponseEntity.status(HttpStatus.OK).body(offerDto);
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/offers/{id}/details")
+    public ResponseEntity<?> findOfferWithDetails(@PathVariable @Valid Long id) {
+        try {
+            OfferDto offerDto = offerService.findOfferWithDetails(id);
+            return ResponseEntity.status(HttpStatus.OK).body(offerDto);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
@@ -52,12 +64,12 @@ public class OfferController {
     }
 
     @PutMapping("/offers/{id}") // TODO: 27.04.2024 aktualizacja tylko ofert od użytkownika
-    public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferRequest offerRequest, Long id) {
+    public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferRequest offerRequest, @PathVariable Long id) {
         OfferDetailsDto offerDetailsDto = offerRequest.getOfferDetailsDto();
         OfferDto offerDto = offerRequest.getOfferDto();
         try {
-            offerService.updateOffer(offerDto, offerDetailsDto, id);
-            return ResponseEntity.status(HttpStatus.OK).body("dodano ofertę");
+            Offer offer = offerService.updateOffer(offerDto, offerDetailsDto, id);
+            return ResponseEntity.status(HttpStatus.OK).body("zaktualizowano ofertę " + offer.getId());
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
