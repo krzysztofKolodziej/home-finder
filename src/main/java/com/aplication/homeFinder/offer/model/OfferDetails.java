@@ -16,7 +16,7 @@ public class OfferDetails {
     private Long id;
     private double rent;
     @Enumerated(EnumType.STRING)
-    private OwnershipForm ownershipForm;
+    private OwnershipForm ownerShipForm;
     @Enumerated(EnumType.STRING)
     private FinishLevel finishLevel;
     @Enumerated(EnumType.STRING)

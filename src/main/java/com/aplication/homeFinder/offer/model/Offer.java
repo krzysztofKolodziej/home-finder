@@ -4,6 +4,8 @@ import com.aplication.homeFinder.offer.model.enumClass.KindOfProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.function.ToDoubleBiFunction;
+
 @Entity
 @Getter
 @Setter
@@ -35,7 +37,7 @@ public class Offer {
         offerDetails.setOffer(this);
         this.offerDetails = offerDetails;
     }
-    public void removeDetails() {
+    public void removeDetails() {  // TODO: 10.05.2024 ustawić tę metodę przy usuwaniu encji
         offerDetails.setOffer(null);
         this.offerDetails = null;
     }
