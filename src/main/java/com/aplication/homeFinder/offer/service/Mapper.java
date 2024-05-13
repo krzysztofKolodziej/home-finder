@@ -4,15 +4,9 @@ import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
-import com.aplication.homeFinder.offer.service.dto.OfferRequest;
 
 public class Mapper {
-    public Offer mapOffer(OfferRequest offerRequest, Long id) {
-            OfferDto offerDto = offerRequest.getOfferDto();
-            OfferDetailsDto offerDetailsDto = offerRequest.getOfferDetailsDto();
-            if (offerDetailsDto == null && offerDto == null) {
-                return null;
-            }
+    public Offer mapOffer(OfferDto offerDto, Long id, Long idDetails) {
             Offer offer = Offer.builder()
                     .id(id)
                     .kindOfProperty(offerDto.getKindOfProperty())
@@ -25,7 +19,7 @@ public class Mapper {
                     .floor(offerDto.getFloor())
                     .description(offerDto.getDescription())
                     .build();
-            offer.addDetails(mapOfferDetails(offerDetailsDto,id));
+            offer.addDetails(mapOfferDetails(offerDto.getOfferDetailsDto(),idDetails));
             return offer;
         }
 
@@ -41,7 +35,7 @@ public class Mapper {
             OfferDetails offerDetails = new OfferDetails();
             offerDetails.setId(id);
             offerDetails.setRent(offerDetailsDto.getRent());
-            offerDetails.setOwnerShipForm(offerDetailsDto.getOwnershipForm());
+            offerDetails.setOwnershipForm(offerDetailsDto.getOwnershipForm());
             offerDetails.setFinishLevel(offerDetailsDto.getFinishLevel());
             offerDetails.setParkingPlace(offerDetailsDto.getParkingPlace());
             offerDetails.setHeating(offerDetailsDto.getHeating());
@@ -83,7 +77,7 @@ public class Mapper {
         private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
             return OfferDetailsDto.builder()
                     .rent(offerDetails.getRent())
-                    .ownershipForm(offerDetails.getOwnerShipForm())
+                    .ownershipForm(offerDetails.getOwnershipForm())
                     .finishLevel(offerDetails.getFinishLevel())
                     .parkingPlace(offerDetails.getParkingPlace())
                     .heating(offerDetails.getHeating())

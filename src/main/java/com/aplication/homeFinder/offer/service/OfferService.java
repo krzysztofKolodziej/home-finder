@@ -4,7 +4,6 @@ import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
-import com.aplication.homeFinder.offer.service.dto.OfferRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +23,60 @@ public class OfferService {
     private final EntityManager em;
     private final Mapper mapper = new Mapper();
 
+
     public List<OfferDto> findOffers(String kindOfProperty, Double minPrice, Double maxPrice, String location,
                                      Integer minNumberOfRooms, Integer maxNumberOfRooms, Double minArea, Double maxArea,
                                      Double minPricePerMeter, Double maxPricePerMeter, Integer minFloor, Integer maxFloor,
                                      String ownerShipForm, String finishLevel, String parkingPlace, String heating,
                                      String market, String announcerType, Integer minYearOfConstruction,
                                      Integer maxYearOfConstruction, String buildingType) {
+
+        return filteringLogic(kindOfProperty, minPrice, maxPrice, location, minNumberOfRooms, maxNumberOfRooms, minArea, maxArea,
+                minPricePerMeter, maxPricePerMeter, minFloor, maxFloor, ownerShipForm, finishLevel, parkingPlace,
+                heating, market, announcerType, minYearOfConstruction, maxYearOfConstruction, buildingType).stream()
+                .map(mapper::mapOfferDto)
+                .collect(Collectors.toList());
+    }
+
+    public OfferDto findOfferWithDetails(Long id) {
+        Offer offer = offerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
+        OfferDetails offerDetails = offer.getOfferDetails();
+        if (offerDetails == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono szczegolow oferty");
+        }
+        return mapper.mapOfferWithDetailsDto(offer, offerDetails);
+    }
+
+    public Offer saveOffer(OfferDto offerDto) {
+        return offerRepository.save(mapper.mapOffer(offerDto, null, null));
+    }
+
+    public Offer updateOffer(OfferDto offerDto, Long id) {
+        Offer offer = offerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
+        Long idDetails = offer.getOfferDetails().getId();
+        return offerRepository.save(mapper.mapOffer(offerDto, id, idDetails));
+    }
+
+    public void deleteOffer(Long id) {
+        offerRepository.deleteById(id);
+    }
+
+    private List<Offer> filteringLogic(String kindOfProperty, Double minPrice, Double maxPrice, String location,
+                                       Integer minNumberOfRooms, Integer maxNumberOfRooms, Double minArea, Double maxArea,
+                                       Double minPricePerMeter, Double maxPricePerMeter, Integer minFloor, Integer maxFloor,
+                                       String ownerShipForm, String finishLevel, String parkingPlace, String heating,
+                                       String market, String announcerType, Integer minYearOfConstruction,
+                                       Integer maxYearOfConstruction, String buildingType) {
+
+        ArrayList<Predicate> predicates = new ArrayList<>();
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Offer> cr = cb.createQuery(Offer.class);
         Root<Offer> root = cr.from(Offer.class);
 
         Join<Offer, OfferDetails> offerOfferDetailsJoin = root.join("offerDetails", JoinType.INNER);
-
-        ArrayList<Predicate> predicates = new ArrayList<>();
 
         if ("MIESZKANIE".equals(kindOfProperty) || "DOM".equals(kindOfProperty) || "LOKAL".equals(kindOfProperty)
                 || "DZIALKA".equals(kindOfProperty) || "GARAZ".equals(kindOfProperty)) {
@@ -92,7 +132,7 @@ public class OfferService {
             predicates.add(cb.equal(offerOfferDetailsJoin.get("heating"), heating));
         }
         if ("PIERWOTNY".equals(market) || "WTORNY".equals(market)) {
-            predicates.add(cb.equal(offerOfferDetailsJoin.get("additionalInformation").get("marker"), market));
+            predicates.add(cb.equal(offerOfferDetailsJoin.get("additionalInformation").get("market"), market));
         }
         if ("DEWELOPER".equals(announcerType) || "BIURONIERUCHOMOSCI".equals(announcerType)
                 || "OSOBAPRYWATNA".equals(announcerType)) {
@@ -111,41 +151,13 @@ public class OfferService {
         }
 
         if ("BLOK".equals(buildingType) || "KAMIENICA".equals(buildingType)
-                || "DOMWOLNOSTOJACY".equals(buildingType) ||"SZEREGOWIEC".equals(buildingType)
+                || "DOMWOLNOSTOJACY".equals(buildingType) || "SZEREGOWIEC".equals(buildingType)
                 || "APARTAMENTOWIEC".equals(buildingType)) {
-                predicates.add(cb.equal(offerOfferDetailsJoin.get("additionalInformation")
-                        .get("buildingType"), buildingType));
+            predicates.add(cb.equal(offerOfferDetailsJoin.get("additionalInformation")
+                    .get("buildingType"), buildingType));
         }
         cr.where(cb.and(predicates.toArray(new Predicate[0])));
 
-        List<Offer> offers = em.createQuery(cr).getResultList();
-        return offers.stream()
-                .map(mapper::mapOfferDto)
-                .collect(Collectors.toList());
+        return em.createQuery(cr).getResultList();
     }
-
-    public OfferDto findOfferWithDetails(Long id) {
-        Offer offer = offerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
-        OfferDetails offerDetails = offer.getOfferDetails();
-        if (offerDetails == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono szczegolow oferty");
-        }
-        return mapper.mapOfferWithDetailsDto(offer, offerDetails);
-    }
-
-    public Offer saveOffer(OfferRequest offerRequest) {
-        return offerRepository.save(mapper.mapOffer(offerRequest, null));
-    }
-
-    public Offer updateOffer(OfferRequest offerRequest, Long id) {
-        offerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
-        return offerRepository.save(mapper.mapOffer(offerRequest, id));
-    }
-
-    public void deleteOffer(Long id) {
-        offerRepository.deleteById(id);
-    }
-
 }

@@ -2,6 +2,8 @@ package com.aplication.homeFinder.offer.model;
 
 import com.aplication.homeFinder.offer.model.enumClass.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -16,7 +18,7 @@ public class OfferDetails {
     private Long id;
     private double rent;
     @Enumerated(EnumType.STRING)
-    private OwnershipForm ownerShipForm;
+    private OwnershipForm ownershipForm;
     @Enumerated(EnumType.STRING)
     private FinishLevel finishLevel;
     @Enumerated(EnumType.STRING)
@@ -39,10 +41,13 @@ public class OfferDetails {
         private Market market;
         @Enumerated(EnumType.STRING)
         private AnnouncerType announcerType;
+        @Min(0)
         private int yearOfConstruction;
         @Enumerated(EnumType.STRING)
         private BuildingType buildingType;
+        @NotNull
         private String media;
+        @NotNull
         private String equipment;
     }
 }

@@ -1,9 +1,7 @@
 package com.aplication.homeFinder.offer.controller;
 
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
-import com.aplication.homeFinder.offer.service.dto.OfferRequest;
 import com.aplication.homeFinder.offer.service.OfferService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,10 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.DoubleBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @AllArgsConstructor
@@ -53,8 +51,8 @@ public class OfferController {
         try {
             List<OfferDto> offers = offerService.findOffers(kindOfProperty, minPrice, maxPrice, location,
                     minNumberOfRooms, maxNumberOfRooms, minArea, maxArea, minPricePerMeter, maxPricePerMeter, minFloor,
-                    maxFloor, ownerShipForm,finishLevel,parkingPlace,heating,market,announcerType,minYearOfConstruction,
-                    maxYearOfConstruction,buildingType );
+                    maxFloor, ownerShipForm, finishLevel, parkingPlace, heating, market, announcerType, minYearOfConstruction,
+                    maxYearOfConstruction, buildingType);
             return ResponseEntity.status(HttpStatus.OK).body(offers);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
@@ -72,41 +70,41 @@ public class OfferController {
     }
 
     @PostMapping
-    public ResponseEntity<String> safeOffer(@RequestBody @Valid OfferRequest offerRequest) {
+    public ResponseEntity<String> safeOffer(@RequestBody @Valid OfferDto offerDto) {
         try {
-            Offer offer = offerService.saveOffer(offerRequest);
+            Offer offer = offerService.saveOffer(offerDto);
             return ResponseEntity.status(HttpStatus.OK).body("dodano ofertę " + offer.getId());
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
 
-    @PutMapping("/{id}") // TODO: 27.04.2024 aktualizacja tylko ofert od użytkownika
-    public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferRequest offerRequest, @PathVariable Long id) {
+    @PutMapping("{id}") // TODO: 27.04.2024 aktualizacja tylko ofert od użytkownika
+    public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id) {
         try {
-            Offer offer = offerService.updateOffer(offerRequest, id);
+            Offer offer = offerService.updateOffer(offerDto, id);
             return ResponseEntity.status(HttpStatus.OK).body("zaktualizowano ofertę " + offer.getId());
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}") // TODO: 27.04.2024 usuwanie tylko ofert od użytkownika
+    @DeleteMapping("{id}") // TODO: 27.04.2024 usuwanie tylko ofert od użytkownika
     public void deleteOffer(@PathVariable @Valid Long id) {
         offerService.deleteOffer(id);
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException exception) {
-//
-//        Map<String, String> errors = new HashMap<>();
-//
-//        exception.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return errors;
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException exception) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        exception.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 }

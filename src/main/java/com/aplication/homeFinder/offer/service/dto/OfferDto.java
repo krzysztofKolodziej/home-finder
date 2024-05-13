@@ -30,5 +30,6 @@ public class OfferDto {
     @NotBlank
     @Size(max = 5000, message = "Maksymalna ilość znaków to 5000")
     private String description;
+    @NotNull
     private OfferDetailsDto offerDetailsDto;
 }
