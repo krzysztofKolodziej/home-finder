@@ -1,8 +1,11 @@
 package com.aplication.homeFinder.offer.service;
 
+import com.aplication.homeFinder.offer.model.ClientMessage;
+import com.aplication.homeFinder.offer.repository.ClientMessageRepository;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class OfferService {
 
     private final OfferRepository offerRepository;
+    private final ClientMessageRepository clientMessageRepository;
     private final EntityManager em;
     private final Mapper mapper = new Mapper();
 
@@ -63,6 +67,18 @@ public class OfferService {
         offerRepository.deleteById(id);
     }
 
+    public ClientMessage addMessage(ClientMessageDto clientMessageDto, Long id) {
+        Offer offer = offerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
+        return clientMessageRepository.save(ClientMessage.builder()
+                .name(clientMessageDto.getName())
+                .email(clientMessageDto.getEmail())
+                .phoneNumber(clientMessageDto.getPhoneNumber())
+                .message(clientMessageDto.getMessage())
+                .offer(offer)
+                .build());
+    }
+    
     private List<Offer> filteringLogic(String kindOfProperty, Double minPrice, Double maxPrice, String location,
                                        Integer minNumberOfRooms, Integer maxNumberOfRooms, Double minArea, Double maxArea,
                                        Double minPricePerMeter, Double maxPricePerMeter, Integer minFloor, Integer maxFloor,
@@ -113,7 +129,7 @@ public class OfferService {
             predicates.add(cb.greaterThanOrEqualTo(root.get("floor"), minFloor));
         }
         if (maxFloor != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("floor"), maxPricePerMeter));
+            predicates.add(cb.lessThanOrEqualTo(root.get("floor"), maxFloor));
         }
         if ("PELNAWLASNOSC".equals(ownerShipForm) || "SPOLDZIELCZE".equals(ownerShipForm) ||
                 "UZYTKOWANIEWIECZYSTE".equals(ownerShipForm) || "UDZIAL".equals(ownerShipForm)) {

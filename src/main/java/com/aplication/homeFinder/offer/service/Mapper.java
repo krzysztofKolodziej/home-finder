@@ -1,7 +1,9 @@
 package com.aplication.homeFinder.offer.service;
 
+import com.aplication.homeFinder.offer.model.ClientMessage;
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 
@@ -75,20 +77,23 @@ public class Mapper {
         }
 
         private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
-            return OfferDetailsDto.builder()
-                    .rent(offerDetails.getRent())
-                    .ownershipForm(offerDetails.getOwnershipForm())
-                    .finishLevel(offerDetails.getFinishLevel())
-                    .parkingPlace(offerDetails.getParkingPlace())
-                    .heating(offerDetails.getHeating())
-                    .contactDetails(offerDetails.getContactDetails())
-                    .market(offerDetails.getAdditionalInformation().getMarket())
-                    .announcerType(offerDetails.getAdditionalInformation().getAnnouncerType())
-                    .yearOfConstruction(offerDetails.getAdditionalInformation().getYearOfConstruction())
-                    .buildingType(offerDetails.getAdditionalInformation().getBuildingType())
-                    .media(offerDetails.getAdditionalInformation().getMedia())
-                    .equipment(offerDetails.getAdditionalInformation().getEquipment())
-                    .build();
-        }
-
+            OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
+            if (additionalInformation == null) {
+                return null;
+            }
+                return OfferDetailsDto.builder()
+                        .rent(offerDetails.getRent())
+                        .ownershipForm(offerDetails.getOwnershipForm())
+                        .finishLevel(offerDetails.getFinishLevel())
+                        .parkingPlace(offerDetails.getParkingPlace())
+                        .heating(offerDetails.getHeating())
+                        .contactDetails(offerDetails.getContactDetails())
+                        .market(additionalInformation.getMarket())
+                        .announcerType(additionalInformation.getAnnouncerType())
+                        .yearOfConstruction(additionalInformation.getYearOfConstruction())
+                        .buildingType(additionalInformation.getBuildingType())
+                        .media(additionalInformation.getMedia())
+                        .equipment(additionalInformation.getEquipment())
+                        .build();
+            }
 }

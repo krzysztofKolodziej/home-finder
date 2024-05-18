@@ -1,6 +1,7 @@
 package com.aplication.homeFinder.offer.controller;
 
 import com.aplication.homeFinder.offer.model.Offer;
+import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import com.aplication.homeFinder.offer.service.OfferService;
 import jakarta.validation.Valid;
@@ -23,7 +24,6 @@ import java.util.Map;
 public class OfferController {
 
     private final OfferService offerService;
-
     @GetMapping
     public ResponseEntity<?> findAllOffer(
             @RequestParam(required = false) String kindOfProperty,
@@ -92,6 +92,16 @@ public class OfferController {
     @DeleteMapping("{id}") // TODO: 27.04.2024 usuwanie tylko ofert od użytkownika
     public void deleteOffer(@PathVariable @Valid Long id) {
         offerService.deleteOffer(id);
+    }
+
+    @PostMapping("/{id}/message")
+    public ResponseEntity<String> saveMessage(@RequestBody @Valid ClientMessageDto clientMessageDto, @PathVariable Long id) {
+        try {
+            offerService.addMessage(clientMessageDto, id);
+            return ResponseEntity.status(HttpStatus.OK).body("Dziękujemy za przesłaną wiadomość");
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+        }
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

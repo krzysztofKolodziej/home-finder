@@ -1,11 +1,8 @@
 package com.aplication.homeFinder.offer.service.dto;
 
-import com.aplication.homeFinder.offer.model.OfferDetails;
-import com.aplication.homeFinder.offer.model.enumClass.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.aplication.homeFinder.offer.model.Offer;
+
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,10 +10,11 @@ import lombok.Getter;
 @Builder
 public class OfferDto {
     @NotNull
-    private KindOfProperty kindOfProperty;
+    private Offer.KindOfProperty kindOfProperty;
     @Min(0)
     private double price;
     @NotBlank
+    @Pattern(regexp = "[a-z]+", message = "nieprawidłowy tytuł")
     private String title;
     @NotBlank
     private String location;

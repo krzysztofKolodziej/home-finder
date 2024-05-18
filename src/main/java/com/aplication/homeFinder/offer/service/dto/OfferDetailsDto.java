@@ -1,6 +1,6 @@
 package com.aplication.homeFinder.offer.service.dto;
 
-import com.aplication.homeFinder.offer.model.enumClass.*;
+import com.aplication.homeFinder.offer.model.OfferDetails;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,23 +15,23 @@ public class OfferDetailsDto {
     @Min(0)
     private double rent;
     @NotNull
-    private OwnershipForm ownershipForm;
+    private OfferDetails.OwnershipForm ownershipForm;
     @NotNull
-    private FinishLevel finishLevel;
+    private OfferDetails.FinishLevel finishLevel;
     @NotNull
-    private ParkingPlace parkingPlace;
+    private OfferDetails.ParkingPlace parkingPlace;
     @NotNull
-    private Heating heating;
+    private OfferDetails.Heating heating;
     @NotBlank
     private String contactDetails;
     @NotNull
-    private Market market;
+    private OfferDetails.Market market;
     @NotNull
-    private AnnouncerType announcerType;
+    private OfferDetails.AnnouncerType announcerType;
     @Min(0)
     private int yearOfConstruction;
     @NotNull
-    private BuildingType buildingType;
+    private OfferDetails.BuildingType buildingType;
     @NotBlank
     private String media;
     @NotBlank

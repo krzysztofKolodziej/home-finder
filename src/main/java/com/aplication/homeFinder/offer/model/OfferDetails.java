@@ -1,6 +1,5 @@
 package com.aplication.homeFinder.offer.model;
 
-import com.aplication.homeFinder.offer.model.enumClass.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -49,5 +48,26 @@ public class OfferDetails {
         private String media;
         @NotNull
         private String equipment;
+    }
+    public enum AnnouncerType {
+        DEWELOPER, BIURONIERUCHOMOSCI, OSOBAPRYWATNA
+    }
+    public enum BuildingType {
+        BLOK, KAMIENICA, DOMWOLNOSTOJACY, SZEREGOWIEC, APARTAMENTOWIEC
+    }
+    public enum FinishLevel {
+        DOZAMIESZKANIA, DOWYKONCZENIA, DOREMONTU
+    }
+    public enum Heating {
+        MIEJSKIE, GAZOWE, ELEKTRYCZNE, KOTLOWE, INNE
+    }
+    public enum Market {
+        PIERWOTNY, WTORNY
+    }
+    public enum OwnershipForm {
+        PELNAWLASNOSC, SPOLDZIELCZE, UZYTKOWANIEWIECZYSTE, UDZIAL
+    }
+    public enum ParkingPlace {
+        BRAK, MIEJSCEWGARAZUPODZIEMNYM, MIEJSCENAZIEMNE
     }
 }
