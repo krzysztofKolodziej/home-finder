@@ -1,0 +1,22 @@
+
+Wzór na maksymalną kwotę kredytu
+P =  (EMI * ((1+r)^2 - 1)) / (r * (1 + r)^2
+
+EMI to miesięczna rata kredytu (Equated Monthly Installment),
+P to kwota kredytu (principal),
+r to miesięczna stopa procentowa,
+n to liczba płatności (liczba miesięcy)
+
+Aby bank udzielił kredyt wskaźnik DTI nie może byćniżczy niż 40%
+Średnie roczne oprocentowanie kredytów hipotecznych 0,0821
+Miesięczny koszt utrzymania kart kredytowych około 0,02
+
+Wzór na ratę kredytu hipotecznego
+R=K*(1+(b/m)^n)*(1+(b/m)-1)/[(1+(b/m)^n)-1]
+
+R – wysokość raty równej
+K – kwota udzielonego kredytu
+b – wysokość oprocentowania kredytu w skali roku
+m – liczba miesięcy w roku
+n – liczba rat
+^ – symbol potęgowania

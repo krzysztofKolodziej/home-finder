@@ -2,6 +2,7 @@ package com.aplication.homeFinder.offer.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.context.annotation.Bean;
 
 @Entity
 @Getter
