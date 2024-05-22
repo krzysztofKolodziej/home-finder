@@ -34,9 +34,9 @@ public class OfferDetailsDto {
     @NotNull
     private OfferDetails.BuildingType buildingType;
     @NotBlank
-    @Size(max = 5000, message = "Maksymalna ilość znaków to 1000")
+    @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
     private String media;
     @NotBlank
-    @Size(max = 5000, message = "Maksymalna ilość znaków to 1000")
+    @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
     private String equipment;
 }

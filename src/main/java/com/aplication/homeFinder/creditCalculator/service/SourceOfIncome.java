@@ -1,4 +1,4 @@
-package com.aplication.homeFinder.creditCalculator;
+package com.aplication.homeFinder.creditCalculator.service;
 
 public enum SourceOfIncome {
     FIXED_TERM_CONTRACT, INDEFINITE_EMPLOYMENT_CONTRACT, BUSINESS_OPERATION_MORE_THAN_YEAR, BUSINESS_OPERATION_LESS_THAN_YEAR,

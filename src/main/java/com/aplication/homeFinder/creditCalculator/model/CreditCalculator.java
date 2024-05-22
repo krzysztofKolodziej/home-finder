@@ -1,9 +1,11 @@
 package com.aplication.homeFinder.creditCalculator.model;
 
-import com.aplication.homeFinder.creditCalculator.SourceOfIncome;
+import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 @Entity
 @Getter
@@ -32,7 +34,7 @@ public class CreditCalculator {
     private int monthlyAmountOtherLoans;
     private int creditCardLimit;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private int phoneNumber;
     private String name;
 

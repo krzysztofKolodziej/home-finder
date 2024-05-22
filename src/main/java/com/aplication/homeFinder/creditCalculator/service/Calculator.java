@@ -1,70 +1,57 @@
 package com.aplication.homeFinder.creditCalculator.service;
 
 
-import com.aplication.homeFinder.creditCalculator.SourceOfIncome;
+import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
 
 public class Calculator {
 
     private static final double MAX_DTI = 0.6;
     private static final double averageAnnualInterestRateLoan = 0.0821;
 
-    public int maxLoanAmount(int monthlyNetIncome, int monthlyExpenditures, int numberOfDependents,
-                             int monthlyAmountOtherLoans, int creditCardLimit, int repaymentPeriod,
-                             SourceOfIncome sourceOfIncome, int contractDurationInMonth, boolean continuityOfEmployment) {
+    public int maxLoanAmount(CreditCalculatorDto creditCalculatorDto) {
         double monthlyInterestRate = averageAnnualInterestRateLoan / 12;
-        double numberOfPayments = repaymentPeriod * 12;
+        double numberOfPayments = creditCalculatorDto.getRepaymentPeriod() * 12;
 
-        double creditWorthiness = (availableIncomeForDebt(monthlyNetIncome, monthlyExpenditures, numberOfDependents,
-                monthlyAmountOtherLoans, creditCardLimit, sourceOfIncome, contractDurationInMonth, continuityOfEmployment)
+        if (creditCalculatorDto.isDelayInLoanRepayment()) {
+            return 0;
+        }
+        double creditWorthiness = (availableIncomeForDebt(creditCalculatorDto)
                 * (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1))
                 / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments));
 
         double result = 0;
 
-        if (sourceOfIncome == SourceOfIncome.FIXED_TERM_CONTRACT){
-            if (contractDurationInMonth <= 12) {
+        if (creditCalculatorDto.getSourceOfIncome() == SourceOfIncome.FIXED_TERM_CONTRACT) {
+            if (creditCalculatorDto.getContractDurationInMonth() <= 12) {
                 creditWorthiness = 0;
             } else {
-                result =  0.14 + ((contractDurationInMonth - 12.0) /100.0);
+                result = 0.14 + ((creditCalculatorDto.getContractDurationInMonth() - 12.0) / 100.0);
                 creditWorthiness = (int) (result * creditWorthiness);
             }
         }
         return (int) creditWorthiness;
     }
 
-    private double availableIncomeForDebt(int monthlyNetIncome, int monthlyExpenditures, int numberOfDependents,
-                                          int monthlyAmountOtherLoans, int creditCardLimit, SourceOfIncome sourceOfIncome,
-                                          int contractDurationInMonth, boolean continuityOfEmployment) {
-        int validIncome = validationIncome(sourceOfIncome, monthlyNetIncome, contractDurationInMonth, continuityOfEmployment);
+    private double availableIncomeForDebt(CreditCalculatorDto creditCalculatorDto) {
+        int validIncome = validationIncome(creditCalculatorDto);
 
-        double result = validIncome * MAX_DTI - totalMonthlyDebts(monthlyExpenditures, monthlyAmountOtherLoans,
-                creditCardLimit, numberOfDependents, monthlyNetIncome);
+        double result = validIncome * MAX_DTI - totalMonthlyDebts(creditCalculatorDto);
+
         if (result <= 0) {
             return 0;
         }
         return result;
     }
 
-    private int validationIncome(SourceOfIncome sourceOfIncome, int monthlyNetIncome, int contractDurationInMonth,
-                                 boolean continuityOfEmployment) {
-        double result = 0;
+    private int validationIncome(CreditCalculatorDto creditCalculatorDto) {
+        int monthlyNetIncome = creditCalculatorDto.getMonthlyNetIncome();
 
-        switch (sourceOfIncome) {
+        switch (creditCalculatorDto.getSourceOfIncome()) {
             case BUSINESS_OPERATION_LESS_THAN_YEAR:
                 monthlyNetIncome = 0;
                 break;
-            case CONTRACT_OF_SPECIFIC_WORK:
-                if (!continuityOfEmployment) {
-                    monthlyNetIncome = 0;
-                }
-                break;
-            case ORDER_CONTRACT:
-                if (!continuityOfEmployment) {
-                    monthlyNetIncome = 0;
-                }
-                break;
-            case ANNUITIES:
-                if (!continuityOfEmployment) {
+            case CONTRACT_OF_SPECIFIC_WORK, ORDER_CONTRACT, ANNUITIES:
+                if (!creditCalculatorDto.isContinuityOfEmployment()) {
                     monthlyNetIncome = 0;
                 }
                 break;
@@ -72,14 +59,17 @@ public class Calculator {
         return monthlyNetIncome;
     }
 
-    private int totalMonthlyDebts(int monthlyExpenditures, int monthlyAmountOtherLoans, int creditCardLimit,
-                                  int numberOfDependents, int monthlyNetIncome) {
+    private int totalMonthlyDebts(CreditCalculatorDto creditCalculatorDto) {
+        int monthlyExpenditures = creditCalculatorDto.getMonthlyExpenditures();
+        int monthlyAmountOtherLoans = creditCalculatorDto.getMonthlyAmountOtherLoans();
+        int creditCardLimit = creditCalculatorDto.getCreditCardLimit();
+
         int debts = monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * 0.02);
 
-        if (debts >= monthlyNetIncome) {
+        if (debts >= creditCalculatorDto.getMonthlyNetIncome()) {
             return debts;
         }
-        switch (numberOfDependents) {
+        switch (creditCalculatorDto.getNumberOfDependents()) {
             case 0:
                 monthlyExpenditures = 1000;
                 break;
@@ -96,13 +86,13 @@ public class Calculator {
                 monthlyExpenditures = 3000;
                 break;
             case 5:
-                monthlyExpenditures = 3500;
+                monthlyExpenditures = 3250;
                 break;
             case 6:
                 monthlyExpenditures = 3500;
                 break;
             default:
-                monthlyExpenditures = 4000;
+                monthlyExpenditures = 3750;
         }
         return monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * 0.02);
     }

@@ -1,8 +1,8 @@
 package com.aplication.homeFinder.creditCalculator.service;
 
 import com.aplication.homeFinder.creditCalculator.model.CreditCalculator;
-import com.aplication.homeFinder.creditCalculator.model.CreditCalculatorDto;
 import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
+import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,7 @@ public class CreditCalculatorService {
     public int checkCreditWorthiness(CreditCalculatorDto creditCalculatorDto) {
         creditCalculatorRepository.save(mapper(creditCalculatorDto));
 
-        return calculator.maxLoanAmount(creditCalculatorDto.getMonthlyNetIncome(),
-                creditCalculatorDto.getMonthlyExpenditures(),
-                creditCalculatorDto.getNumberOfDependents(),
-                creditCalculatorDto.getMonthlyAmountOtherLoans(),
-                creditCalculatorDto.getCreditCardLimit(),
-                creditCalculatorDto.getRepaymentPeriod(),
-                creditCalculatorDto.getSourceOfIncome(),
-                creditCalculatorDto.getContractDurationInMonth(),
-                creditCalculatorDto.isContinuityOfEmployment());
+        return calculator.maxLoanAmount(creditCalculatorDto);
     }
 
     private CreditCalculator mapper(CreditCalculatorDto creditCalculatorDto) {

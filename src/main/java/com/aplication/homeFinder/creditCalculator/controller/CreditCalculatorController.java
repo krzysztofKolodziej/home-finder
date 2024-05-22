@@ -1,7 +1,8 @@
-package com.aplication.homeFinder.creditCalculator;
+package com.aplication.homeFinder.creditCalculator.controller;
 
-import com.aplication.homeFinder.creditCalculator.model.CreditCalculatorDto;
+import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
 import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CreditCalculatorController {
     private final CreditCalculatorService creditCalculatorService;
 
     @PostMapping("/creditCalculator")
-    public ResponseEntity<?> checkCreditWorthiness(@RequestBody CreditCalculatorDto creditCalculatorDto) {
+    public ResponseEntity<?> checkCreditWorthiness(@RequestBody @Valid CreditCalculatorDto creditCalculatorDto) {
         try {
             int creditWorthiness = creditCalculatorService.checkCreditWorthiness(creditCalculatorDto);
             return ResponseEntity.status(HttpStatus.OK).body(creditWorthiness);
