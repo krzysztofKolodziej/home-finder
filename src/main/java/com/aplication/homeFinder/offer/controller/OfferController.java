@@ -1,6 +1,8 @@
 package com.aplication.homeFinder.offer.controller;
 
 import com.aplication.homeFinder.offer.model.Offer;
+import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.service.FilteringSchema;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import com.aplication.homeFinder.offer.service.OfferService;
@@ -24,35 +26,11 @@ import java.util.Map;
 public class OfferController {
 
     private final OfferService offerService;
+
     @GetMapping
-    public ResponseEntity<?> findAllOffer(
-            @RequestParam(required = false) String kindOfProperty,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) Integer minNumberOfRooms,
-            @RequestParam(required = false) Integer maxNumberOfRooms,
-            @RequestParam(required = false) Double minArea,
-            @RequestParam(required = false) Double maxArea,
-            @RequestParam(required = false) Double minPricePerMeter,
-            @RequestParam(required = false) Double maxPricePerMeter,
-            @RequestParam(required = false) Integer minFloor,
-            @RequestParam(required = false) Integer maxFloor,
-            @RequestParam(required = false) String ownerShipForm,
-            @RequestParam(required = false) String finishLevel,
-            @RequestParam(required = false) String parkingPlace,
-            @RequestParam(required = false) String heating,
-            @RequestParam(required = false) String market,
-            @RequestParam(required = false) String announcerType,
-            @RequestParam(required = false) Integer minYearOfConstruction,
-            @RequestParam(required = false) Integer maxYearOfConstruction,
-            @RequestParam(required = false) String buildingType
-    ) {
+    public ResponseEntity<?> findAllOffer(@ModelAttribute("filteringSchema") FilteringSchema filteringSchema) {
         try {
-            List<OfferDto> offers = offerService.findOffers(kindOfProperty, minPrice, maxPrice, location,
-                    minNumberOfRooms, maxNumberOfRooms, minArea, maxArea, minPricePerMeter, maxPricePerMeter, minFloor,
-                    maxFloor, ownerShipForm, finishLevel, parkingPlace, heating, market, announcerType, minYearOfConstruction,
-                    maxYearOfConstruction, buildingType);
+            List<OfferDto> offers = offerService.findOffers(filteringSchema);
             return ResponseEntity.status(HttpStatus.OK).body(offers);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
@@ -90,8 +68,8 @@ public class OfferController {
     }
 
     @DeleteMapping("{id}") // TODO: 27.04.2024 usuwanie tylko ofert od użytkownika
-    public void deleteOffer(@PathVariable @Valid Long id) {
-        offerService.deleteOffer(id);
+    public void deleteOffer(@PathVariable @Valid Long id, OfferDetails offerDetails) {
+        offerService.deleteOffer(id, offerDetails);
     }
 
     @PostMapping("/{id}/message")

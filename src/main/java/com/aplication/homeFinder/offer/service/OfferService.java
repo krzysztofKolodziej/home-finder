@@ -25,19 +25,13 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final ClientMessageRepository clientMessageRepository;
     private final EntityManager em;
+    private final Offer offer = new Offer();
     private final Mapper mapper = new Mapper();
 
 
-    public List<OfferDto> findOffers(String kindOfProperty, Double minPrice, Double maxPrice, String location,
-                                     Integer minNumberOfRooms, Integer maxNumberOfRooms, Double minArea, Double maxArea,
-                                     Double minPricePerMeter, Double maxPricePerMeter, Integer minFloor, Integer maxFloor,
-                                     String ownerShipForm, String finishLevel, String parkingPlace, String heating,
-                                     String market, String announcerType, Integer minYearOfConstruction,
-                                     Integer maxYearOfConstruction, String buildingType) {
+    public List<OfferDto> findOffers(FilteringSchema filteringSchema) {
 
-        return filteringLogic(kindOfProperty, minPrice, maxPrice, location, minNumberOfRooms, maxNumberOfRooms, minArea, maxArea,
-                minPricePerMeter, maxPricePerMeter, minFloor, maxFloor, ownerShipForm, finishLevel, parkingPlace,
-                heating, market, announcerType, minYearOfConstruction, maxYearOfConstruction, buildingType).stream()
+        return filteringLogic(filteringSchema).stream()
                 .map(mapper::mapOfferDto)
                 .collect(Collectors.toList());
     }
@@ -63,8 +57,9 @@ public class OfferService {
         return offerRepository.save(mapper.mapOffer(offerDto, id, idDetails));
     }
 
-    public void deleteOffer(Long id) {
+    public void deleteOffer(Long id, OfferDetails offerDetails) {
         offerRepository.deleteById(id);
+        offer.removeDetails(offerDetails);
     }
 
     public ClientMessage addMessage(ClientMessageDto clientMessageDto, Long id) {
@@ -78,15 +73,31 @@ public class OfferService {
                 .offer(offer)
                 .build());
     }
-    
-    private List<Offer> filteringLogic(String kindOfProperty, Double minPrice, Double maxPrice, String location,
-                                       Integer minNumberOfRooms, Integer maxNumberOfRooms, Double minArea, Double maxArea,
-                                       Double minPricePerMeter, Double maxPricePerMeter, Integer minFloor, Integer maxFloor,
-                                       String ownerShipForm, String finishLevel, String parkingPlace, String heating,
-                                       String market, String announcerType, Integer minYearOfConstruction,
-                                       Integer maxYearOfConstruction, String buildingType) {
+
+    private List<Offer> filteringLogic(FilteringSchema filteringSchema) {
+        String kindOfProperty = filteringSchema.getKindOfProperty();
+        Double minPrice = filteringSchema.getMinPrice();
+        Double maxPrice = filteringSchema.getMaxPrice();
+        String location = filteringSchema.getLocation();
+        Integer minNumberOfRooms = filteringSchema.getMinNumberOfRooms();
+        Integer maxNumberOfRooms = filteringSchema.getMaxNumberOfRooms();
+        Double minArea = filteringSchema.getMinArea();
+        Double maxArea = filteringSchema.getMaxArea();
+        Double minPricePerMeter = filteringSchema.getMinPrice();
+        Double maxPricePerMeter = filteringSchema.getMaxPricePerMeter();
+        Integer minFloor = filteringSchema.getMinFloor();
+        Integer maxFloor = filteringSchema.getMaxFloor();
+        String ownerShipForm = filteringSchema.getOwnerShipForm();
+        String finishLevel = filteringSchema.getFinishLevel();
+        String parkingPlace = filteringSchema.getParkingPlace();
+        String heating = filteringSchema.getHeating();
+        String market = filteringSchema.getMarket();
+        String announcerType = filteringSchema.getAnnouncerType();
 
         ArrayList<Predicate> predicates = new ArrayList<>();
+        Integer minYearOfConstruction = filteringSchema.getMinYearOfConstruction();
+        Integer maxYearOfConstruction = filteringSchema.getMaxYearOfConstruction();
+        String buildingType = filteringSchema.getBuildingType();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Offer> cr = cb.createQuery(Offer.class);

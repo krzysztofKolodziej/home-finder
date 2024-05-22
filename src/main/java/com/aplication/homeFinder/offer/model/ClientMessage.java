@@ -19,5 +19,6 @@ public class ClientMessage {
     private int phoneNumber;
     private String message;
     @ManyToOne
+    @JoinColumn(name = "offer_id")
     private Offer offer;
 }

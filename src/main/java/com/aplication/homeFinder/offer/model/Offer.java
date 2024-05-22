@@ -43,9 +43,20 @@ public class Offer {
         offerDetails.setOffer(this);
         this.offerDetails = offerDetails;
     }
-    public void removeDetails() {  // TODO: 10.05.2024 ustawić tę metodę przy usuwaniu encji
+
+    public void removeDetails(OfferDetails offerDetails) {
         offerDetails.setOffer(null);
         this.offerDetails = null;
+    }
+
+    public void addClientMessage(ClientMessage clientMessage) {
+        clientMessage.setOffer(this);
+        this.clientMessages.add(clientMessage);
+    }
+
+    public void removeClientMessage(ClientMessage clientMessage) {
+        clientMessage.setOffer(null);
+        this.clientMessages.remove(clientMessage);
     }
 
     public enum KindOfProperty {
