@@ -15,7 +15,7 @@ public class FilteringSchema {
     private String kindOfProperty;
     private Double minPrice;
     private Double maxPrice;
-    private String location;
+    private String city;
     private Integer minNumberOfRooms;
     private Integer maxNumberOfRooms;
     private Double minArea;

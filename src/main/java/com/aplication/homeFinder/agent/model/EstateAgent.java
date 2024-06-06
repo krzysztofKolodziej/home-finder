@@ -20,8 +20,8 @@ public class EstateAgent {
     private String name;
     private String street;
     private int houseNumber;
-    private int zipCode;
+    private String zipCode;
     private String city;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
 }

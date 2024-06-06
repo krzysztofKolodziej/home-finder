@@ -15,11 +15,11 @@ public class OfferDto {
     @Min(0)
     private double price;
     @NotBlank
-    @Pattern(regexp = "[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+", message = "nieprawidłowy tytuł")
     private String title;
     @NotBlank
-    @Pattern(regexp = "[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+", message = "nieprawidłowa lokalizacja")
-    private String location;
+    private String city;
+    @NotBlank
+    private String street;
     @Min(0)
     private int numberOfRooms;
     @Min(0)

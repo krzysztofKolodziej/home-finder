@@ -35,7 +35,7 @@ public class CreditCalculator {
     private int creditCardLimit;
 
     private LocalDate dateOfBirth;
-    private int phoneNumber;
+    private String phoneNumber;
     private String name;
 
 }

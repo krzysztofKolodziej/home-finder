@@ -40,7 +40,7 @@ public class EstateAgentController {
     public ResponseEntity<String> deleteAgent(Long id) {
         try {
             estateAgentService.deleteAgent(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Agent został usuniety");
+            return ResponseEntity.status(HttpStatus.OK).body("Agent został usuniety " + id);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }

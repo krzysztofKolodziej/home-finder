@@ -28,7 +28,7 @@ public class OfferController {
     private final OfferService offerService;
 
     @GetMapping
-    public ResponseEntity<?> findAllOffer(@ModelAttribute("filteringSchema") FilteringSchema filteringSchema) {
+    public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema) {
         try {
             List<OfferDto> offers = offerService.findOffers(filteringSchema);
             return ResponseEntity.status(HttpStatus.OK).body(offers);
@@ -57,7 +57,7 @@ public class OfferController {
         }
     }
 
-    @PutMapping("{id}") // TODO: 27.04.2024 aktualizacja tylko ofert od użytkownika
+    @PutMapping("{id}")
     public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id) {
         try {
             Offer offer = offerService.updateOffer(offerDto, id);
@@ -67,9 +67,9 @@ public class OfferController {
         }
     }
 
-    @DeleteMapping("{id}") // TODO: 27.04.2024 usuwanie tylko ofert od użytkownika
-    public void deleteOffer(@PathVariable @Valid Long id, OfferDetails offerDetails) {
-        offerService.deleteOffer(id, offerDetails);
+    @DeleteMapping("{id}")
+    public void deleteOffer(@PathVariable @Valid Long id) {
+        offerService.deleteOffer(id);
     }
 
     @PostMapping("/{id}/message")

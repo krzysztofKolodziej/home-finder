@@ -21,7 +21,8 @@ public class Offer {
     private KindOfProperty kindOfProperty;
     private double price;
     private String title;
-    private String location;
+    private String city;
+    private String street;
     private int numberOfRooms;
     private double area;
     private double pricePerMeter;

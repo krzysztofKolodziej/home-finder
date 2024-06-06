@@ -22,11 +22,11 @@ public class EstateAgentDto {
     @Min(0)
     private int houseNumber;
     @Pattern(regexp = "\\d{2}-\\d{3}")
-    private int zipCode;
+    private String zipCode;
     @NotBlank
     private String city;
     @Email
     private String email;
     @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
-    private int phoneNumber;
+    private String phoneNumber;
 }

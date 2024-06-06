@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,9 +58,8 @@ public class OfferService {
         return offerRepository.save(mapper.mapOffer(offerDto, id, idDetails));
     }
 
-    public void deleteOffer(Long id, OfferDetails offerDetails) {
+    public void deleteOffer(Long id) {
         offerRepository.deleteById(id);
-        offer.removeDetails(offerDetails);
     }
 
     public ClientMessage addMessage(ClientMessageDto clientMessageDto, Long id) {
@@ -78,12 +78,12 @@ public class OfferService {
         String kindOfProperty = filteringSchema.getKindOfProperty();
         Double minPrice = filteringSchema.getMinPrice();
         Double maxPrice = filteringSchema.getMaxPrice();
-        String location = filteringSchema.getLocation();
+        String city = filteringSchema.getCity();
         Integer minNumberOfRooms = filteringSchema.getMinNumberOfRooms();
         Integer maxNumberOfRooms = filteringSchema.getMaxNumberOfRooms();
         Double minArea = filteringSchema.getMinArea();
         Double maxArea = filteringSchema.getMaxArea();
-        Double minPricePerMeter = filteringSchema.getMinPrice();
+        Double minPricePerMeter = filteringSchema.getMinPricePerMeter();
         Double maxPricePerMeter = filteringSchema.getMaxPricePerMeter();
         Integer minFloor = filteringSchema.getMinFloor();
         Integer maxFloor = filteringSchema.getMaxFloor();
@@ -93,11 +93,11 @@ public class OfferService {
         String heating = filteringSchema.getHeating();
         String market = filteringSchema.getMarket();
         String announcerType = filteringSchema.getAnnouncerType();
-
-        ArrayList<Predicate> predicates = new ArrayList<>();
         Integer minYearOfConstruction = filteringSchema.getMinYearOfConstruction();
         Integer maxYearOfConstruction = filteringSchema.getMaxYearOfConstruction();
         String buildingType = filteringSchema.getBuildingType();
+
+        ArrayList<Predicate> predicates = new ArrayList<>();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Offer> cr = cb.createQuery(Offer.class);
@@ -115,8 +115,8 @@ public class OfferService {
         if (maxPrice != null) {
             predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
         }
-        if (location != null && !location.isEmpty()) {
-            predicates.add(cb.equal(root.get("location"), location));
+        if (city != null && !city.isEmpty()) {
+            predicates.add(cb.equal(root.get("city"), city));
         }
         if (minNumberOfRooms != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get("numberOfRooms"), minNumberOfRooms));

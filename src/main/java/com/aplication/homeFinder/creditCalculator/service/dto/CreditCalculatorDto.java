@@ -43,7 +43,7 @@ public class CreditCalculatorDto {
     @Past
     private LocalDate dateOfBirth;
     @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
-    private int phoneNumber;
+    private String phoneNumber;
     @NotBlank
     private String name;
 }
