@@ -8,95 +8,122 @@ import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 
 public class Mapper {
-    public Offer mapOffer(OfferDto offerDto, Long id, Long idDetails) {
-            Offer offer = Offer.builder()
-                    .id(id)
-                    .kindOfProperty(offerDto.getKindOfProperty())
-                    .price(offerDto.getPrice())
-                    .title(offerDto.getTitle())
-                    .city(offerDto.getCity())
-                    .street(offerDto.getStreet())
-                    .numberOfRooms(offerDto.getNumberOfRooms())
-                    .area(offerDto.getArea())
-                    .pricePerMeter(offerDto.getPricePerMeter())
-                    .floor(offerDto.getFloor())
-                    .description(offerDto.getDescription())
-                    .build();
-            offer.addDetails(mapOfferDetails(offerDto.getOfferDetailsDto(),idDetails));
-            return offer;
+
+    public Offer mapOffer(Offer offer, OfferDto offerDto) {
+        offer.setKindOfProperty(offerDto.getKindOfProperty());
+        offer.setPrice(offerDto.getPrice());
+        offer.setTitle(offerDto.getTitle());
+        offer.setCity(offerDto.getCity());
+        offer.setStreet(offerDto.getStreet());
+        offer.setNumberOfRooms(offerDto.getNumberOfRooms());
+        offer.setArea(offerDto.getArea());
+        offer.setPricePerMeter(offerDto.getPricePerMeter());
+        offer.setFloor(offer.getFloor());
+        offer.setDescription(offerDto.getDescription());
+        offer.getOfferDetails().setOwnershipForm(offerDto.getOfferDetailsDto().getOwnershipForm());
+        offer.getOfferDetails().setRent(offerDto.getOfferDetailsDto().getRent());
+        offer.getOfferDetails().setFinishLevel(offerDto.getOfferDetailsDto().getFinishLevel());
+        offer.getOfferDetails().setParkingPlace(offerDto.getOfferDetailsDto().getParkingPlace());
+        offer.getOfferDetails().setHeating(offerDto.getOfferDetailsDto().getHeating());
+        offer.getOfferDetails().setContactDetails(offerDto.getOfferDetailsDto().getContactDetails());
+        offer.getOfferDetails().getAdditionalInformation().setMarket(offerDto.getOfferDetailsDto().getMarket());
+        offer.getOfferDetails().getAdditionalInformation().setAnnouncerType(offerDto.getOfferDetailsDto().getAnnouncerType());
+        offer.getOfferDetails().getAdditionalInformation().setYearOfConstruction(offerDto.getOfferDetailsDto().getYearOfConstruction());
+        offer.getOfferDetails().getAdditionalInformation().setBuildingType(offerDto.getOfferDetailsDto().getBuildingType());
+        offer.getOfferDetails().getAdditionalInformation().setMedia(offerDto.getOfferDetailsDto().getMedia());
+        offer.getOfferDetails().getAdditionalInformation().setEquipment(offerDto.getOfferDetailsDto().getEquipment());
+        return offer;
+    }
+
+    public Offer mapOffer(OfferDto offerDto) {
+        Offer offer = Offer.builder()
+                .kindOfProperty(offerDto.getKindOfProperty())
+                .price(offerDto.getPrice())
+                .title(offerDto.getTitle())
+                .city(offerDto.getCity())
+                .street(offerDto.getStreet())
+                .numberOfRooms(offerDto.getNumberOfRooms())
+                .area(offerDto.getArea())
+                .pricePerMeter(offerDto.getPricePerMeter())
+                .floor(offerDto.getFloor())
+                .description(offerDto.getDescription())
+                .build();
+        offer.addDetails(mapOfferDetails(offerDto.getOfferDetailsDto()));
+        return offer;
+    }
+
+    private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto) {
+        OfferDetails.AdditionalInformation additionalInformationBuild = OfferDetails.AdditionalInformation.builder()
+                .market(offerDetailsDto.getMarket())
+                .announcerType(offerDetailsDto.getAnnouncerType())
+                .yearOfConstruction(offerDetailsDto.getYearOfConstruction())
+                .buildingType(offerDetailsDto.getBuildingType())
+                .media(offerDetailsDto.getMedia())
+                .equipment(offerDetailsDto.getEquipment())
+                .build();
+
+        return OfferDetails.builder()
+                .rent(offerDetailsDto.getRent())
+                .ownershipForm(offerDetailsDto.getOwnershipForm())
+                .finishLevel(offerDetailsDto.getFinishLevel())
+                .parkingPlace(offerDetailsDto.getParkingPlace())
+                .heating(offerDetailsDto.getHeating())
+                .contactDetails(offerDetailsDto.getContactDetails())
+                .additionalInformation(additionalInformationBuild)
+                .build();
+    }
+
+    public OfferDto mapOfferDto(Offer offer) {
+        return OfferDto.builder()
+                .id(offer.getId())
+                .kindOfProperty(offer.getKindOfProperty())
+                .price(offer.getPrice())
+                .title(offer.getTitle())
+                .city(offer.getCity())
+                .street(offer.getStreet())
+                .numberOfRooms(offer.getNumberOfRooms())
+                .area(offer.getArea())
+                .pricePerMeter(offer.getPricePerMeter())
+                .floor(offer.getFloor())
+                .description(offer.getDescription())
+                .build();
+    }
+
+    public OfferDto mapOfferWithDetailsDto(Offer offer) {
+        return OfferDto.builder()
+                .id(offer.getId())
+                .kindOfProperty(offer.getKindOfProperty())
+                .price(offer.getPrice())
+                .title(offer.getTitle())
+                .city(offer.getCity())
+                .street(offer.getStreet())
+                .numberOfRooms(offer.getNumberOfRooms())
+                .area(offer.getArea())
+                .pricePerMeter(offer.getPricePerMeter())
+                .floor(offer.getFloor())
+                .description(offer.getDescription())
+                .offerDetailsDto(mapOfferDetailsDto(offer.getOfferDetails()))
+                .build();
+    }
+
+    private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
+        OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
+        if (additionalInformation == null) {
+            return null;
         }
-
-        private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto, Long id) {
-            OfferDetails.AdditionalInformation additionalInformation = new OfferDetails.AdditionalInformation();
-            additionalInformation.setMarket(offerDetailsDto.getMarket());
-            additionalInformation.setAnnouncerType(offerDetailsDto.getAnnouncerType());
-            additionalInformation.setYearOfConstruction(offerDetailsDto.getYearOfConstruction());
-            additionalInformation.setBuildingType(offerDetailsDto.getBuildingType());
-            additionalInformation.setMedia(offerDetailsDto.getMedia());
-            additionalInformation.setEquipment(offerDetailsDto.getEquipment());
-
-            OfferDetails offerDetails = new OfferDetails();
-            offerDetails.setId(id);
-            offerDetails.setRent(offerDetailsDto.getRent());
-            offerDetails.setOwnershipForm(offerDetailsDto.getOwnershipForm());
-            offerDetails.setFinishLevel(offerDetailsDto.getFinishLevel());
-            offerDetails.setParkingPlace(offerDetailsDto.getParkingPlace());
-            offerDetails.setHeating(offerDetailsDto.getHeating());
-            offerDetails.setContactDetails(offerDetailsDto.getContactDetails());
-            offerDetails.setAdditionalInformation(additionalInformation);
-
-            return offerDetails;
-        }
-
-        public OfferDto mapOfferDto(Offer offer) {
-            return OfferDto.builder()
-                    .kindOfProperty(offer.getKindOfProperty())
-                    .price(offer.getPrice())
-                    .title(offer.getTitle())
-                    .city(offer.getCity())
-                    .street(offer.getStreet())
-                    .numberOfRooms(offer.getNumberOfRooms())
-                    .area(offer.getArea())
-                    .pricePerMeter(offer.getPricePerMeter())
-                    .floor(offer.getFloor())
-                    .description(offer.getDescription())
-                    .build();
-        }
-
-        public OfferDto mapOfferWithDetailsDto(Offer offer, OfferDetails offerDetails) {
-            return OfferDto.builder()
-                    .kindOfProperty(offer.getKindOfProperty())
-                    .price(offer.getPrice())
-                    .title(offer.getTitle())
-                    .city(offer.getCity())
-                    .street(offer.getStreet())
-                    .numberOfRooms(offer.getNumberOfRooms())
-                    .area(offer.getArea())
-                    .pricePerMeter(offer.getPricePerMeter())
-                    .floor(offer.getFloor())
-                    .description(offer.getDescription())
-                    .offerDetailsDto(mapOfferDetailsDto(offerDetails))
-                    .build();
-        }
-
-        private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
-            OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
-            if (additionalInformation == null) {
-                return null;
-            }
-                return OfferDetailsDto.builder()
-                        .rent(offerDetails.getRent())
-                        .ownershipForm(offerDetails.getOwnershipForm())
-                        .finishLevel(offerDetails.getFinishLevel())
-                        .parkingPlace(offerDetails.getParkingPlace())
-                        .heating(offerDetails.getHeating())
-                        .contactDetails(offerDetails.getContactDetails())
-                        .market(additionalInformation.getMarket())
-                        .announcerType(additionalInformation.getAnnouncerType())
-                        .yearOfConstruction(additionalInformation.getYearOfConstruction())
-                        .buildingType(additionalInformation.getBuildingType())
-                        .media(additionalInformation.getMedia())
-                        .equipment(additionalInformation.getEquipment())
-                        .build();
-            }
+        return OfferDetailsDto.builder()
+                .rent(offerDetails.getRent())
+                .ownershipForm(offerDetails.getOwnershipForm())
+                .finishLevel(offerDetails.getFinishLevel())
+                .parkingPlace(offerDetails.getParkingPlace())
+                .heating(offerDetails.getHeating())
+                .contactDetails(offerDetails.getContactDetails())
+                .market(additionalInformation.getMarket())
+                .announcerType(additionalInformation.getAnnouncerType())
+                .yearOfConstruction(additionalInformation.getYearOfConstruction())
+                .buildingType(additionalInformation.getBuildingType())
+                .media(additionalInformation.getMedia())
+                .equipment(additionalInformation.getEquipment())
+                .build();
+    }
 }

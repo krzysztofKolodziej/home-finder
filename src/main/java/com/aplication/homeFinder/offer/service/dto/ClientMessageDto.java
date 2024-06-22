@@ -18,7 +18,7 @@ public class ClientMessageDto {
     @Email
     private String email;
     @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
-    private int phoneNumber;
+    private String phoneNumber;
     @NotBlank
     @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
     private String message;

@@ -13,6 +13,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class OfferDetailsDto {
+
     @Min(0)
     private double rent;
     @NotNull

@@ -22,12 +22,11 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/offers")
 public class OfferController {
 
     private final OfferService offerService;
 
-    @GetMapping
+    @GetMapping("/offers")
     public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema) {
         try {
             List<OfferDto> offers = offerService.findOffers(filteringSchema);
@@ -37,7 +36,7 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/{id}/")
+    @GetMapping("/offers/{id}")
     public ResponseEntity<?> findOfferWithDetails(@PathVariable @Valid Long id) {
         try {
             OfferDto offerDto = offerService.findOfferWithDetails(id);
@@ -47,36 +46,37 @@ public class OfferController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<String> safeOffer(@RequestBody @Valid OfferDto offerDto) {
+    @PostMapping("/add")
+    public ResponseEntity<?> safeOffer(@RequestBody @Valid OfferDto offerDto) {
         try {
-            Offer offer = offerService.saveOffer(offerDto);
-            return ResponseEntity.status(HttpStatus.OK).body("dodano ofertę " + offer.getId());
+            OfferDto offerDtoMap = offerService.saveOffer(offerDto);
+            return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<String> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id) {
+    @PutMapping("/offers/{id}")
+    public ResponseEntity<?> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id) {
         try {
-            Offer offer = offerService.updateOffer(offerDto, id);
-            return ResponseEntity.status(HttpStatus.OK).body("zaktualizowano ofertę " + offer.getId());
+            OfferDto offerDtoMap = offerService.updateOffer(offerDto, id);
+            return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("{id}")
-    public void deleteOffer(@PathVariable @Valid Long id) {
+    @DeleteMapping("/offers/{id}")
+    public Long deleteOffer(@PathVariable @Valid Long id) {
         offerService.deleteOffer(id);
+        return id;
     }
 
-    @PostMapping("/{id}/message")
+    @PostMapping("offers/{id}/message")
     public ResponseEntity<String> saveMessage(@RequestBody @Valid ClientMessageDto clientMessageDto, @PathVariable Long id) {
         try {
             offerService.addMessage(clientMessageDto, id);
-            return ResponseEntity.status(HttpStatus.OK).body("Dziękujemy za przesłaną wiadomość");
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }

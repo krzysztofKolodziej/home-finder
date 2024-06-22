@@ -35,6 +35,7 @@ public class OfferDetails {
     @NoArgsConstructor
     @Getter
     @Setter
+    @Builder
     public static class AdditionalInformation{
         @Enumerated(EnumType.STRING)
         private Market market;

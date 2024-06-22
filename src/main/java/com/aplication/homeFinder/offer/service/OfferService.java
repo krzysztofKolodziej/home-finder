@@ -26,7 +26,6 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final ClientMessageRepository clientMessageRepository;
     private final EntityManager em;
-    private final Offer offer = new Offer();
     private final Mapper mapper = new Mapper();
 
 
@@ -44,18 +43,21 @@ public class OfferService {
         if (offerDetails == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono szczegolow oferty");
         }
-        return mapper.mapOfferWithDetailsDto(offer, offerDetails);
+        return mapper.mapOfferWithDetailsDto(offer);
     }
 
-    public Offer saveOffer(OfferDto offerDto) {
-        return offerRepository.save(mapper.mapOffer(offerDto, null, null));
+    public OfferDto saveOffer(OfferDto offerDto) {
+        Offer offer = offerRepository.save(mapper.mapOffer(offerDto));
+        return mapper.mapOfferWithDetailsDto(offer);
     }
 
-    public Offer updateOffer(OfferDto offerDto, Long id) {
+    public OfferDto updateOffer(OfferDto offerDto, Long id) {
         Offer offer = offerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
-        Long idDetails = offer.getOfferDetails().getId();
-        return offerRepository.save(mapper.mapOffer(offerDto, id, idDetails));
+
+        offerRepository.save(mapper.mapOffer(offer,offerDto));
+
+        return offerDto;
     }
 
     public void deleteOffer(Long id) {

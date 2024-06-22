@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Builder
 public class OfferDto {
+    private Long id;
     @NotNull
     private Offer.KindOfProperty kindOfProperty;
     @Min(0)
