@@ -16,14 +16,82 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MapperTest {
     @InjectMocks
     Mapper mapper;
 
+    @Test
+    void shouldMapOfferDtoToOffer() {
+        //given
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformationDto();
+        additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
+        additionalInformationDtoTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
+        additionalInformationDtoTest.setYearOfConstruction(2019);
+        additionalInformationDtoTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
+        additionalInformationDtoTest.setMedia("internet");
+        additionalInformationDtoTest.setEquipment("pralka, piekarnik");
 
+        OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
+        offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
+        offerDetailsDtoTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
+        offerDetailsDtoTest.setRent(450d);
+        offerDetailsDtoTest.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
+        offerDetailsDtoTest.setParkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE);
+        offerDetailsDtoTest.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
+        offerDetailsDtoTest.setContactDetails("900300100");
+
+        OfferDto offerDtoTest = new OfferDto();
+        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
+        offerDtoTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
+        offerDtoTest.setPrice(600000d);
+        offerDtoTest.setTitle("Sprzedam");
+        offerDtoTest.setCity("Wroclaw");
+        offerDtoTest.setNumberOfRooms(4);
+        offerDtoTest.setArea(50d);
+        offerDtoTest.setPricePerMeter(12000d);
+        offerDtoTest.setFloor(5);
+
+        OfferDetails.AdditionalInformation additionalInformationTest = new OfferDetails.AdditionalInformation();
+        OfferDetails offerDetailsTest = new OfferDetails();
+        Offer offerTest = new Offer();
+        offerDetailsTest.setAdditionalInformation(additionalInformationTest);
+        offerTest.setOfferDetails(offerDetailsTest);
+
+        //when
+        Offer offer = mapper.mapOffer(offerTest, offerDtoTest);
+
+        //then
+        assertThat(offer.getKindOfProperty()).isEqualTo(offerDtoTest.getKindOfProperty());
+        assertThat(offer.getPrice()).isEqualTo(offerDtoTest.getPrice());
+        assertThat(offer.getTitle()).isEqualTo(offerDtoTest.getTitle());
+        assertThat(offer.getCity()).isEqualTo(offerDtoTest.getCity());
+        assertThat(offer.getStreet()).isEqualTo(offerDtoTest.getStreet());
+        assertThat(offer.getNumberOfRooms()).isEqualTo(offerDtoTest.getNumberOfRooms());
+        assertThat(offer.getArea()).isEqualTo(offerDtoTest.getArea());
+        assertThat(offer.getPricePerMeter()).isEqualTo(offerDtoTest.getPricePerMeter());
+        assertThat(offer.getFloor()).isEqualTo(offerDtoTest.getFloor());
+        assertThat(offer.getDescription()).isEqualTo(offerDtoTest.getDescription());
+
+        OfferDetails offerDetails = offer.getOfferDetails();
+        OfferDetailsDto offerDetailsDto = offerDtoTest.getOfferDetailsDto();
+        assertThat(offerDetails.getOwnershipForm()).isEqualTo(offerDetailsDto.getOwnershipForm());
+        assertThat(offerDetails.getRent()).isEqualTo(offerDetailsDto.getRent());
+        assertThat(offerDetails.getFinishLevel()).isEqualTo(offerDetailsDto.getFinishLevel());
+        assertThat(offerDetails.getParkingPlace()).isEqualTo(offerDetailsDto.getParkingPlace());
+        assertThat(offerDetails.getHeating()).isEqualTo(offerDetailsDto.getHeating());
+        assertThat(offerDetails.getContactDetails()).isEqualTo(offerDetailsDto.getContactDetails());
+
+        OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        assertThat(additionalInformation.getMarket()).isEqualTo(additionalInformationDto.getMarket());
+        assertThat(additionalInformation.getAnnouncerType()).isEqualTo(additionalInformationDto.getAnnouncerType());
+        assertThat(additionalInformation.getYearOfConstruction()).isEqualTo(additionalInformationDto.getYearOfConstruction());
+        assertThat(additionalInformation.getBuildingType()).isEqualTo(additionalInformationDto.getBuildingType());
+        assertThat(additionalInformation.getMedia()).isEqualTo(additionalInformationDto.getMedia());
+        assertThat(additionalInformation.getEquipment()).isEqualTo(additionalInformationDto.getEquipment());
+    }
 
     @Test
     void shouldMapOfferWithDetailsToOfferWithDetailsDto() {
@@ -32,6 +100,7 @@ class MapperTest {
         additionalInformationTest.setMarket(OfferDetails.Market.PIERWOTNY);
         additionalInformationTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
         additionalInformationTest.setYearOfConstruction(2010);
+        additionalInformationTest.setMedia("internet");
         additionalInformationTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
         additionalInformationTest.setEquipment("pralka, lodowka");
 
@@ -85,6 +154,7 @@ class MapperTest {
         assertThat(additionalInformationDto.getMarket()).isEqualTo(additionalInformationTest.getMarket());
         assertThat(additionalInformationDto.getAnnouncerType()).isEqualTo(additionalInformationTest.getAnnouncerType());
         assertThat(additionalInformationDto.getYearOfConstruction()).isEqualTo(additionalInformationTest.getYearOfConstruction());
+        assertThat(additionalInformationDto.getMedia()).isEqualTo(additionalInformationTest.getMedia());
         assertThat(additionalInformationDto.getBuildingType()).isEqualTo(additionalInformationTest.getBuildingType());
         assertThat(additionalInformationDto.getEquipment()).isEqualTo(additionalInformationTest.getEquipment());
     }
