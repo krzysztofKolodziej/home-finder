@@ -1,5 +1,6 @@
 package com.aplication.homeFinder.offer.service;
 
+import com.aplication.homeFinder.offer.model.ClientMessage;
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
@@ -21,6 +22,8 @@ import static org.mockito.Mockito.when;
 class MapperTest {
     @InjectMocks
     Mapper mapper;
+
+
 
     @Test
     void shouldMapOfferWithDetailsToOfferWithDetailsDto() {
@@ -107,9 +110,22 @@ class MapperTest {
     void shouldMapClientMessageDtoToClientMessage() {
         //given
         ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
+        Offer offerTest = new Offer();
+        offerTest.setId(1L);
+        clientMessageDtoTest.setName("Karol");
+        clientMessageDtoTest.setEmail("karol@gmail.com");
+        clientMessageDtoTest.setPhoneNumber("444333111");
+        clientMessageDtoTest.setMessage("Prosze o kontakt w sprawie oferty");
+        clientMessageDtoTest.setIdOffer(offerTest.getId());
 
         //when
+        ClientMessage clientMessage = mapper.mapClientMessage(clientMessageDtoTest, offerTest);
 
         //then
+        assertThat(clientMessage.getName()).isEqualTo(clientMessageDtoTest.getName());
+        assertThat(clientMessage.getEmail()).isEqualTo(clientMessageDtoTest.getEmail());
+        assertThat(clientMessage.getPhoneNumber()).isEqualTo(clientMessageDtoTest.getPhoneNumber());
+        assertThat(clientMessage.getMessage()).isEqualTo(clientMessageDtoTest.getMessage());
+        assertThat(clientMessage.getOffer()).isEqualTo(offerTest);
     }
 }
