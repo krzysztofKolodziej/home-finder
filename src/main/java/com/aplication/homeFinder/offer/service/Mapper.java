@@ -6,10 +6,15 @@ import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 
 public class Mapper {
 
+
     public Offer mapOffer(Offer offer, OfferDto offerDto) {
+
         offer.setKindOfProperty(offerDto.getKindOfProperty());
         offer.setPrice(offerDto.getPrice());
         offer.setTitle(offerDto.getTitle());
@@ -26,12 +31,12 @@ public class Mapper {
         offer.getOfferDetails().setParkingPlace(offerDto.getOfferDetailsDto().getParkingPlace());
         offer.getOfferDetails().setHeating(offerDto.getOfferDetailsDto().getHeating());
         offer.getOfferDetails().setContactDetails(offerDto.getOfferDetailsDto().getContactDetails());
-        offer.getOfferDetails().getAdditionalInformation().setMarket(offerDto.getOfferDetailsDto().getMarket());
-        offer.getOfferDetails().getAdditionalInformation().setAnnouncerType(offerDto.getOfferDetailsDto().getAnnouncerType());
-        offer.getOfferDetails().getAdditionalInformation().setYearOfConstruction(offerDto.getOfferDetailsDto().getYearOfConstruction());
-        offer.getOfferDetails().getAdditionalInformation().setBuildingType(offerDto.getOfferDetailsDto().getBuildingType());
-        offer.getOfferDetails().getAdditionalInformation().setMedia(offerDto.getOfferDetailsDto().getMedia());
-        offer.getOfferDetails().getAdditionalInformation().setEquipment(offerDto.getOfferDetailsDto().getEquipment());
+        offer.getOfferDetails().getAdditionalInformation().setMarket(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getMarket());
+        offer.getOfferDetails().getAdditionalInformation().setAnnouncerType(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getAnnouncerType());
+        offer.getOfferDetails().getAdditionalInformation().setYearOfConstruction(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getYearOfConstruction());
+        offer.getOfferDetails().getAdditionalInformation().setBuildingType(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getBuildingType());
+        offer.getOfferDetails().getAdditionalInformation().setMedia(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getMedia());
+        offer.getOfferDetails().getAdditionalInformation().setEquipment(offerDto.getOfferDetailsDto().getAdditionalInformationDto().getEquipment());
         return offer;
     }
 
@@ -54,12 +59,12 @@ public class Mapper {
 
     private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto) {
         OfferDetails.AdditionalInformation additionalInformationBuild = OfferDetails.AdditionalInformation.builder()
-                .market(offerDetailsDto.getMarket())
-                .announcerType(offerDetailsDto.getAnnouncerType())
-                .yearOfConstruction(offerDetailsDto.getYearOfConstruction())
-                .buildingType(offerDetailsDto.getBuildingType())
-                .media(offerDetailsDto.getMedia())
-                .equipment(offerDetailsDto.getEquipment())
+                .market(offerDetailsDto.getAdditionalInformationDto().getMarket())
+                .announcerType(offerDetailsDto.getAdditionalInformationDto().getAnnouncerType())
+                .yearOfConstruction(offerDetailsDto.getAdditionalInformationDto().getYearOfConstruction())
+                .buildingType(offerDetailsDto.getAdditionalInformationDto().getBuildingType())
+                .media(offerDetailsDto.getAdditionalInformationDto().getMedia())
+                .equipment(offerDetailsDto.getAdditionalInformationDto().getEquipment())
                 .build();
 
         return OfferDetails.builder()
@@ -73,17 +78,17 @@ public class Mapper {
                 .build();
     }
 
-    public OfferDto mapOfferDto(Offer offer) {
+    public OfferDto mapOfferDto(Offer offer, double midRate) {
         return OfferDto.builder()
                 .id(offer.getId())
                 .kindOfProperty(offer.getKindOfProperty())
-                .price(offer.getPrice())
+                .price(offer.getPrice() / midRate)
                 .title(offer.getTitle())
                 .city(offer.getCity())
                 .street(offer.getStreet())
                 .numberOfRooms(offer.getNumberOfRooms())
                 .area(offer.getArea())
-                .pricePerMeter(offer.getPricePerMeter())
+                .pricePerMeter(offer.getPricePerMeter() / midRate)
                 .floor(offer.getFloor())
                 .description(offer.getDescription())
                 .build();
@@ -109,8 +114,16 @@ public class Mapper {
     private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
         OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
         if (additionalInformation == null) {
-            return null;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found");
         }
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = OfferDetailsDto.AdditionalInformationDto.builder()
+                .market(additionalInformation.getMarket())
+                .announcerType(additionalInformation.getAnnouncerType())
+                .yearOfConstruction(additionalInformation.getYearOfConstruction())
+                .buildingType(additionalInformation.getBuildingType())
+                .equipment(additionalInformation.getEquipment())
+                .build();
+
         return OfferDetailsDto.builder()
                 .rent(offerDetails.getRent())
                 .ownershipForm(offerDetails.getOwnershipForm())
@@ -118,12 +131,17 @@ public class Mapper {
                 .parkingPlace(offerDetails.getParkingPlace())
                 .heating(offerDetails.getHeating())
                 .contactDetails(offerDetails.getContactDetails())
-                .market(additionalInformation.getMarket())
-                .announcerType(additionalInformation.getAnnouncerType())
-                .yearOfConstruction(additionalInformation.getYearOfConstruction())
-                .buildingType(additionalInformation.getBuildingType())
-                .media(additionalInformation.getMedia())
-                .equipment(additionalInformation.getEquipment())
+                .additionalInformationDto(additionalInformationDto)
+                .build();
+    }
+
+    public ClientMessage mapClientMessage(ClientMessageDto clientMessageDto, Offer offer) {
+        return ClientMessage.builder()
+                .name(clientMessageDto.getName())
+                .email(clientMessageDto.getEmail())
+                .phoneNumber(clientMessageDto.getPhoneNumber())
+                .message(clientMessageDto.getMessage())
+                .offer(offer)
                 .build();
     }
 }

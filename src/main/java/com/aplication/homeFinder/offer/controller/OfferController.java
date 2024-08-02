@@ -1,7 +1,5 @@
 package com.aplication.homeFinder.offer.controller;
 
-import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.service.FilteringSchema;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
@@ -19,17 +17,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @AllArgsConstructor
 public class OfferController {
 
     private final OfferService offerService;
 
-    @GetMapping("/offers")
-    public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema) {
+    @GetMapping("/api/offers/{currency}/all")
+    public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema, @PathVariable String currency) {
         try {
-            List<OfferDto> offers = offerService.findOffers(filteringSchema);
+            List<OfferDto> offers = offerService.findOffers(filteringSchema, currency);
             return ResponseEntity.status(HttpStatus.OK).body(offers);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());

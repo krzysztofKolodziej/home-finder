@@ -3,12 +3,16 @@ package com.aplication.homeFinder.offer.service.dto;
 import com.aplication.homeFinder.offer.model.Offer;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OfferDto {
     private Long id;
     @NotNull

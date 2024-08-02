@@ -51,13 +51,13 @@ public class OfferDetails {
         private String equipment;
     }
     public enum AnnouncerType {
-        DEWELOPER, BIURONIERUCHOMOSCI, OSOBAPRYWATNA
+        DEWELOPER, BIURO_NIERUCHOMOSCI, OSOBA_PRYWATNA
     }
     public enum BuildingType {
-        BLOK, KAMIENICA, DOMWOLNOSTOJACY, SZEREGOWIEC, APARTAMENTOWIEC
+        BLOK, KAMIENICA, DOM_WOLNOSTOJACY, SZEREGOWIEC, APARTAMENTOWIEC
     }
     public enum FinishLevel {
-        DOZAMIESZKANIA, DOWYKONCZENIA, DOREMONTU
+        DO_ZAMIESZKANIA, DO_WYKONCZENIA, DO_REMONTU
     }
     public enum Heating {
         MIEJSKIE, GAZOWE, ELEKTRYCZNE, KOTLOWE, INNE
@@ -66,9 +66,9 @@ public class OfferDetails {
         PIERWOTNY, WTORNY
     }
     public enum OwnershipForm {
-        PELNAWLASNOSC, SPOLDZIELCZE, UZYTKOWANIEWIECZYSTE, UDZIAL
+        PELNA_WLASNOSC, SPOLDZIELCZE, UZYTKOWANIE_WIECZYSTE, UDZIAL
     }
     public enum ParkingPlace {
-        BRAK, MIEJSCEWGARAZUPODZIEMNYM, MIEJSCENAZIEMNE
+        BRAK, MIEJSCE_W_GARAZU_PODZIEMNYM, MIEJSCE_NAZIEMNE
     }
 }

@@ -6,11 +6,15 @@ import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDt
 public class Calculator {
 
     private static final double MAX_DTI = 0.6;
-    private static final double averageAnnualInterestRateLoan = 0.0821;
+    private static final double AVERAGE_ANNUAL_INTEREST_RATE_LOAN = 0.0821;
+    private static final double MONTHLY_COST_CREDIT_CARD = 0.02;
 
     public int maxLoanAmount(CreditCalculatorDto creditCalculatorDto) {
-        double monthlyInterestRate = averageAnnualInterestRateLoan / 12;
+
+        double monthlyInterestRate = AVERAGE_ANNUAL_INTEREST_RATE_LOAN / 12;
         double numberOfPayments = creditCalculatorDto.getRepaymentPeriod() * 12;
+        int contractDurationInMont = creditCalculatorDto.getContractDurationInMonth();
+        double result;
 
         if (creditCalculatorDto.isDelayInLoanRepayment()) {
             return 0;
@@ -19,18 +23,17 @@ public class Calculator {
                 * (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1))
                 / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments));
 
-        double result = 0;
-
         if (creditCalculatorDto.getSourceOfIncome() == SourceOfIncome.FIXED_TERM_CONTRACT) {
-            if (creditCalculatorDto.getContractDurationInMonth() <= 12) {
+            if (contractDurationInMont <= 12) {
                 creditWorthiness = 0;
             } else {
-                result = 0.14 + ((creditCalculatorDto.getContractDurationInMonth() - 12.0) / 100.0);
+                result = contractDurationInMont / 100.0;
                 creditWorthiness = (int) (result * creditWorthiness);
             }
         }
         return (int) creditWorthiness;
     }
+
 
     private double availableIncomeForDebt(CreditCalculatorDto creditCalculatorDto) {
         int validIncome = validationIncome(creditCalculatorDto);
@@ -64,37 +67,22 @@ public class Calculator {
         int monthlyAmountOtherLoans = creditCalculatorDto.getMonthlyAmountOtherLoans();
         int creditCardLimit = creditCalculatorDto.getCreditCardLimit();
 
-        int debts = monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * 0.02);
+        int debts = monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * MONTHLY_COST_CREDIT_CARD);
 
         if (debts >= creditCalculatorDto.getMonthlyNetIncome()) {
             return debts;
         }
-        switch (creditCalculatorDto.getNumberOfDependents()) {
-            case 0:
-                monthlyExpenditures = 1000;
-                break;
-            case 1:
-                monthlyExpenditures = 1500;
-                break;
-            case 2:
-                monthlyExpenditures = 2000;
-                break;
-            case 3:
-                monthlyExpenditures = 2500;
-                break;
-            case 4:
-                monthlyExpenditures = 3000;
-                break;
-            case 5:
-                monthlyExpenditures = 3250;
-                break;
-            case 6:
-                monthlyExpenditures = 3500;
-                break;
-            default:
-                monthlyExpenditures = 3750;
-        }
-        return monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * 0.02);
+        monthlyExpenditures = switch (creditCalculatorDto.getNumberOfDependents()) {
+            case 0 -> 1000;
+            case 1 -> 1500;
+            case 2 -> 2000;
+            case 3 -> 2500;
+            case 4 -> 3000;
+            case 5 -> 3250;
+            case 6 -> 3500;
+            default -> 3750;
+        };
+        return monthlyExpenditures + monthlyAmountOtherLoans + (int) (creditCardLimit * MONTHLY_COST_CREDIT_CARD);
     }
 
 

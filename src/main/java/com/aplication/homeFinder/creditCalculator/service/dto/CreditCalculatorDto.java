@@ -25,7 +25,6 @@ public class CreditCalculatorDto {
     @NotNull
     private SourceOfIncome sourceOfIncome;
     @Max(33)
-    @Min(0)
     private int contractDurationInMonth;
     private boolean continuityOfEmployment;
     @Min(0)

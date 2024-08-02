@@ -1,22 +1,29 @@
 
-Wzór na maksymalną kwotę kredytu
+Formula for the maximum loan amount
 P =  (EMI * ((1+r)^2 - 1)) / (r * (1 + r)^2
 
-EMI to miesięczna rata kredytu (Equated Monthly Installment),
-P to kwota kredytu (principal),
-r to miesięczna stopa procentowa,
-n to liczba płatności (liczba miesięcy)
+EMI (Equated Monthly Installment),
+P - loan amount
+r - monthly interest rate
+n - number of payments (number of months)
 
-Aby bank udzielił kredyt wskaźnik DTI nie może byćniżczy niż 40%
-Średnie roczne oprocentowanie kredytów hipotecznych 0,0821
-Miesięczny koszt utrzymania kart kredytowych około 0,02
-
-Wzór na ratę kredytu hipotecznego
+Formula for the mortgage payment
 R=K*(1+(b/m)^n)*(1+(b/m)-1)/[(1+(b/m)^n)-1]
 
-R – wysokość raty równej
-K – kwota udzielonego kredytu
-b – wysokość oprocentowania kredytu w skali roku
-m – liczba miesięcy w roku
-n – liczba rat
-^ – symbol potęgowania
+R – payment amount
+K – loan amount
+b – annual interest rate
+m – number of months in a year
+n – number of installments
+
+Calculator assumptions:
+1. For the bank to grant a loan, the DTI ratio must not be lower than 40%.
+2. The average annual interest rate loan for mortgages is 0.0821.
+3. The monthly maintenance cost of credit cards is approximately 0.02 percent.
+4. If you have delays in loan repayments, the bank will not grant you a loan (in the project field delayInLoanRepayment)
+5. If you have a fixed-term contract or business operation with a duration shorter than 13 months, the bank will not grant you a loan.
+6. If you haven't continuity with contracts of specific work, order contract, annuities, the bank will not grant you a loan.
+
+
+
+

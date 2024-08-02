@@ -2,7 +2,6 @@ package com.aplication.homeFinder.offer.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.annotation.Bean;
 
 @Entity
 @Getter
@@ -18,7 +17,7 @@ public class ClientMessage {
     private String email;
     private String phoneNumber;
     private String message;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id")
     private Offer offer;
 }

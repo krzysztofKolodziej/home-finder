@@ -6,12 +6,12 @@ import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDt
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class CreditCalculatorService {
 
     private final CreditCalculatorRepository creditCalculatorRepository;
-    private final Calculator calculator = new Calculator();
+    private final Calculator calculator;
+
 
     public int checkCreditWorthiness(CreditCalculatorDto creditCalculatorDto) {
         creditCalculatorRepository.save(mapper(creditCalculatorDto));

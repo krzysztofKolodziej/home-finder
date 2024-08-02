@@ -8,8 +8,10 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Builder
 public class OfferDetailsDto {
@@ -27,17 +29,25 @@ public class OfferDetailsDto {
     @NotBlank
     private String contactDetails;
     @NotNull
-    private OfferDetails.Market market;
-    @NotNull
-    private OfferDetails.AnnouncerType announcerType;
-    @Min(0)
-    private int yearOfConstruction;
-    @NotNull
-    private OfferDetails.BuildingType buildingType;
-    @NotBlank
-    @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
-    private String media;
-    @NotBlank
-    @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
-    private String equipment;
+    private AdditionalInformationDto additionalInformationDto;
+
+    @AllArgsConstructor
+    @Getter
+    @Builder
+    public static class AdditionalInformationDto{
+        @NotNull
+        private OfferDetails.Market market;
+        @NotNull
+        private OfferDetails.AnnouncerType announcerType;
+        @Min(0)
+        private int yearOfConstruction;
+        @NotNull
+        private OfferDetails.BuildingType buildingType;
+        @NotBlank
+        @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
+        private String media;
+        @NotBlank
+        @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
+        private String equipment;
+    }
 }
