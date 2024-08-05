@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,6 +80,26 @@ class OfferServiceTest {
                 () -> offerService.findOfferWithDetails(id));
         assertEquals(HttpStatus.NOT_FOUND, responseStatusException.getStatusCode());
         assertEquals("404 NOT_FOUND \"Offer Details not found\"", responseStatusException.getMessage());
+    }
+
+    @Test
+    void shouldSaveOfferAndReturnOfferDTo() {
+        //given
+        OfferDto offerDtoInput = new OfferDto();
+        OfferDto offerDtoOutput = new OfferDto();
+        Offer offerInput = new Offer();
+        Offer offerOutput = new Offer();
+
+        //when
+        when(mapper.mapOffer(offerDtoInput)).thenReturn(offerInput);
+        when(offerRepository.save(offerInput)).thenReturn(offerOutput);
+        when(mapper.mapOfferWithDetailsDto(offerOutput)).thenReturn(offerDtoOutput);
+
+        OfferDto offerDtoTest = offerService.saveOffer(offerDtoInput);
+
+        //then
+        assertEquals(offerDtoTest, offerDtoOutput);
+        verify(offerRepository).save(offerInput);
     }
 
 }
