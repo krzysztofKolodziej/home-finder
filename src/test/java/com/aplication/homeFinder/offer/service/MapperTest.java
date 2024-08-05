@@ -23,7 +23,7 @@ class MapperTest {
     Mapper mapper;
 
     @Test
-    void shouldMapOfferDtoToOffer() {
+    void shouldMapOfferDtoToEditToOffer() {
         //given
         OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformationDto();
         additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
@@ -60,7 +60,7 @@ class MapperTest {
         offerTest.setOfferDetails(offerDetailsTest);
 
         //when
-        Offer offer = mapper.mapOffer(offerTest, offerDtoTest);
+        Offer offer = mapper.mapOfferEdit(offerTest, offerDtoTest);
 
         //then
         assertThat(offer.getKindOfProperty()).isEqualTo(offerDtoTest.getKindOfProperty());
@@ -91,6 +91,104 @@ class MapperTest {
         assertThat(additionalInformation.getBuildingType()).isEqualTo(additionalInformationDto.getBuildingType());
         assertThat(additionalInformation.getMedia()).isEqualTo(additionalInformationDto.getMedia());
         assertThat(additionalInformation.getEquipment()).isEqualTo(additionalInformationDto.getEquipment());
+    }
+
+    @Test
+    void shouldMapOfferDtoToOffer() {
+        //given
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformationDto();
+        additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
+        additionalInformationDtoTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
+        additionalInformationDtoTest.setYearOfConstruction(2019);
+        additionalInformationDtoTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
+        additionalInformationDtoTest.setMedia("internet");
+        additionalInformationDtoTest.setEquipment("pralka, piekarnik");
+
+        OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
+        offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
+        offerDetailsDtoTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
+        offerDetailsDtoTest.setRent(450d);
+        offerDetailsDtoTest.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
+        offerDetailsDtoTest.setParkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE);
+        offerDetailsDtoTest.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
+        offerDetailsDtoTest.setContactDetails("900300100");
+
+        OfferDto offerDtoTest = new OfferDto();
+        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
+        offerDtoTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
+        offerDtoTest.setPrice(600000d);
+        offerDtoTest.setTitle("Sprzedam");
+        offerDtoTest.setCity("Wroclaw");
+        offerDtoTest.setNumberOfRooms(4);
+        offerDtoTest.setArea(50d);
+        offerDtoTest.setPricePerMeter(12000d);
+        offerDtoTest.setFloor(5);
+
+        //when
+        Offer offer = mapper.mapOffer(offerDtoTest);
+
+        //then
+        assertThat(offer.getKindOfProperty()).isEqualTo(offerDtoTest.getKindOfProperty());
+        assertThat(offer.getPrice()).isEqualTo(offerDtoTest.getPrice());
+        assertThat(offer.getTitle()).isEqualTo(offerDtoTest.getTitle());
+        assertThat(offer.getCity()).isEqualTo(offerDtoTest.getCity());
+        assertThat(offer.getStreet()).isEqualTo(offerDtoTest.getStreet());
+        assertThat(offer.getNumberOfRooms()).isEqualTo(offerDtoTest.getNumberOfRooms());
+        assertThat(offer.getArea()).isEqualTo(offerDtoTest.getArea());
+        assertThat(offer.getPricePerMeter()).isEqualTo(offerDtoTest.getPricePerMeter());
+        assertThat(offer.getFloor()).isEqualTo(offerDtoTest.getFloor());
+        assertThat(offer.getDescription()).isEqualTo(offerDtoTest.getDescription());
+
+        OfferDetails offerDetails = offer.getOfferDetails();
+        OfferDetailsDto offerDetailsDto = offerDtoTest.getOfferDetailsDto();
+        assertThat(offerDetails.getOwnershipForm()).isEqualTo(offerDetailsDto.getOwnershipForm());
+        assertThat(offerDetails.getRent()).isEqualTo(offerDetailsDto.getRent());
+        assertThat(offerDetails.getFinishLevel()).isEqualTo(offerDetailsDto.getFinishLevel());
+        assertThat(offerDetails.getParkingPlace()).isEqualTo(offerDetailsDto.getParkingPlace());
+        assertThat(offerDetails.getHeating()).isEqualTo(offerDetailsDto.getHeating());
+        assertThat(offerDetails.getContactDetails()).isEqualTo(offerDetailsDto.getContactDetails());
+
+        OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        assertThat(additionalInformation.getMarket()).isEqualTo(additionalInformationDto.getMarket());
+        assertThat(additionalInformation.getAnnouncerType()).isEqualTo(additionalInformationDto.getAnnouncerType());
+        assertThat(additionalInformation.getYearOfConstruction()).isEqualTo(additionalInformationDto.getYearOfConstruction());
+        assertThat(additionalInformation.getBuildingType()).isEqualTo(additionalInformationDto.getBuildingType());
+        assertThat(additionalInformation.getMedia()).isEqualTo(additionalInformationDto.getMedia());
+        assertThat(additionalInformation.getEquipment()).isEqualTo(additionalInformationDto.getEquipment());
+    }
+
+    @Test
+    void shouldMapOfferToOfferDto() {
+        //given
+        final double MID_RATE = 4.2d;
+
+        Offer offerTest = new Offer();
+        offerTest.setId(1L);
+        offerTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
+        offerTest.setPrice(500000d);
+        offerTest.setTitle("Spzedam mieszaknie");
+        offerTest.setCity("Wroclaw");
+        offerTest.setNumberOfRooms(3);
+        offerTest.setArea(50d);
+        offerTest.setPricePerMeter(10000d);
+        offerTest.setFloor(3);
+        offerTest.setDescription("Sprzedam mieszkanie w spokojnej okolicy");
+
+        //when
+        OfferDto offerDto = mapper.mapOfferDto(offerTest, MID_RATE);
+
+        //then
+        assertThat(offerDto.getId()).isEqualTo(offerTest.getId());
+        assertThat(offerDto.getKindOfProperty()).isEqualTo(offerTest.getKindOfProperty());
+        assertThat(offerDto.getPrice()).isEqualTo(offerTest.getPrice() / MID_RATE);
+        assertThat(offerDto.getTitle()).isEqualTo(offerTest.getTitle());
+        assertThat(offerDto.getCity()).isEqualTo(offerTest.getCity());
+        assertThat(offerDto.getNumberOfRooms()).isEqualTo(offerTest.getNumberOfRooms());
+        assertThat(offerDto.getArea()).isEqualTo(offerTest.getArea());
+        assertThat(offerDto.getPricePerMeter()).isEqualTo(offerTest.getPricePerMeter() / MID_RATE);
+        assertThat(offerDto.getFloor()).isEqualTo(offerTest.getFloor());
+        assertThat(offerDto.getDescription()).isEqualTo(offerTest.getDescription());
     }
 
     @Test

@@ -52,7 +52,7 @@ public class OfferService {
         Offer offer = offerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
 
-        offerRepository.save(mapper.mapOffer(offer,offerDto));
+        offerRepository.save(mapper.mapOfferEdit(offer,offerDto));
 
         return offerDto;
     }

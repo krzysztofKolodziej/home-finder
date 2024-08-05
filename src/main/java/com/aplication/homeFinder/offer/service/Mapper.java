@@ -9,12 +9,13 @@ import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 
 public class Mapper {
 
 
-    public Offer mapOffer(Offer offer, OfferDto offerDto) {
-
+    public Offer mapOfferEdit(Offer offer, OfferDto offerDto) {
         offer.setKindOfProperty(offerDto.getKindOfProperty());
         offer.setPrice(offerDto.getPrice());
         offer.setTitle(offerDto.getTitle());
@@ -23,7 +24,7 @@ public class Mapper {
         offer.setNumberOfRooms(offerDto.getNumberOfRooms());
         offer.setArea(offerDto.getArea());
         offer.setPricePerMeter(offerDto.getPricePerMeter());
-        offer.setFloor(offer.getFloor());
+        offer.setFloor(offerDto.getFloor());
         offer.setDescription(offerDto.getDescription());
         offer.getOfferDetails().setOwnershipForm(offerDto.getOfferDetailsDto().getOwnershipForm());
         offer.getOfferDetails().setRent(offerDto.getOfferDetailsDto().getRent());
@@ -113,14 +114,15 @@ public class Mapper {
 
     private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
         OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
-        if (additionalInformation == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found");
-        }
+        Optional.ofNullable(additionalInformation)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found"));
+
         OfferDetailsDto.AdditionalInformationDto additionalInformationDto = OfferDetailsDto.AdditionalInformationDto.builder()
                 .market(additionalInformation.getMarket())
                 .announcerType(additionalInformation.getAnnouncerType())
                 .yearOfConstruction(additionalInformation.getYearOfConstruction())
                 .buildingType(additionalInformation.getBuildingType())
+                .media(additionalInformation.getMedia())
                 .equipment(additionalInformation.getEquipment())
                 .build();
 
