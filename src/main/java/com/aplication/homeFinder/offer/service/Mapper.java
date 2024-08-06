@@ -59,6 +59,8 @@ public class Mapper {
     }
 
     private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto) {
+        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        // sprawdzić czy jest nullem
         OfferDetails.AdditionalInformation additionalInformationBuild = OfferDetails.AdditionalInformation.builder()
                 .market(offerDetailsDto.getAdditionalInformationDto().getMarket())
                 .announcerType(offerDetailsDto.getAdditionalInformationDto().getAnnouncerType())
@@ -138,6 +140,7 @@ public class Mapper {
     }
 
     public ClientMessage mapClientMessage(ClientMessageDto clientMessageDto, Offer offer) {
+        // sprwdzić nulla
         return ClientMessage.builder()
                 .name(clientMessageDto.getName())
                 .email(clientMessageDto.getEmail())

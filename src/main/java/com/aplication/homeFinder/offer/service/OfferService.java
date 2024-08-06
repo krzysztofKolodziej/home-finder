@@ -49,6 +49,7 @@ public class OfferService {
     }
 
     public OfferDto updateOffer(OfferDto offerDto, Long id) {
+
         Offer offer = offerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
 

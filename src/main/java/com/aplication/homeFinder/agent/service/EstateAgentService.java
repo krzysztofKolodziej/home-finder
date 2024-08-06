@@ -17,7 +17,11 @@ public class EstateAgentService {
     }
 
     public List<EstateAgentDto> findAgent() {
-        return estateAgentRepository.findAll().stream().map(estateAgent -> EstateAgentDto.builder()
+        return estateAgentRepository
+                .findAll()
+                .stream()
+                //.filter(Object::nonNull)
+                .map(estateAgent -> EstateAgentDto.builder()
                 .name(estateAgent.getName())
                 .street(estateAgent.getStreet())
                 .houseNumber(estateAgent.getHouseNumber())
@@ -27,12 +31,28 @@ public class EstateAgentService {
                 .phoneNumber(estateAgent.getPhoneNumber())
                 .build()).toList();
     }
+    // prywatne metody na dół
+    private EstateAgentDto mapAgent(EstateAgent estateAgent) {
+        return EstateAgentDto.builder()
+        .name(estateAgent.getName())
+                .street(estateAgent.getStreet())
+                .houseNumber(estateAgent.getHouseNumber())
+                .zipCode(estateAgent.getZipCode())
+                .city(estateAgent.getCity())
+                .email(estateAgent.getEmail())
+                .phoneNumber(estateAgent.getPhoneNumber())
+                .build();
+    }
 
     public void deleteAgent(Long id) {
+        // czy deleta obsługuje null
         estateAgentRepository.deleteById(id);
     }
 
     private EstateAgent mapper(EstateAgentDto estateAgentDto) {
+        if (estateAgentDto != null) {
+            return null;
+        }
         return EstateAgent.builder()
                 .id(null)
                 .name(estateAgentDto.getName())
