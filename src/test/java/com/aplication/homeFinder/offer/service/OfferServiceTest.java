@@ -25,8 +25,19 @@ class OfferServiceTest {
     OfferRepository offerRepository;
     @Mock
     Mapper mapper;
+    @Mock
+    FilteringLogic filteringLogic;
     @InjectMocks
     OfferService offerService;
+
+    @Test
+    void shouldReturnFilteredOffers() {
+        //given
+
+        //when
+
+        //then
+    }
 
     @Test
     void shouldReturnOfferWithDetailsWhenOfferExists() {
