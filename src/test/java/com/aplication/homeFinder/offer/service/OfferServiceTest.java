@@ -22,13 +22,13 @@ import static org.mockito.Mockito.when;
 class OfferServiceTest {
 
     @Mock
-    OfferRepository offerRepository;
+    private OfferRepository offerRepository;
     @Mock
-    Mapper mapper;
+    private Mapper mapper;
     @Mock
-    FilteringLogic filteringLogic;
+    private FilteringLogic filteringLogic;
     @InjectMocks
-    OfferService offerService;
+    private OfferService offerService;
 
     @Test
     void shouldReturnFilteredOffers() {
