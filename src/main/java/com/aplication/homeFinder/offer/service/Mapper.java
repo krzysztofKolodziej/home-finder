@@ -15,25 +15,21 @@ import java.util.Optional;
 public class Mapper {
 
     public Offer mapOfferEdit(Offer offer, OfferDto offerDto) {
-
         if (offer == null || offerDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
-
         OfferDetails offerWithDetails = offer.getOfferDetails();
         OfferDetailsDto offerDtoWithDetails = offerDto.getOfferDetailsDto();
 
         if (offerWithDetails == null || offerDtoWithDetails == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
-
         OfferDetails.AdditionalInformation additionalInformation = offer.getOfferDetails().getAdditionalInformation();
         OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDto.getOfferDetailsDto().getAdditionalInformationDto();
 
         if (additionalInformation == null || additionalInformationDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
-
         offer.setKindOfProperty(offerDto.getKindOfProperty());
         offer.setPrice(offerDto.getPrice());
         offer.setTitle(offerDto.getTitle());
@@ -58,16 +54,13 @@ public class Mapper {
         additionalInformation.setBuildingType(additionalInformationDto.getBuildingType());
         additionalInformation.setMedia(additionalInformationDto.getMedia());
         additionalInformation.setEquipment(additionalInformationDto.getEquipment());
-
         return offer;
     }
 
     public Offer mapOffer(OfferDto offerDto) {
-
         if (offerDto == null || offerDto.getOfferDetailsDto() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
-
         return Offer.builder()
                 .kindOfProperty(offerDto.getKindOfProperty())
                 .price(offerDto.getPrice())
@@ -84,10 +77,8 @@ public class Mapper {
     }
 
     public OfferDto mapOfferDto(Offer offer, double midRate) {
-
         Optional.ofNullable(offer)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer not found"));
-
         return OfferDto.builder()
                 .id(offer.getId())
                 .kindOfProperty(offer.getKindOfProperty())
@@ -104,14 +95,12 @@ public class Mapper {
     }
 
     public OfferDto mapOfferWithDetailsDto(Offer offer) {
-
         Optional.ofNullable(offer)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer not found"));
-
         OfferDetails offerDetails = offer.getOfferDetails();
+
         Optional.ofNullable(offerDetails)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "OfferDetails not found"));
-
         return OfferDto.builder()
                 .id(offer.getId())
                 .kindOfProperty(offer.getKindOfProperty())
@@ -129,11 +118,9 @@ public class Mapper {
     }
 
     public ClientMessage mapClientMessage(ClientMessageDto clientMessageDto, Offer offer) {
-
         if (clientMessageDto == null || offer == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
-
         return ClientMessage.builder()
                 .name(clientMessageDto.getName())
                 .email(clientMessageDto.getEmail())
@@ -144,7 +131,6 @@ public class Mapper {
     }
 
     private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto) {
-
         OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
 
         Optional.ofNullable(additionalInformationDto)
@@ -158,7 +144,6 @@ public class Mapper {
                 .media(additionalInformationDto.getMedia())
                 .equipment(additionalInformationDto.getEquipment())
                 .build();
-
         return OfferDetails.builder()
                 .rent(offerDetailsDto.getRent())
                 .ownershipForm(offerDetailsDto.getOwnershipForm())
@@ -171,7 +156,6 @@ public class Mapper {
     }
 
     private OfferDetailsDto mapOfferDetailsDto(OfferDetails offerDetails) {
-
         OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
         Optional.ofNullable(additionalInformation)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found"));
@@ -184,7 +168,6 @@ public class Mapper {
                 .media(additionalInformation.getMedia())
                 .equipment(additionalInformation.getEquipment())
                 .build();
-
         return OfferDetailsDto.builder()
                 .rent(offerDetails.getRent())
                 .ownershipForm(offerDetails.getOwnershipForm())

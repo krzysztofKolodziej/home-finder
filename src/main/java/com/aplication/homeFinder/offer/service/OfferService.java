@@ -24,12 +24,11 @@ public class OfferService {
     private final Mapper mapper;
 
     public List<OfferDto> findOffers(FilteringSchema filteringSchema, String currency) {
-
         return filteringLogic.filteringMethod(filteringSchema)
                 .stream()
                 .map(offer -> {
                     double midRate = exchangeClient.getExchangeRate(currency).getMidRate();
-                    return mapper.mapOfferDto(offer,midRate);
+                    return mapper.mapOfferDto(offer, midRate);
                 }).collect(Collectors.toList());
     }
 
@@ -49,12 +48,9 @@ public class OfferService {
     }
 
     public OfferDto updateOffer(OfferDto offerDto, Long id) {
-
         Offer offer = offerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
-
-        offerRepository.save(mapper.mapOfferEdit(offer,offerDto));
-
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer not found"));
+        offerRepository.save(mapper.mapOfferEdit(offer, offerDto));
         return offerDto;
     }
 
@@ -62,10 +58,10 @@ public class OfferService {
         offerRepository.deleteById(id);
     }
 
-    public ClientMessage addMessage(ClientMessageDto clientMessageDto, Long id) {
+    public void addMessage(ClientMessageDto clientMessageDto, Long id) {
         Offer offer = offerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nie znaleziono oferty"));
-        return clientMessageRepository.save(mapper.mapClientMessage(clientMessageDto, offer));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer not found"));
+        clientMessageRepository.save(mapper.mapClientMessage(clientMessageDto, offer));
     }
 
 }
