@@ -16,6 +16,12 @@ public class ExchangeClient {
     public Currency getExchangeRate(String currency) {
         CurrencyDto currencyDto;
 
+        if (currency.equals("pln")) {
+            return Currency.builder()
+                    .currency(CURRENCY)
+                    .midRate(1)
+                    .build();
+        }
         try {
             currencyDto = restTemplate.getForObject(url, CurrencyDto.class, currency);
         } catch (RestClientException e) {
@@ -32,10 +38,12 @@ public class ExchangeClient {
         }
         return Currency.builder()
                 .currency(currencyDto.getCurrency())
-                .midRate(currencyDto.getRates().stream()
+                .midRate(currencyDto.getRates()
+                        .stream()
                         .findFirst()
                         .orElseThrow()
                         .getMid())
                 .build();
     }
 }
+

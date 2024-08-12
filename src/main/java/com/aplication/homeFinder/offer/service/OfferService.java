@@ -24,12 +24,12 @@ public class OfferService {
     private final Mapper mapper;
 
     public List<OfferDto> findOffers(FilteringSchema filteringSchema, String currency) {
+        double midRate = exchangeClient.getExchangeRate(currency).getMidRate();
+
         return filteringLogic.filteringMethod(filteringSchema)
                 .stream()
-                .map(offer -> {
-                    double midRate = exchangeClient.getExchangeRate(currency).getMidRate();
-                    return mapper.mapOfferDto(offer, midRate);
-                }).collect(Collectors.toList());
+                .map(offer -> mapper.mapOfferDto(offer, midRate))
+                .collect(Collectors.toList());
     }
 
     public OfferDto findOfferWithDetails(Long id) {

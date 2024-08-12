@@ -26,7 +26,7 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    @GetMapping("/api/offers/{currency}/all")
+    @GetMapping("/offers/{currency}/all")
     public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema, @PathVariable String currency) {
         try {
             List<OfferDto> offers = offerService.findOffers(filteringSchema, currency);

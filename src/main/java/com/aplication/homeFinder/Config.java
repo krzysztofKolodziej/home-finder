@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
- public class Config {
+public class Config {
 
     @Bean
     public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository) {
@@ -33,7 +33,7 @@ import org.springframework.web.client.RestTemplate;
 
     @Bean
     public CreditCalculatorService creditCalculatorService(Calculator calculator, CreditCalculatorRepository creditCalculatorRepository) {
-        return new CreditCalculatorService(creditCalculatorRepository,calculator);
+        return new CreditCalculatorService(creditCalculatorRepository, calculator);
     }
 
     @Bean
@@ -55,10 +55,11 @@ import org.springframework.web.client.RestTemplate;
     public Mapper mapper() {
         return new Mapper();
     }
+
     @Bean
     public OfferService offerService(OfferRepository offerRepository, ClientMessageRepository clientMessageRepository,
-                                     ExchangeClient exchangeClient, FilteringLogic filteringLogic, Mapper mapper){
-        return new OfferService(offerRepository, clientMessageRepository,exchangeClient,filteringLogic, mapper);
+                                     ExchangeClient exchangeClient, FilteringLogic filteringLogic, Mapper mapper) {
+        return new OfferService(offerRepository, clientMessageRepository, exchangeClient, filteringLogic, mapper);
     }
 
 
