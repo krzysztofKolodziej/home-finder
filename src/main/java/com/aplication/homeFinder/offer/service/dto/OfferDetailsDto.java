@@ -27,14 +27,14 @@ public class OfferDetailsDto {
     @NotBlank
     private String contactDetails;
     @NotNull
-    private AdditionalInformationDto additionalInformationDto;
+    private OfferDetailsDto.AdditionalInformation additionalInformationDto;
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     @Setter
     @Builder
-    public static class AdditionalInformationDto{
+    public static class AdditionalInformation {
         @NotNull
         private OfferDetails.Market market;
         @NotNull

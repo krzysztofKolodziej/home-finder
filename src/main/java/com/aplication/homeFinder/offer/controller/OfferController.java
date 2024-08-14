@@ -1,6 +1,7 @@
 package com.aplication.homeFinder.offer.controller;
 
-import com.aplication.homeFinder.ErrorRespond;
+import com.aplication.homeFinder.errorHandler.ErrorRespond;
+import com.aplication.homeFinder.errorHandler.GlobalExceptionHandler;
 import com.aplication.homeFinder.offer.service.FilteringSchema;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,55 +27,29 @@ public class OfferController {
     private final OfferService offerService;
 
     @GetMapping("/offers/{currency}/all")
-    public ResponseEntity<?> findAllOffer(@ModelAttribute FilteringSchema filteringSchema, @PathVariable String currency) {
-        try {
-            List<OfferDto> offers = offerService.findOffers(filteringSchema, currency);
-            return ResponseEntity.status(HttpStatus.OK).body(offers);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            return new ResponseEntity<>(new ErrorRespond(e.getStatusCode(), e.getMessage()), e.getStatusCode());
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ErrorRespond(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<OfferDto>> findAllOffer(@ModelAttribute FilteringSchema filteringSchema,
+                                                       @PathVariable String currency) throws GlobalExceptionHandler {
+        List<OfferDto> offersDto = offerService.findOffers(filteringSchema, currency);
+        return ResponseEntity.status(HttpStatus.OK).body(offersDto);
     }
 
     @GetMapping("/offers/{id}")
-    public ResponseEntity<?> findOfferWithDetails(@PathVariable @Valid Long id) {
-        try {
-            OfferDto offerDto = offerService.findOfferWithDetails(id);
-            return ResponseEntity.status(HttpStatus.OK).body(offerDto);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            return new ResponseEntity<>(new ErrorRespond(e.getStatusCode(), e.getMessage()), e.getStatusCode());
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ErrorRespond(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<OfferDto> findOfferWithDetails(@PathVariable @Valid Long id) throws GlobalExceptionHandler {
+        OfferDto offerDto = offerService.findOfferWithDetails(id);
+        return ResponseEntity.status(HttpStatus.OK).body(offerDto);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> safeOffer(@RequestBody @Valid OfferDto offerDto) {
-        try {
-            OfferDto offerDtoMap = offerService.saveOffer(offerDto);
-            return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            return new ResponseEntity<>(new ErrorRespond(e.getStatusCode(), e.getMessage()), e.getStatusCode());
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ErrorRespond(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<OfferDto> safeOffer(@RequestBody @Valid OfferDto offerDto) throws GlobalExceptionHandler {
+        OfferDto offerDtoMap = offerService.saveOffer(offerDto);
+        return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
     }
 
     @PutMapping("/offers/{id}")
-    public ResponseEntity<?> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id) {
-        try {
-            OfferDto offerDtoMap = offerService.updateOffer(offerDto, id);
-            return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            return new ResponseEntity<>(new ErrorRespond(e.getStatusCode(), e.getMessage()), e.getStatusCode());
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ErrorRespond(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> updateOffer(@RequestBody @Valid OfferDto offerDto, @PathVariable Long id)
+            throws GlobalExceptionHandler {
+        OfferDto offerDtoMap = offerService.updateOffer(offerDto, id);
+        return ResponseEntity.status(HttpStatus.OK).body(offerDtoMap);
     }
 
     @DeleteMapping("/offers/{id}")

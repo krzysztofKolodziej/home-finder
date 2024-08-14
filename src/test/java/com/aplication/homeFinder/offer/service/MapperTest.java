@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,7 +27,7 @@ class MapperTest {
     @Test
     void shouldMapOfferDtoToEditToOffer() {
         //given
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
         OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         Offer offerTest = getOfferNewEmpty();
@@ -58,7 +57,7 @@ class MapperTest {
         assertThat(offerDetails.getContactDetails()).isEqualTo(offerDetailsDto.getContactDetails());
 
         OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
         assertThat(additionalInformation.getMarket()).isEqualTo(additionalInformationDto.getMarket());
         assertThat(additionalInformation.getAnnouncerType()).isEqualTo(additionalInformationDto.getAnnouncerType());
         assertThat(additionalInformation.getYearOfConstruction()).isEqualTo(additionalInformationDto.getYearOfConstruction());
@@ -156,7 +155,7 @@ class MapperTest {
     @Test
     void shouldMapOfferDtoToOffer() {
         //given
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
         OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
 
@@ -185,7 +184,7 @@ class MapperTest {
         assertThat(offerDetails.getContactDetails()).isEqualTo(offerDetailsDto.getContactDetails());
 
         OfferDetails.AdditionalInformation additionalInformation = offerDetails.getAdditionalInformation();
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
         assertThat(additionalInformation.getMarket()).isEqualTo(additionalInformationDto.getMarket());
         assertThat(additionalInformation.getAnnouncerType()).isEqualTo(additionalInformationDto.getAnnouncerType());
         assertThat(additionalInformation.getYearOfConstruction()).isEqualTo(additionalInformationDto.getYearOfConstruction());
@@ -287,7 +286,7 @@ class MapperTest {
         assertThat(offerDetailsDto.getHeating()).isEqualTo(offerDetailsTest.getHeating());
         assertThat(offerDetailsDto.getContactDetails()).isEqualTo(offerDetailsTest.getContactDetails());
 
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
         assertThat(additionalInformationDto.getMarket()).isEqualTo(additionalInformationTest.getMarket());
         assertThat(additionalInformationDto.getAnnouncerType()).isEqualTo(additionalInformationTest.getAnnouncerType());
         assertThat(additionalInformationDto.getYearOfConstruction()).isEqualTo(additionalInformationTest.getYearOfConstruction());
@@ -388,7 +387,7 @@ class MapperTest {
         return offerDtoTest;
     }
 
-    private static OfferDetailsDto getOfferDetailsDto(OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest) {
+    private static OfferDetailsDto getOfferDetailsDto(OfferDetailsDto.AdditionalInformation additionalInformationDtoTest) {
         OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
         offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
         offerDetailsDtoTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
@@ -400,8 +399,8 @@ class MapperTest {
         return offerDetailsDtoTest;
     }
 
-    private static OfferDetailsDto.AdditionalInformationDto getAdditionalInformationDto() {
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformationDto();
+    private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDto() {
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformation();
         additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
         additionalInformationDtoTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
         additionalInformationDtoTest.setYearOfConstruction(2019);
@@ -460,7 +459,7 @@ class MapperTest {
 
     private static OfferDto getOfferDtoNewEmpty() {
         OfferDto offerDtoTest = new OfferDto();
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformation();
         OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
         offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
         offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);

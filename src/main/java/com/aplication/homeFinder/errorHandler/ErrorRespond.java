@@ -1,4 +1,4 @@
-package com.aplication.homeFinder;
+package com.aplication.homeFinder.errorHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

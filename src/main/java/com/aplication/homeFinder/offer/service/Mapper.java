@@ -25,7 +25,7 @@ public class Mapper {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
         OfferDetails.AdditionalInformation additionalInformation = offer.getOfferDetails().getAdditionalInformation();
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDto.getOfferDetailsDto().getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = offerDto.getOfferDetailsDto().getAdditionalInformationDto();
 
         if (additionalInformation == null || additionalInformationDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
@@ -131,7 +131,7 @@ public class Mapper {
     }
 
     private OfferDetails mapOfferDetails(OfferDetailsDto offerDetailsDto) {
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = offerDetailsDto.getAdditionalInformationDto();
 
         Optional.ofNullable(additionalInformationDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found"));
@@ -160,7 +160,7 @@ public class Mapper {
         Optional.ofNullable(additionalInformation)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "AdditionalInformation not found"));
 
-        OfferDetailsDto.AdditionalInformationDto additionalInformationDto = OfferDetailsDto.AdditionalInformationDto.builder()
+        OfferDetailsDto.AdditionalInformation additionalInformationDto = OfferDetailsDto.AdditionalInformation.builder()
                 .market(additionalInformation.getMarket())
                 .announcerType(additionalInformation.getAnnouncerType())
                 .yearOfConstruction(additionalInformation.getYearOfConstruction())
