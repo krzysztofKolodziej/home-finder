@@ -186,9 +186,6 @@ class OfferControllerTest {
     @Test
     @Transactional
     void shouldReturnBadRequestWhenOfferDtoIsNull() throws Exception {
-        //given
-        OfferDto offerTestDto = null;
-
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -335,8 +332,6 @@ class OfferControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
-
 
 
     private static Offer getOfferData() {

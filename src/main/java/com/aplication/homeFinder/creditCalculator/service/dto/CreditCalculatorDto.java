@@ -2,47 +2,48 @@ package com.aplication.homeFinder.creditCalculator.service.dto;
 
 import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreditCalculatorDto {
 
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int propertyValue;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int downPayment;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int creditAmount;
-    @Min(1)
+    @Min(value = 1, message = "Value must be greater than or equal to one")
     private int repaymentPeriod;
-    @NotNull
+    @NotNull(message = "Value must not be null")
     private SourceOfIncome sourceOfIncome;
-    @Max(33)
+    @Min(value = 33, message = "Value must be greater than or equal to thirty-three")
     private int contractDurationInMonth;
     private boolean continuityOfEmployment;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int monthlyNetIncome;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int monthlyExpenditures;
     private boolean delayInLoanRepayment;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int numberOfDependents;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int monthlyAmountOtherLoans;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int creditCardLimit;
-    @NotNull
-    @Past
+    @NotNull(message = "Value must not be null")
+    @Past(message = "Date must be past")
     private LocalDate dateOfBirth;
-    @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
+    @NotNull(message = "Value must not be null")
+    @Pattern(regexp = "^\\d{9}$", message = "Invalid phone number")
     private String phoneNumber;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String name;
 }

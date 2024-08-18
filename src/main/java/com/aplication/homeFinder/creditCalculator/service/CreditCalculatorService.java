@@ -15,7 +15,6 @@ public class CreditCalculatorService {
 
     public int checkCreditWorthiness(CreditCalculatorDto creditCalculatorDto) {
         creditCalculatorRepository.save(mapper(creditCalculatorDto));
-
         return calculator.maxLoanAmount(creditCalculatorDto);
     }
 

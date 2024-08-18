@@ -67,7 +67,7 @@ public class OfferControllerValidationTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenFieldPriceIsLessOrEqualsThanZero() throws Exception {
+    void shouldReturnBadRequestWhenFieldPriceIsGreaterOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
         OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
