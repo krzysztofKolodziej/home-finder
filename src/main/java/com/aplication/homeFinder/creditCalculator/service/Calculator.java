@@ -10,7 +10,6 @@ public class Calculator {
     private static final double MONTHLY_COST_CREDIT_CARD = 0.02;
 
     public int maxLoanAmount(CreditCalculatorDto creditCalculatorDto) {
-
         double monthlyInterestRate = AVERAGE_ANNUAL_INTEREST_RATE_LOAN / 12;
         double numberOfPayments = creditCalculatorDto.getRepaymentPeriod() * 12;
         int contractDurationInMont = creditCalculatorDto.getContractDurationInMonth();
@@ -19,6 +18,7 @@ public class Calculator {
         if (creditCalculatorDto.isDelayInLoanRepayment()) {
             return 0;
         }
+
         double creditWorthiness = (availableIncomeForDebt(creditCalculatorDto)
                 * (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1))
                 / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments));
