@@ -5,6 +5,7 @@ import com.aplication.homeFinder.offer.model.OfferDetails;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.FilteringSchema;
 import com.aplication.homeFinder.offer.service.OfferService;
+import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -195,6 +195,145 @@ class OfferControllerTest {
                         .content(objectMapper.writeValueAsString(null)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    void shouldUpdateOfferDtoAndReturnOfferDto() throws Exception {
+        //given
+        OfferDto offerDtoTest = getOfferDtoData();
+        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
+        offerDto.setPrice(700000);
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.put("/offers/{id}", offerDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(offerDto)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(jsonPath("$.price").value(700000))
+                .andExpect(jsonPath("$.title").value("Super lokalizacja/trzy pokoje/dwupoziomowe/parking"))
+                .andExpect(jsonPath("$.city").value("Wroclaw"))
+                .andExpect(jsonPath("$.street").value("Dluga"))
+                .andExpect(jsonPath("$.numberOfRooms").value(4))
+                .andExpect(jsonPath("$.floor").value(3))
+                .andExpect(jsonPath("$.description").value("Sprzedam mieszkanie w centrum Wroclawia"))
+                .andExpect(jsonPath("$.kindOfProperty").value("MIESZKANIE"))
+                .andExpect(jsonPath("$.offerDetailsDto.rent").value(500))
+                .andExpect(jsonPath("$.offerDetailsDto.ownershipForm").value("PELNA_WLASNOSC"))
+                .andExpect(jsonPath("$.offerDetailsDto.finishLevel").value("DO_ZAMIESZKANIA"))
+                .andExpect(jsonPath("$.offerDetailsDto.parkingPlace").value("BRAK"))
+                .andExpect(jsonPath("$.offerDetailsDto.heating").value("ELEKTRYCZNE"))
+                .andExpect(jsonPath("$.offerDetailsDto.contactDetails").value("555444333"))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.market").value("PIERWOTNY"))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.announcerType").value("BIURO_NIERUCHOMOSCI"))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.yearOfConstruction").value(2022))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.buildingType").value("APARTAMENTOWIEC"))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.media").value("Tv, internet"))
+                .andExpect(jsonPath("$.offerDetailsDto.additionalInformationDto.equipment").value("lodowka, piekarnik, kuchenka"))
+                .andReturn();
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnNotFoundWhenUpdateOfferDoesNotExist() throws Exception {
+        //given
+        OfferDto offerDtoTest = getOfferDtoData();
+        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
+        offerDto.setPrice(700000);
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.put("/offers/{id}", 10000L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(offerDto)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers
+                        .content().string("{\"status\":\"NOT_FOUND\",\"message\":\"404 NOT_FOUND \\\"Offer not found\\\"\"}"));
+    }
+
+    @Test
+    @Transactional
+    void shouldDeleteOfferWhenOfferExist() throws Exception {
+        //given
+        OfferDto offerDtoTest = getOfferDtoData();
+        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/offers/{id}", offerDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(offerDto)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(204));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnNotContentWhenOfferDoesNotExist() throws Exception {
+        //given
+        Long notExistingId = 2232323L;
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/offers/{id}", notExistingId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(204));
+    }
+
+    @Test
+    @Transactional
+    void shouldSaveMessageWhenOfferExist() throws Exception {
+        //given
+        OfferDto offerDtoTest = getOfferDtoData();
+        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
+        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
+        clientMessageDtoTest.setMessage("Message");
+        clientMessageDtoTest.setIdOffer(offerDto.getId());
+        clientMessageDtoTest.setName("XYZ");
+        clientMessageDtoTest.setEmail("xyz@gmail.com");
+        clientMessageDtoTest.setPhoneNumber("900800700");
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", offerDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clientMessageDtoTest)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnStatusNotFoundWhenOfferNotExist() throws Exception {
+        //given
+        long notExistentId = 9999999999L;
+        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
+        clientMessageDtoTest.setMessage("Message");
+        clientMessageDtoTest.setIdOffer(notExistentId);
+        clientMessageDtoTest.setName("XYZ");
+        clientMessageDtoTest.setEmail("xyz@gmail.com");
+        clientMessageDtoTest.setPhoneNumber("900800700");
+
+        //when & then
+        mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", notExistentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clientMessageDtoTest)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers
+                        .content().string("{\"status\":\"NOT_FOUND\",\"message\":\"404 NOT_FOUND \\\"Offer not found\\\"\"}"));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnBadRequestWhenMessageDtoIsInvalid() throws Exception {
+        // given
+        OfferDto offerDtoTest = getOfferDtoData();
+        ClientMessageDto clientMessageDto = new ClientMessageDto();
+
+        // when & then
+        mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", offerDtoTest.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 

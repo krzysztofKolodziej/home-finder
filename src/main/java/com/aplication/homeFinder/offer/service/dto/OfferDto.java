@@ -2,6 +2,7 @@ package com.aplication.homeFinder.offer.service.dto;
 
 import com.aplication.homeFinder.offer.model.Offer;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -13,27 +14,28 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 public class OfferDto {
     private Long id;
-    @NotNull
+    @NotNull(message = "Value must not be null")
     private Offer.KindOfProperty kindOfProperty;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private double price;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String title;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String city;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String street;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int numberOfRooms;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private double area;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private double pricePerMeter;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int floor;
-    @NotBlank
-    @Size(max = 5000, message = "Maksymalna ilość znaków to 5000")
+    @NotBlank(message = "Value must not be empty")
+    @Size(max = 5000, message = "Maximum number of characters is 5000")
     private String description;
-    @NotNull
+    @NotNull(message = "Offer Details can not be null")
+    @Valid
     private OfferDetailsDto offerDetailsDto;
 }

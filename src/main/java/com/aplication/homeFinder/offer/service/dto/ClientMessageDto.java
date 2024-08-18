@@ -1,9 +1,6 @@
 package com.aplication.homeFinder.offer.service.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -12,15 +9,16 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ClientMessageDto {
-
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String name;
-    @Email
+    @Email(message = "Email doesn't meet the requirements")
+    @NotNull(message = "Value must not be null")
     private String email;
-    @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
+    @Pattern(regexp = "^\\d{9}$", message = "Invalid phone number")
+    @NotNull(message = "Value must not be null")
     private String phoneNumber;
-    @NotBlank
-    @Size(max = 1000, message = "Maksymalna ilość znaków to 1000")
+    @NotBlank(message = "Value must not be empty")
+    @Size(max = 1000, message = "Maximum number of characters is 1000")
     private String message;
     private Long idOffer;
 }
