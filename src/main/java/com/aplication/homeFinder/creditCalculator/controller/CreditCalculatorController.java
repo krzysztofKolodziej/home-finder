@@ -19,8 +19,8 @@ public class CreditCalculatorController {
 
     @PostMapping("/creditCalculator")
     public ResponseEntity<Integer> checkCreditWorthiness(@RequestBody @Valid CreditCalculatorDto creditCalculatorDto)
-    throws GlobalExceptionHandler {
-            int creditWorthiness = creditCalculatorService.checkCreditWorthiness(creditCalculatorDto);
-            return ResponseEntity.status(HttpStatus.OK).body(creditWorthiness);
+            throws GlobalExceptionHandler {
+        creditCalculatorService.saveCalculationWorthiness(creditCalculatorDto);
+        return ResponseEntity.status(HttpStatus.OK).body(creditCalculatorService.checkCreditWorthiness(creditCalculatorDto));
     }
 }

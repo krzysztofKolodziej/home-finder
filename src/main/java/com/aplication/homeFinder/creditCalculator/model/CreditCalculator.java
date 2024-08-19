@@ -2,11 +2,10 @@ package com.aplication.homeFinder.creditCalculator.model;
 
 import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 @Entity
 @Getter
 @Setter
