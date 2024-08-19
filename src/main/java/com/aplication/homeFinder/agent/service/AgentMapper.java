@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 public class AgentMapper {
-    EstateAgent mapper(EstateAgentDto estateAgentDto) {
+    public EstateAgent mapper(EstateAgentDto estateAgentDto) {
         Optional.ofNullable(estateAgentDto).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Agent not found"));
         return EstateAgent.builder()
@@ -22,7 +22,7 @@ public class AgentMapper {
                 .build();
     }
 
-    EstateAgentDto mapAgent(EstateAgent estateAgent) {
+    public EstateAgentDto mapAgent(EstateAgent estateAgent) {
         Optional.ofNullable(estateAgent).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Agent not found"));
         return EstateAgentDto.builder()

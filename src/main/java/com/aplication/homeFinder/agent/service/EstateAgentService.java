@@ -25,8 +25,4 @@ public class EstateAgentService {
                 .toList();
     }
 
-    public void deleteAgent(Long id) {
-        estateAgentRepository.deleteById(id);
-    }
-
 }

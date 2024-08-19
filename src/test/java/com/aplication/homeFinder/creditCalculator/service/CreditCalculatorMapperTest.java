@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class CreditCalculatorMapperTest {
     @InjectMocks
-    CreditCalculatorMapper creditCalculatorMapper;
+    private CreditCalculatorMapper creditCalculatorMapper;
 
     @Test
     void shouldMapCreditCalculatorToCreditCalculatorDto() {
