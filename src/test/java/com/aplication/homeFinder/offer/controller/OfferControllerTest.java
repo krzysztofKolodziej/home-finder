@@ -70,7 +70,7 @@ class OfferControllerTest {
 
     @Test
     @Transactional
-    void shouldReturnEmptyListWhenNoOffersFound() throws Exception {
+    void shouldReturnEmptyListWhenNotFoundOffers() throws Exception {
         // given
         OfferDto offerTestDto = getOfferDtoData();
         FilteringSchema filteringSchema = new FilteringSchema();

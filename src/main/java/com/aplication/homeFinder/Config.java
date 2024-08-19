@@ -1,6 +1,7 @@
 package com.aplication.homeFinder;
 
 import com.aplication.homeFinder.agent.respository.EstateAgentRepository;
+import com.aplication.homeFinder.agent.service.AgentMapper;
 import com.aplication.homeFinder.agent.service.EstateAgentService;
 import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
 import com.aplication.homeFinder.creditCalculator.service.Calculator;
@@ -14,6 +15,7 @@ import com.aplication.homeFinder.offer.service.FilteringLogic;
 import com.aplication.homeFinder.offer.service.Mapper;
 import com.aplication.homeFinder.offer.service.OfferService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +23,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class Config {
+    @Bean
+    public AgentMapper agentMapper() {
+        return new AgentMapper();
+    }
 
     @Bean
-    public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository) {
-        return new EstateAgentService(estateAgentRepository);
+    public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository, AgentMapper agentMapper) {
+        return new EstateAgentService(estateAgentRepository, agentMapper);
     }
 
     @Bean

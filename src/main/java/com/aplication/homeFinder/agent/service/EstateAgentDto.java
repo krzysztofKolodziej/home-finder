@@ -1,32 +1,30 @@
 package com.aplication.homeFinder.agent.service;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EstateAgentDto {
 
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String street;
-    @Min(0)
+    @Min(value = 0, message = "Value must be greater than or equal to zero")
     private int houseNumber;
-    @Pattern(regexp = "\\d{2}-\\d{3}")
+    @Pattern(regexp = "\\d{2}-\\d{3}", message = "Invalid zip code")
+    @NotNull(message = "Value must not be null")
     private String zipCode;
-    @NotBlank
+    @NotBlank(message = "Value must not be empty")
     private String city;
-    @Email
+    @Email(message = "Email doesn't meet the requirements")
+    @NotNull(message = "Value must not be null")
     private String email;
-    @Pattern(regexp = "^\\d{9}$", message = "Nieprawidłowy numer telefonu")
+    @Pattern(regexp = "^\\d{9}$", message = "Invalid phone number")
+    @NotNull(message = "Value must not be null")
     private String phoneNumber;
 }
