@@ -124,7 +124,7 @@ class OfferControllerTest {
 
     @Test
     @Transactional
-    void shouldReturnBadRequestWhenBadRequestIsThrown() throws Exception {
+    void shouldReturnBadRequestWhenOfferIdIsInvalid() throws Exception {
         //given
         String badRequest = "bad request";
 
@@ -323,16 +323,16 @@ class OfferControllerTest {
     void shouldReturnBadRequestWhenMessageDtoIsInvalid() throws Exception {
         // given
         OfferDto offerDtoTest = getOfferDtoData();
+        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
         ClientMessageDto clientMessageDto = new ClientMessageDto();
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", offerDtoTest.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDto)))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
-
 
     private static Offer getOfferData() {
         Offer testOffer = new Offer();
