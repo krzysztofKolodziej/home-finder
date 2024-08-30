@@ -15,6 +15,7 @@ import java.util.List;
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     @Enumerated(EnumType.STRING)
     private KindOfProperty kindOfProperty;
@@ -38,26 +39,6 @@ public class Offer {
             cascade = CascadeType.ALL
     )
     private List<ClientMessage> clientMessages = new ArrayList<>();
-
-    public void addDetails(OfferDetails offerDetails) {
-        offerDetails.setOffer(this);
-        this.offerDetails = offerDetails;
-    }
-
-    public void removeDetails(OfferDetails offerDetails) {
-        offerDetails.setOffer(null);
-        this.offerDetails = null;
-    }
-
-    public void addClientMessage(ClientMessage clientMessage) {
-        clientMessage.setOffer(this);
-        this.clientMessages.add(clientMessage);
-    }
-
-    public void removeClientMessage(ClientMessage clientMessage) {
-        clientMessage.setOffer(null);
-        this.clientMessages.remove(clientMessage);
-    }
 
     public enum KindOfProperty {
         MIESZKANIE, DOM, DZIALKA, LOKAL, GARAZ

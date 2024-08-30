@@ -14,6 +14,7 @@ import lombok.*;
 public class OfferDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     private double rent;
     @Enumerated(EnumType.STRING)

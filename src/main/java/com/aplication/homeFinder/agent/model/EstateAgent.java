@@ -16,6 +16,7 @@ public class EstateAgent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     private String name;
     private String street;

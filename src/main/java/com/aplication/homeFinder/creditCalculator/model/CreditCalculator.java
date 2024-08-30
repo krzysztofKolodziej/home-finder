@@ -16,6 +16,7 @@ public class CreditCalculator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     private int propertyValue;
     private int downPayment;
