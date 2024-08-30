@@ -14,8 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @ExtendWith(MockitoExtension.class)
 class MapperTest {
@@ -330,14 +329,15 @@ class MapperTest {
     @Test
     void shouldMapClientMessageDtoToClientMessage() {
         //given
-        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
         Offer offerTest = getOfferNewEmpty();
         offerTest.setId(1L);
-        clientMessageDtoTest.setName("Karol");
-        clientMessageDtoTest.setEmail("karol@gmail.com");
-        clientMessageDtoTest.setPhoneNumber("444333111");
-        clientMessageDtoTest.setMessage("Prosze o kontakt w sprawie oferty");
-        clientMessageDtoTest.setIdOffer(offerTest.getId());
+        ClientMessageDto clientMessageDtoTest = ClientMessageDto.builder()
+                .name("Karol")
+                .email("karol@gmail.com")
+                .phoneNumber("444333666")
+                .message("Prosze o kontakt w sprawie oferty")
+                .idOffer(offerTest.getId())
+                .build();
 
         //when
         ClientMessage clientMessage = mapper.mapClientMessage(clientMessageDtoTest, offerTest);

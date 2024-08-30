@@ -281,12 +281,13 @@ class OfferControllerTest {
         //given
         OfferDto offerDtoTest = getOfferDtoData();
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
-        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
-        clientMessageDtoTest.setMessage("Message");
-        clientMessageDtoTest.setIdOffer(offerDto.getId());
-        clientMessageDtoTest.setName("XYZ");
-        clientMessageDtoTest.setEmail("xyz@gmail.com");
-        clientMessageDtoTest.setPhoneNumber("900800700");
+        ClientMessageDto clientMessageDtoTest = ClientMessageDto.builder()
+                .name("Karol")
+                .email("karol@gmail.com")
+                .phoneNumber("444333666")
+                .message("Prosze o kontakt w sprawie oferty")
+                .idOffer(offerDto.getId())
+                .build();
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", offerDto.getId())
@@ -301,12 +302,13 @@ class OfferControllerTest {
     void shouldReturnStatusNotFoundWhenOfferNotExist() throws Exception {
         //given
         long notExistentId = 9999999999L;
-        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
-        clientMessageDtoTest.setMessage("Message");
-        clientMessageDtoTest.setIdOffer(notExistentId);
-        clientMessageDtoTest.setName("XYZ");
-        clientMessageDtoTest.setEmail("xyz@gmail.com");
-        clientMessageDtoTest.setPhoneNumber("900800700");
+        ClientMessageDto clientMessageDtoTest = ClientMessageDto.builder()
+                .name("Karol")
+                .email("karol@gmail.com")
+                .phoneNumber("444333666")
+                .message("Prosze o kontakt w sprawie oferty")
+                .idOffer(notExistentId)
+                .build();
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/offers/{id}/message", notExistentId)

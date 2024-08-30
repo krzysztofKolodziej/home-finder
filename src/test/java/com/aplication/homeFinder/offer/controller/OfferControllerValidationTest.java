@@ -2,7 +2,6 @@ package com.aplication.homeFinder.offer.controller;
 
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.OfferDetails;
-import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.OfferService;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -295,7 +293,7 @@ public class OfferControllerValidationTest {
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
         OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        setDescrptionsWithInvalidSize(offerDtoTest);
+        setDescriptionsWithInvalidSize(offerDtoTest);
 
         //when & then
         mockMvc.perform(post("/add")
@@ -736,13 +734,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setName(null);
+        ClientMessageDto clientMessageDtoInvalidName = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name(null)
+                .email("jan.kowalski@gmail.com")
+                .phoneNumber("700599333")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidName)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
@@ -757,13 +761,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setName("    ");
+        ClientMessageDto clientMessageDtoInvalidName = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("   ")
+                .email("jan.kowalski@gmail.com")
+                .phoneNumber("700599333")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidName)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
@@ -778,13 +788,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setEmail("    ");
+        ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("  ")
+                .phoneNumber("700599333")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Email doesn't meet the requirements\"}"));
@@ -799,13 +815,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setEmail("invalid.email");
+        ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("invalid.email")
+                .phoneNumber("700599333")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Email doesn't meet the requirements\"}"));
@@ -820,13 +842,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setEmail(null);
+        ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email(null)
+                .phoneNumber("700599333")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be null\"}"));
@@ -841,13 +869,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setPhoneNumber("12345abc");
+        ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan@gmail.com")
+                .phoneNumber("12345abc")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Invalid phone number\"}"));
@@ -862,13 +896,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setPhoneNumber("    ");
+        ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan@gmail.com")
+                .phoneNumber("   ")
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Invalid phone number\"}"));
@@ -883,13 +923,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setPhoneNumber(null);
+        ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan@gmail.com")
+                .phoneNumber(null)
+                .message("Jestem zaintersowany ofertą. Proszę o kontakt")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be null\"}"));
@@ -903,13 +949,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setMessage(null);
+        ClientMessageDto clientMessageDtoInvalidMessage = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan@gmail.com")
+                .phoneNumber("555222444")
+                .message(null)
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidMessage)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
@@ -923,13 +975,19 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        clientMessageDto.setMessage("     ");
+        ClientMessageDto clientMessageDtoInvalidMessage = ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan@gmail.com")
+                .phoneNumber("555222444")
+                .message("   ")
+                .idOffer(1L)
+                .build();
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
+                        .content(objectMapper.writeValueAsString(clientMessageDtoInvalidMessage)))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
@@ -943,8 +1001,7 @@ public class OfferControllerValidationTest {
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
-        ClientMessageDto clientMessageDto = getClientMessageDto(offerDto);
-        setMessageWithInvalidSize(clientMessageDto);
+        ClientMessageDto clientMessageDto = setMessageWithInvalidSize(offerDto);
 
         //when & then
         mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
@@ -995,18 +1052,7 @@ public class OfferControllerValidationTest {
         return additionalInformationDtoTest;
     }
 
-    private static ClientMessageDto getClientMessageDto(OfferDto offerDtoTest) {
-        ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
-        clientMessageDtoTest.setIdOffer(offerDtoTest.getId());
-        clientMessageDtoTest.setName("Jan");
-        clientMessageDtoTest.setEmail("jan.kowalski@gmail.com");
-        clientMessageDtoTest.setPhoneNumber("700599333");
-        clientMessageDtoTest.setMessage("Jestem zaintersowany ofertą. Proszę o kontakt");
-        return clientMessageDtoTest;
-    }
-
-
-    private static void setDescrptionsWithInvalidSize(OfferDto offerDtoTest) {
+    private static void setDescriptionsWithInvalidSize(OfferDto offerDtoTest) {
         offerDtoTest.setDescription("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
                 "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
                 "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
@@ -1094,18 +1140,24 @@ public class OfferControllerValidationTest {
                 "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie");
     }
 
-    private static void setMessageWithInvalidSize(ClientMessageDto clientMessageDto) {
-        clientMessageDto.setMessage("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie");
+    private static ClientMessageDto setMessageWithInvalidSize(OfferDto offerDtoTest) {
+        return ClientMessageDto.builder()
+                .idOffer(offerDtoTest.getId())
+                .name("Jan")
+                .email("jan.kowalski@gmail.com")
+                .phoneNumber("700599333")
+                .message("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie")
+                .build();
     }
 
     private static String getInvalidJsonWithFieldKindOfProperty() {

@@ -115,7 +115,7 @@ class CreditCalculatorControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenSourceOfIncomeIsDifferThanEnum() throws Exception {
+    void  WhenSourceOfIncomeIsDifferThanEnum() throws Exception {
         //given
         String invalidJsonWithFieldSourceOfIncome = getInvalidJsonWithFieldSourceOfIncome();
 

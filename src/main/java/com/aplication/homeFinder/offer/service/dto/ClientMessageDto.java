@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,6 +19,6 @@ public class ClientMessageDto {
     @NotBlank(message = "Value must not be empty")
     @Size(max = 1000, message = "Maximum number of characters is 1000")
     private String message;
-    @NotNull
+    @NotNull(message = "Value must not be null")
     private Long idOffer;
 }

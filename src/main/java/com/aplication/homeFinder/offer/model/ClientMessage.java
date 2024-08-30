@@ -12,6 +12,7 @@ import lombok.*;
 public class ClientMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     private String name;
     private String email;
