@@ -1,7 +1,6 @@
 package com.aplication.homeFinder.agent.service;
 
 import com.aplication.homeFinder.agent.model.EstateAgent;
-import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -71,14 +70,14 @@ class AgentMapperTest {
     }
 
     private static EstateAgentDto getEstateAgentDto() {
-        EstateAgentDto estateAgentDtoTest = new EstateAgentDto();
-        estateAgentDtoTest.setName("Jan");
-        estateAgentDtoTest.setStreet("Kazimierza Wielkiego");
-        estateAgentDtoTest.setZipCode("50-333");
-        estateAgentDtoTest.setCity("Wroclaw");
-        estateAgentDtoTest.setEmail("jan@gmail.com");
-        estateAgentDtoTest.setPhoneNumber("555333222");
-        return estateAgentDtoTest;
+        return EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .city("Wroclaw")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
     }
 
     private static EstateAgent getEstateAgent() {

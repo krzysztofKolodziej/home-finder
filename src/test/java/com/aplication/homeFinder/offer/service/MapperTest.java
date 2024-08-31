@@ -330,13 +330,12 @@ class MapperTest {
     void shouldMapClientMessageDtoToClientMessage() {
         //given
         Offer offerTest = getOfferNewEmpty();
-        offerTest.setId(1L);
         ClientMessageDto clientMessageDtoTest = ClientMessageDto.builder()
                 .name("Karol")
                 .email("karol@gmail.com")
                 .phoneNumber("444333666")
                 .message("Prosze o kontakt w sprawie oferty")
-                .idOffer(offerTest.getId())
+                .idOffer(1L)
                 .build();
 
         //when
@@ -411,18 +410,18 @@ class MapperTest {
     }
 
     private static Offer getOffer() {
-        Offer offerTest = new Offer();
-        offerTest.setId(1L);
-        offerTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
-        offerTest.setPrice(500000d);
-        offerTest.setTitle("Spzedam mieszaknie");
-        offerTest.setCity("Wroclaw");
-        offerTest.setNumberOfRooms(3);
-        offerTest.setArea(50d);
-        offerTest.setPricePerMeter(10000d);
-        offerTest.setFloor(3);
-        offerTest.setDescription("Sprzedam mieszkanie w spokojnej okolicy");
-        return offerTest;
+        return Offer.builder()
+                .id(1L)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(500000d)
+                .title("Sprzedam mieszkanie")
+                .city("Wrocław")
+                .numberOfRooms(3)
+                .area(50d)
+                .pricePerMeter(10000d)
+                .floor(3)
+                .description("Sprzedam mieszkanie w spokojnej okolicy")
+                .build();
     }
 
     private static OfferDetails getOfferDetails(OfferDetails.AdditionalInformation additionalInformationTest) {

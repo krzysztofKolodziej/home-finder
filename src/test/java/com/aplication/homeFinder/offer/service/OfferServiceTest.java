@@ -68,12 +68,14 @@ class OfferServiceTest {
     @Test
     void shouldReturnOfferWithDetailsWhenOfferExists() {
         //given
-        Long id = 1L;
-        Offer offerTest = new Offer();
-        OfferDetails offerDetailsTest = new OfferDetails();
-        offerTest.setId(id);
-        offerTest.setOfferDetails(offerDetailsTest);
+        long id = 1L;
+
         OfferDto offerDtoTest = new OfferDto();
+        OfferDetails offerDetailsTest = new OfferDetails();
+        Offer offerTest = Offer.builder()
+                .id(id)
+                .offerDetails(offerDetailsTest)
+                .build();
 
         when(offerRepository.findById(id)).thenReturn(Optional.of(offerTest));
         when(mapper.mapOfferWithDetailsDto(offerTest)).thenReturn(offerDtoTest);
@@ -104,9 +106,11 @@ class OfferServiceTest {
     void shouldThrowNotFoundExceptionWhenOfferDetailsDoesNotExist() {
         //given
         Long id = 1L;
-        Offer offer = new Offer();
-        offer.setId(id);
-        offer.setOfferDetails(null);
+
+        Offer offer = Offer.builder()
+                .id(id)
+                .offerDetails(null)
+                .build();
 
         when(offerRepository.findById(id)).thenReturn(Optional.of(offer));
 
@@ -180,7 +184,6 @@ class OfferServiceTest {
     void shouldDeleteOffer() {
         //given
         final long id = 1L;
-        Offer offerTest = new Offer();
 
         //when
         offerService.deleteOffer(id);
@@ -212,7 +215,6 @@ class OfferServiceTest {
     void shouldThrowExceptionWhenOfferNotFoundAddMessage() {
         // given
         Long offerId = 1L;
-        OfferDto offerDtoTest = new OfferDto();
         ClientMessageDto clientMessageDtoTest = new ClientMessageDto();
 
         when(offerRepository.findById(offerId)).thenReturn(Optional.empty());
@@ -226,43 +228,46 @@ class OfferServiceTest {
     }
 
 
-
     private static List<Offer> getOfferList() {
-        Offer offerTest = new Offer();
-        offerTest.setId(1L);
-        offerTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
-        offerTest.setPrice(500000d);
-        offerTest.setTitle("Spzedam mieszaknie");
-        offerTest.setCity("Wroclaw");
-        offerTest.setNumberOfRooms(3);
-        offerTest.setArea(50d);
-        offerTest.setPricePerMeter(10000d);
-        offerTest.setFloor(3);
-        offerTest.setDescription("Sprzedam mieszkanie w spokojnej okolicy");
+        Offer offerTest = Offer.builder()
+                .id(1L)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(500000d)
+                .title("Sprzedam mieszkanie")
+                .city("Wrocław")
+                .numberOfRooms(3)
+                .area(50d)
+                .pricePerMeter(10000d)
+                .floor(3)
+                .description("Sprzedam mieszkanie w spokojnej okolicy")
+                .build();
 
-        Offer offerTest2 = new Offer();
-        offerTest.setId(10L);
-        offerTest.setKindOfProperty(Offer.KindOfProperty.DOM);
-        offerTest.setPrice(5000000d);
-        offerTest.setTitle("Spzedam dom");
-        offerTest.setCity("Wroclaw");
-        offerTest.setNumberOfRooms(4);
-        offerTest.setArea(500d);
-        offerTest.setPricePerMeter(10000d);
-        offerTest.setFloor(3);
-        offerTest.setDescription("Sprzedam dom w spokojnej okolicy");
+        Offer offerTest2 = Offer.builder()
+                .id(10L)
+                .kindOfProperty(Offer.KindOfProperty.DOM)
+                .price(5000000d)
+                .title("Sprzedam dom")
+                .city("Wrocław")
+                .numberOfRooms(4)
+                .area(500d)
+                .pricePerMeter(10000d)
+                .floor(3)
+                .description("Sprzedam dom w spokojnej okolicy")
+                .build();
 
-        Offer offerTest3 = new Offer();
-        offerTest.setId(155L);
-        offerTest.setKindOfProperty(Offer.KindOfProperty.DZIALKA);
-        offerTest.setPrice(100000d);
-        offerTest.setTitle("Spzedam dzialke budowalna niedaleko Wroclawia");
-        offerTest.setCity("Wroclaw");
-        offerTest.setNumberOfRooms(3);
-        offerTest.setArea(1000);
-        offerTest.setPricePerMeter(100d);
-        offerTest.setFloor(0);
-        offerTest.setDescription("Sprzedam dzialke niedaleko Wroclawia");
+        Offer offerTest3 = Offer.builder()
+                .id(155L)
+                .kindOfProperty(Offer.KindOfProperty.DZIALKA)
+                .price(100000d)
+                .title("Sprzedam działkę budowlaną niedaleko Wrocławia")
+                .city("Wrocław")
+                .numberOfRooms(3)
+                .area(1000d)
+                .pricePerMeter(100d)
+                .floor(0)
+                .description("Sprzedam działkę niedaleko Wrocławia")
+                .build();
+
         return Arrays.asList(offerTest, offerTest2, offerTest3);
     }
 

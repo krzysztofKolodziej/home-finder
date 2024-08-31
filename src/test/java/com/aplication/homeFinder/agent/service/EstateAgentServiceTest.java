@@ -61,14 +61,14 @@ class EstateAgentServiceTest {
     }
 
     private static EstateAgentDto getEstateAgentDto() {
-        EstateAgentDto estateAgentDtoTest = new EstateAgentDto();
-        estateAgentDtoTest.setName("Jan");
-        estateAgentDtoTest.setStreet("Kazimierza Wielkiego");
-        estateAgentDtoTest.setZipCode("50-333");
-        estateAgentDtoTest.setCity("Wroclaw");
-        estateAgentDtoTest.setEmail("jan@gmail.com");
-        estateAgentDtoTest.setPhoneNumber("555333222");
-        return estateAgentDtoTest;
+        return EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
     }
 
     private static EstateAgent getEstateAgent() {

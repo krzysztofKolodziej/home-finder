@@ -70,8 +70,14 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenNameIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setName(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name(null)
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -85,8 +91,14 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenNameIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setName("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("   ")
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -100,8 +112,14 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenStreetIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setStreet(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street(null)
+                .zipCode("50-333")
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -115,8 +133,14 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenStreetIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setStreet("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("   ")
+                .zipCode("50-333")
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -130,8 +154,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldHouseNumberIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setHouseNumber(-1000000);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .houseNumber(-10000000)
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -145,8 +176,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenZipCodeIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setZipCode(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode(null)
+                .houseNumber(4)
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -160,8 +198,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenZipCodeIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setZipCode("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("  ")
+                .houseNumber(4)
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -176,8 +221,15 @@ class EstateAgentControllerTest {
     @Transactional
     void shouldReturnBadRequestWhenZipCodeIsInvalid() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setZipCode("55555");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("33333")
+                .houseNumber(4)
+                .city("Wrocław")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -191,8 +243,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenCityIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setCity(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city(null)
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -206,8 +265,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenCityIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setCity("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("   ")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -222,8 +288,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenEmailIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setEmail(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email(null)
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -237,8 +310,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenEmailIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setEmail("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email("   ")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -253,8 +333,15 @@ class EstateAgentControllerTest {
     @Transactional
     void shouldReturnBadRequestWhenEmailNIsInvalid() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setEmail("InvalidEmail");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email("InvalidEmail")
+                .phoneNumber("555333222")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -268,8 +355,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenPhoneNumberIsNull() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setPhoneNumber(null);
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email("jan@gmail.com")
+                .phoneNumber(null)
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -283,8 +377,15 @@ class EstateAgentControllerTest {
     @Test
     void shouldReturnBadRequestWhenPhoneNumberIsEmpty() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setPhoneNumber("    ");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email("jan@gmail.com")
+                .phoneNumber("   ")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -299,8 +400,15 @@ class EstateAgentControllerTest {
     @Transactional
     void shouldReturnBadRequestWhenPhoneNumberNIsInvalid() throws Exception {
         //given
-        EstateAgentDto estateAgentDto = getEstateAgentDto();
-        estateAgentDto.setPhoneNumber("7777");
+        EstateAgentDto estateAgentDto = EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("66-222")
+                .houseNumber(4)
+                .city("Wroclaw")
+                .email("jan@gmail.com")
+                .phoneNumber("7777")
+                .build();
 
         //when & then
         mockMvc.perform(post("/agents")
@@ -312,14 +420,14 @@ class EstateAgentControllerTest {
     }
 
     private static EstateAgentDto getEstateAgentDto() {
-        EstateAgentDto estateAgentDtoTest = new EstateAgentDto();
-        estateAgentDtoTest.setName("Jan");
-        estateAgentDtoTest.setStreet("Kazimierza Wielkiego");
-        estateAgentDtoTest.setZipCode("50-333");
-        estateAgentDtoTest.setCity("Wroclaw");
-        estateAgentDtoTest.setEmail("jan@gmail.com");
-        estateAgentDtoTest.setPhoneNumber("555333222");
-        return estateAgentDtoTest;
+        return EstateAgentDto.builder()
+                .name("Jan")
+                .street("Kazimierza Wielkiego")
+                .zipCode("50-333")
+                .city("Wroclaw")
+                .email("jan@gmail.com")
+                .phoneNumber("555333222")
+                .build();
     }
 
 

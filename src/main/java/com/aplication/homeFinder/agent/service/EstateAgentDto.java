@@ -4,12 +4,10 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EstateAgentDto {
-
     @NotBlank(message = "Value must not be empty")
     private String name;
     @NotBlank(message = "Value must not be empty")
