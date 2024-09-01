@@ -32,7 +32,24 @@ class CreditCalculatorControllerTest {
     @Transactional
     void shouldSaveOfferDtoAndReturnOfferDto() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/creditCalculator")
@@ -57,8 +74,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldPropertyValueIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setPropertyValue(-1000000);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(-100000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -72,8 +105,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldDownPaymentIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setDownPayment(-1000000);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(-100000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -87,8 +136,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldCreditAmountIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setCreditAmount(-1000000);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(-100000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -102,8 +167,25 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldRepaymentPeriodIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setRepaymentPeriod(0);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(0)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
+
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -131,8 +213,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldSourceOfIncomeIsNull() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setSourceOfIncome(null);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(null)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -146,8 +244,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldContractDurationIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setContractDurationInMonth(3);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(3)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -161,8 +275,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldNumberOfDependentsIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setNumberOfDependents(-1);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(-1)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -176,8 +306,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldMonthlyAmountOtherLoansIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setMonthlyAmountOtherLoans(-1);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(-1)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -191,8 +337,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenFieldCreditCardLimitIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setCreditCardLimit(-1);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(10000)
+                .creditCardLimit(-1)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -206,8 +368,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenDateOfBirthIsNull() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setDateOfBirth(null);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(null)
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -221,8 +399,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenDateOfBirthIsPast() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setDateOfBirth(LocalDate.of(2029,11,4));
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2026, 11,5))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -236,8 +430,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenPhoneNumberIsNull() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setPhoneNumber(null);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2000, 11,5))
+                .phoneNumber(null)
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -251,8 +461,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenPhoneNumberIsEmpty() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setPhoneNumber("    ");
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2000, 11,5))
+                .phoneNumber("   ")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -267,8 +493,24 @@ class CreditCalculatorControllerTest {
     @Transactional
     void shouldReturnBadRequestWhenPhoneNumberIsInvalid() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setPhoneNumber("444333abc");
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2000, 11,5))
+                .phoneNumber("444333abc")
+                .name("Jan")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -282,8 +524,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenNameIsNull() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setName(null);
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2000, 11,5))
+                .phoneNumber("555444333")
+                .name(null)
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -297,8 +555,24 @@ class CreditCalculatorControllerTest {
     @Test
     void shouldReturnBadRequestWhenNameIsEmpty() throws Exception {
         //given
-        CreditCalculatorDto creditCalculatorDto = getCreditCalculatorDto();
-        creditCalculatorDto.setName("    ");
+        CreditCalculatorDto creditCalculatorDto = CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(1000)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(2000, 11,5))
+                .phoneNumber("555444333")
+                .name("   ")
+                .build();
 
         //when & then
         mockMvc.perform(post("/creditCalculator")
@@ -307,27 +581,6 @@ class CreditCalculatorControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
-    }
-
-    private static CreditCalculatorDto getCreditCalculatorDto() {
-        CreditCalculatorDto creditCalculatorDto = new CreditCalculatorDto();
-        creditCalculatorDto.setPropertyValue(825000);
-        creditCalculatorDto.setDownPayment(200000);
-        creditCalculatorDto.setCreditAmount(625000);
-        creditCalculatorDto.setRepaymentPeriod(30);
-        creditCalculatorDto.setSourceOfIncome(SourceOfIncome.ORDER_CONTRACT);
-        creditCalculatorDto.setContractDurationInMonth(34);
-        creditCalculatorDto.setContinuityOfEmployment(true);
-        creditCalculatorDto.setMonthlyNetIncome(12000);
-        creditCalculatorDto.setMonthlyExpenditures(3000);
-        creditCalculatorDto.setDelayInLoanRepayment(false);
-        creditCalculatorDto.setNumberOfDependents(2);
-        creditCalculatorDto.setMonthlyAmountOtherLoans(500);
-        creditCalculatorDto.setCreditCardLimit(10000);
-        creditCalculatorDto.setDateOfBirth(LocalDate.of(1985, 1, 15));
-        creditCalculatorDto.setPhoneNumber("123456789");
-        creditCalculatorDto.setName("Jan");
-        return creditCalculatorDto;
     }
 
     private static String getInvalidJsonWithFieldSourceOfIncome() {

@@ -46,24 +46,24 @@ class CreditCalculatorMapperTest {
 
 
     private static CreditCalculatorDto getCreditCalculatorDto() {
-        CreditCalculatorDto creditCalculatorDto = new CreditCalculatorDto();
-        creditCalculatorDto.setPropertyValue(825000);
-        creditCalculatorDto.setDownPayment(200000);
-        creditCalculatorDto.setCreditAmount(625000);
-        creditCalculatorDto.setRepaymentPeriod(30);
-        creditCalculatorDto.setSourceOfIncome(SourceOfIncome.ORDER_CONTRACT);
-        creditCalculatorDto.setContractDurationInMonth(34);
-        creditCalculatorDto.setContinuityOfEmployment(true);
-        creditCalculatorDto.setMonthlyNetIncome(12000);
-        creditCalculatorDto.setMonthlyExpenditures(3000);
-        creditCalculatorDto.setDelayInLoanRepayment(false);
-        creditCalculatorDto.setNumberOfDependents(2);
-        creditCalculatorDto.setMonthlyAmountOtherLoans(500);
-        creditCalculatorDto.setCreditCardLimit(10000);
-        creditCalculatorDto.setDateOfBirth(LocalDate.of(1985, 1, 15));
-        creditCalculatorDto.setPhoneNumber("123456789");
-        creditCalculatorDto.setName("Jan");
-        return creditCalculatorDto;
+        return CreditCalculatorDto.builder()
+                .propertyValue(825000)
+                .downPayment(200000)
+                .creditAmount(625000)
+                .repaymentPeriod(30)
+                .sourceOfIncome(SourceOfIncome.ORDER_CONTRACT)
+                .contractDurationInMonth(34)
+                .continuityOfEmployment(true)
+                .monthlyNetIncome(12000)
+                .monthlyExpenditures(3000)
+                .delayInLoanRepayment(false)
+                .numberOfDependents(2)
+                .monthlyAmountOtherLoans(500)
+                .creditCardLimit(10000)
+                .dateOfBirth(LocalDate.of(1985, 1, 15))
+                .phoneNumber("123456789")
+                .name("Jan")
+                .build();
     }
 
     private static CreditCalculator getCreditCalculator() {
