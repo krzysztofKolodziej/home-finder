@@ -200,7 +200,6 @@ class OfferControllerTest {
         //given
         OfferDto offerDtoTest = getOfferDtoData();
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
-        offerDto.setPrice(700000);
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.put("/offers/{id}", offerDto.getId())
@@ -208,7 +207,7 @@ class OfferControllerTest {
                         .content(objectMapper.writeValueAsString(offerDto)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(jsonPath("$.price").value(700000))
+                .andExpect(jsonPath("$.price").value(825000))
                 .andExpect(jsonPath("$.title").value("Super lokalizacja/trzy pokoje/dwupoziomowe/parking"))
                 .andExpect(jsonPath("$.city").value("Wroclaw"))
                 .andExpect(jsonPath("$.street").value("Dluga"))
@@ -237,7 +236,6 @@ class OfferControllerTest {
         //given
         OfferDto offerDtoTest = getOfferDtoData();
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
-        offerDto.setPrice(700000);
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.put("/offers/{id}", 10000L)
@@ -379,45 +377,40 @@ class OfferControllerTest {
     }
 
     private static OfferDto getOfferDtoData() {
-        OfferDto testOfferDto = new OfferDto();
-        OfferDetailsDto testOfferDetailsDto = getOfferDetailsDtoData();
-
-        testOfferDto.setOfferDetailsDto(testOfferDetailsDto);
-        testOfferDto.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
-        testOfferDto.setPrice(825000);
-        testOfferDto.setTitle("Super lokalizacja/trzy pokoje/dwupoziomowe/parking");
-        testOfferDto.setCity("Wroclaw");
-        testOfferDto.setStreet("Dluga");
-        testOfferDto.setNumberOfRooms(4);
-        testOfferDto.setFloor(3);
-        testOfferDto.setDescription("Sprzedam mieszkanie w centrum Wroclawia");
-        return testOfferDto;
+       return OfferDto.builder()
+                .offerDetailsDto(getOfferDetailsDtoData())
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(825000)
+                .title("Super lokalizacja/trzy pokoje/dwupoziomowe/parking")
+                .city("Wroclaw")
+                .street("Dluga")
+                .numberOfRooms(4)
+                .floor(3)
+                .description("Sprzedam mieszkanie w centrum Wroclawia")
+                .build();
     }
 
     private static OfferDetailsDto getOfferDetailsDtoData() {
-        OfferDetailsDto testOfferDetailsDto = new OfferDetailsDto();
-        OfferDetailsDto.AdditionalInformation testAdditionalInformationDto = getAdditionalInformationDtoData();
-
-        testOfferDetailsDto.setAdditionalInformationDto(testAdditionalInformationDto);
-        testOfferDetailsDto.setRent(500);
-        testOfferDetailsDto.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
-        testOfferDetailsDto.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
-        testOfferDetailsDto.setParkingPlace(OfferDetails.ParkingPlace.BRAK);
-        testOfferDetailsDto.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
-        testOfferDetailsDto.setContactDetails("555444333");
-        return testOfferDetailsDto;
+        return OfferDetailsDto.builder()
+                .additionalInformationDto(getAdditionalInformationDtoData())
+                .rent(500)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.BRAK)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("555444333")
+                .build();
     }
 
     private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDtoData() {
-        OfferDetailsDto.AdditionalInformation testAdditionalInformationDto = new OfferDetailsDto.AdditionalInformation();
-
-        testAdditionalInformationDto.setMarket(OfferDetails.Market.PIERWOTNY);
-        testAdditionalInformationDto.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
-        testAdditionalInformationDto.setYearOfConstruction(2022);
-        testAdditionalInformationDto.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
-        testAdditionalInformationDto.setMedia("Tv, internet");
-        testAdditionalInformationDto.setEquipment("lodowka, piekarnik, kuchenka");
-        return testAdditionalInformationDto;
+        return OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2022)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("Tv, internet")
+                .equipment("lodowka, piekarnik, kuchenka")
+                .build();
     }
 
 }

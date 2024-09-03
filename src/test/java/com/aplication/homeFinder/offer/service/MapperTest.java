@@ -128,9 +128,11 @@ class MapperTest {
     @Test
     void shouldThrowResponseStatusExceptionIfAdditionalInformationDtoDoesNotExist() {
         //given
-        OfferDto offerDtoTest = new OfferDto();
         OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
-        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .build();
+
         Offer offerTest = getOfferNewEmpty();
 
         //when & then
@@ -373,40 +375,40 @@ class MapperTest {
 
 
     private static OfferDto getOfferDto(OfferDetailsDto offerDetailsDtoTest) {
-        OfferDto offerDtoTest = new OfferDto();
-        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
-        offerDtoTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
-        offerDtoTest.setPrice(600000d);
-        offerDtoTest.setTitle("Sprzedam");
-        offerDtoTest.setCity("Wroclaw");
-        offerDtoTest.setNumberOfRooms(4);
-        offerDtoTest.setArea(50d);
-        offerDtoTest.setPricePerMeter(12000d);
-        offerDtoTest.setFloor(5);
-        return offerDtoTest;
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .build();
     }
 
     private static OfferDetailsDto getOfferDetailsDto(OfferDetailsDto.AdditionalInformation additionalInformationDtoTest) {
-        OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
-        offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
-        offerDetailsDtoTest.setRent(450d);
-        offerDetailsDtoTest.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
-        offerDetailsDtoTest.setParkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE);
-        offerDetailsDtoTest.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
-        offerDetailsDtoTest.setContactDetails("900300100");
-        return offerDetailsDtoTest;
+        return OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .rent(450d)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
     }
 
     private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDto() {
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformation();
-        additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
-        additionalInformationDtoTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
-        additionalInformationDtoTest.setYearOfConstruction(2019);
-        additionalInformationDtoTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
-        additionalInformationDtoTest.setMedia("internet");
-        additionalInformationDtoTest.setEquipment("pralka, piekarnik");
-        return additionalInformationDtoTest;
+        return OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
     }
 
     private static Offer getOffer() {
@@ -459,9 +461,11 @@ class MapperTest {
     private static OfferDto getOfferDtoNewEmpty() {
         OfferDto offerDtoTest = new OfferDto();
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformation();
-        OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
-        offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
-        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
-        return offerDtoTest;
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .build();
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .build();
     }
 }

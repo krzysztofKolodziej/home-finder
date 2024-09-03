@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Builder
 public class OfferDetailsDto {
     @Min(value = 0, message = "Value must be greater than or equal to zero")
@@ -33,7 +32,6 @@ public class OfferDetailsDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    @Setter
     @Builder
     public static class AdditionalInformation {
         @NotNull(message = "Value must not be null")

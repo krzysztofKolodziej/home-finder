@@ -50,10 +50,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldKindOfPropertyIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setKindOfProperty(null);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(null)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -67,10 +95,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldPriceIsGreaterOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setPrice(-100000);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(-100000)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -84,10 +140,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldTitleIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setTitle(null);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title(null)
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -101,10 +185,39 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldTitleIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setTitle("     ");
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("    ")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
+
 
         //when & then
         mockMvc.perform(post("/add")
@@ -119,10 +232,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldCityIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setCity(null);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city(null)
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -136,10 +277,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldCityIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setCity("     ");
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("   ")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -154,10 +323,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldStreetIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setStreet(null);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street(null)
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -171,11 +368,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldStreetIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setStreet("     ");
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("   ")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -188,11 +412,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldNumberOfRoomsIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setNumberOfRooms(-1);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(-1)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -205,10 +456,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldAreaIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setArea(-100);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(-100d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -222,10 +501,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldPricePerMeterIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setPricePerMeter(-10000);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(-10000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -239,10 +546,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldFloorIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setFloor(-14);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(-4)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -256,10 +591,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldDescriptionIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setDescription(null);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description(null)
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -273,10 +636,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldDescriptionIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setDescription("     ");
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("   ")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -290,10 +681,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldDescriptionWithInvalidSize() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        setDescriptionsWithInvalidSize(offerDtoTest);
+        OfferDto offerDtoTest = setDescriptionsWithInvalidSize();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -307,10 +695,19 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldOfferDetailsIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        offerDtoTest.setOfferDetailsDto(null);
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(null)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -324,11 +721,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldRentIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setRent(-1000);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(-1000)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -355,11 +779,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldOwnerShipFormIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setOwnershipForm(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(null)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -386,10 +837,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFinishLevelIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setFinishLevel(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(null)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -417,11 +896,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenParkingPlaceIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setParkingPlace(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(null)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -448,10 +954,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenHeatingIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setHeating(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(null)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -465,11 +999,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldContactDetailsIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setContactDetails(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails(null)
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -482,11 +1043,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldContactIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setContactDetails("    ");
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("    ")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -499,10 +1087,29 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldAdditionalInformationIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setAdditionalInformationDto(null);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(null)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -516,11 +1123,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldMarketIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setMarket(null);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(null)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -547,10 +1181,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenAnnouncerTypeIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setAnnouncerType(null);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(null)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -578,10 +1240,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldYearOfConstructionIsLessOrEqualsThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setYearOfConstruction(-300);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(-200)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -595,11 +1285,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenBuildingTypeIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setBuildingType(null);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(null)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -626,10 +1343,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldMediaIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setMedia(null);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media(null)
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -643,10 +1388,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldMediaIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setMedia("     ");
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("    ")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -660,10 +1433,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldMediaWithInvalidSize() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        setMediaWithInvalidSize(additionalInformationDtoTest);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDto offerDtoTest = setMediaWithInvalidSize();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -677,10 +1447,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldEquipmentIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setEquipment(null);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment(null)
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -694,11 +1492,38 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldEquipmentIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        additionalInformationDtoTest.setEquipment("     ");
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("   ")
+                .build();
 
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        OfferDto offerDtoTest = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
         //when & then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -711,10 +1536,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldEquipmentWithInvalidSize() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        setEquipmentWithInvalidSize(additionalInformationDtoTest);
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
+        OfferDto offerDtoTest = setEquipmentWithInvalidSize();
 
         //when & then
         mockMvc.perform(post("/add")
@@ -1014,130 +1836,223 @@ public class OfferControllerValidationTest {
 
 
     private static OfferDto getOfferDto(OfferDetailsDto offerDetailsDtoTest) {
-        OfferDto offerDtoTest = new OfferDto();
-        offerDtoTest.setOfferDetailsDto(offerDetailsDtoTest);
-        offerDtoTest.setKindOfProperty(Offer.KindOfProperty.MIESZKANIE);
-        offerDtoTest.setPrice(600000d);
-        offerDtoTest.setTitle("Sprzedam");
-        offerDtoTest.setCity("Wroclaw");
-        offerDtoTest.setStreet("Poniatowskiego");
-        offerDtoTest.setNumberOfRooms(4);
-        offerDtoTest.setArea(50d);
-        offerDtoTest.setPricePerMeter(12000d);
-        offerDtoTest.setFloor(5);
-        offerDtoTest.setDescription("Sprzedam mieszkanie");
-        return offerDtoTest;
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
     }
 
     private static OfferDetailsDto getOfferDetailsDto(OfferDetailsDto.AdditionalInformation additionalInformationDtoTest) {
-        OfferDetailsDto offerDetailsDtoTest = new OfferDetailsDto();
-        offerDetailsDtoTest.setAdditionalInformationDto(additionalInformationDtoTest);
-        offerDetailsDtoTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
-        offerDetailsDtoTest.setRent(450d);
-        offerDetailsDtoTest.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
-        offerDetailsDtoTest.setParkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE);
-        offerDetailsDtoTest.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
-        offerDetailsDtoTest.setContactDetails("900300100");
-        return offerDetailsDtoTest;
+        return OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
     }
 
     private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDto() {
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = new OfferDetailsDto.AdditionalInformation();
-        additionalInformationDtoTest.setMarket(OfferDetails.Market.PIERWOTNY);
-        additionalInformationDtoTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
-        additionalInformationDtoTest.setYearOfConstruction(2019);
-        additionalInformationDtoTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
-        additionalInformationDtoTest.setMedia("internet");
-        additionalInformationDtoTest.setEquipment("pralka, piekarnik");
-        return additionalInformationDtoTest;
+        return OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
     }
 
-    private static void setDescriptionsWithInvalidSize(OfferDto offerDtoTest) {
-        offerDtoTest.setDescription("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieM");
+    private static OfferDto setDescriptionsWithInvalidSize() {
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieM")
+                .build();
     }
 
-    private static void setMediaWithInvalidSize(OfferDetailsDto.AdditionalInformation additionalInformation) {
-        additionalInformation.setMedia("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie");
+    private static OfferDto setMediaWithInvalidSize() {
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie")
+                .equipment("pralka")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
     }
 
-    private static void setEquipmentWithInvalidSize(OfferDetailsDto.AdditionalInformation additionalInformation) {
-        additionalInformation.setEquipment("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie");
+    private static OfferDto setEquipmentWithInvalidSize() {
+        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
+                .market(OfferDetails.Market.PIERWOTNY)
+                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
+                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie")
+                .build();
+
+        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInformationDtoTest)
+                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+
+        return OfferDto.builder()
+                .offerDetailsDto(offerDetailsDtoTest)
+                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
     }
 
     private static ClientMessageDto setMessageWithInvalidSize(OfferDto offerDtoTest) {
