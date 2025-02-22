@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AgentMapperTest {
 
     @InjectMocks
-    private AgentMapper agentMapper;
+    private AgentMapperToDelete agentMapper;
 
     @Test
     void shouldMapEstateAgentDtoToEstateAgent() {

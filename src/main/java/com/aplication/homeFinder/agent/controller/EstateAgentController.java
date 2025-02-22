@@ -2,7 +2,6 @@ package com.aplication.homeFinder.agent.controller;
 
 import com.aplication.homeFinder.agent.service.EstateAgentDto;
 import com.aplication.homeFinder.agent.service.EstateAgentService;
-import com.aplication.homeFinder.errorHandler.GlobalExceptionHandler;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,15 +18,13 @@ public class EstateAgentController {
     private final EstateAgentService estateAgentService;
 
     @PostMapping
-    public ResponseEntity<String> addAgent(@RequestBody @Valid EstateAgentDto estateAgentDto)
-            throws GlobalExceptionHandler {
+    public ResponseEntity<String> addAgent(@RequestBody @Valid EstateAgentDto estateAgentDto) {
         estateAgentService.addAgent(estateAgentDto);
         return ResponseEntity.status(HttpStatus.OK).body("Estate agent added");
     }
 
     @GetMapping
-    public ResponseEntity<List<EstateAgentDto>> findAgents() throws GlobalExceptionHandler {
-        List<EstateAgentDto> agents = estateAgentService.findAgent();
-        return ResponseEntity.status(HttpStatus.OK).body(agents);
+    public ResponseEntity<List<EstateAgentDto>> findAgents() {
+        return ResponseEntity.status(HttpStatus.OK).body(estateAgentService.findAgent());
     }
 }

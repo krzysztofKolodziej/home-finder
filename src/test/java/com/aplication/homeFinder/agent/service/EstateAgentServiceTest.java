@@ -19,7 +19,7 @@ class EstateAgentServiceTest {
     @InjectMocks
     private EstateAgentService estateAgentService;
     @Mock
-    private AgentMapper agentMapper;
+    private AgentMapperToDelete agentMapper;
     @Mock
     EstateAgentRepository estateAgentRepository;
     @Test

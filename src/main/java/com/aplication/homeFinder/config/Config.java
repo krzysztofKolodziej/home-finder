@@ -1,13 +1,12 @@
-package com.aplication.homeFinder;
+package com.aplication.homeFinder.config;
 
 import com.aplication.homeFinder.agent.respository.EstateAgentRepository;
-import com.aplication.homeFinder.agent.service.AgentMapper;
+import com.aplication.homeFinder.agent.service.AgentMapperToDelete;
 import com.aplication.homeFinder.agent.service.EstateAgentService;
 import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
 import com.aplication.homeFinder.creditCalculator.service.Calculator;
 import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorMapper;
 import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorService;
-import com.aplication.homeFinder.offer.controller.OfferController;
 import com.aplication.homeFinder.offer.repository.ClientMessageRepository;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.ExchangeClient;
@@ -15,7 +14,6 @@ import com.aplication.homeFinder.offer.service.FilteringLogic;
 import com.aplication.homeFinder.offer.service.Mapper;
 import com.aplication.homeFinder.offer.service.OfferService;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +22,12 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class Config {
     @Bean
-    public AgentMapper agentMapper() {
-        return new AgentMapper();
+    public AgentMapperToDelete agentMapper() {
+        return new AgentMapperToDelete();
     }
 
     @Bean
-    public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository, AgentMapper agentMapper) {
+    public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository, AgentMapperToDelete agentMapper) {
         return new EstateAgentService(estateAgentRepository, agentMapper);
     }
 

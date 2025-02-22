@@ -1,9 +1,6 @@
 package com.aplication.homeFinder.agent.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,13 +13,26 @@ public class EstateAgent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String street;
+
+    @Column(nullable = false)
     private int houseNumber;
+
+    @Column(nullable = false)
     private String zipCode;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String phoneNumber;
 }

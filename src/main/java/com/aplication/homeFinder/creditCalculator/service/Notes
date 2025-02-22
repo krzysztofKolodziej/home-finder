@@ -7,7 +7,7 @@ P - loan amount
 r - monthly interest rate
 n - number of payments (number of months)
 
-Formula for the mortgage payment
+Equated Monthly Installment
 R=K*(1+(b/m)^n)*(1+(b/m)-1)/[(1+(b/m)^n)-1]
 
 R – payment amount
