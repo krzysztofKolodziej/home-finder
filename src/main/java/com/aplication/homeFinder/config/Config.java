@@ -1,7 +1,6 @@
 package com.aplication.homeFinder.config;
 
 import com.aplication.homeFinder.agent.respository.EstateAgentRepository;
-import com.aplication.homeFinder.agent.service.AgentMapperToDelete;
 import com.aplication.homeFinder.agent.service.EstateAgentService;
 import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
 import com.aplication.homeFinder.creditCalculator.service.Calculator;
@@ -21,15 +20,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class Config {
-    @Bean
-    public AgentMapperToDelete agentMapper() {
-        return new AgentMapperToDelete();
-    }
 
-    @Bean
-    public EstateAgentService estateAgentService(EstateAgentRepository estateAgentRepository, AgentMapperToDelete agentMapper) {
-        return new EstateAgentService(estateAgentRepository, agentMapper);
-    }
+
 
     @Bean
     public Calculator calculator() {

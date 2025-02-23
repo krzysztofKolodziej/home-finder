@@ -19,7 +19,7 @@ class EstateAgentServiceTest {
     @InjectMocks
     private EstateAgentService estateAgentService;
     @Mock
-    private AgentMapperToDelete agentMapper;
+    private AgentMapper agentMapper = new AgentMapperImpl();
     @Mock
     EstateAgentRepository estateAgentRepository;
     @Test
@@ -28,7 +28,7 @@ class EstateAgentServiceTest {
         EstateAgent estateAgent = getEstateAgent();
         EstateAgentDto estateAgentDto = getEstateAgentDto();
 
-        when(agentMapper.mapper(estateAgentDto)).thenReturn(estateAgent);
+        when(agentMapper.toEstateAgent(estateAgentDto)).thenReturn(estateAgent);
         when(estateAgentRepository.save(estateAgent)).thenReturn(estateAgent);
 
         //when
@@ -36,7 +36,7 @@ class EstateAgentServiceTest {
 
         //then
         assertEquals(estateAgent, estateAgentTest);
-        verify(agentMapper).mapper(estateAgentDto);
+        verify(agentMapper).toEstateAgent(estateAgentDto);
         verify(estateAgentRepository).save(estateAgent);
     }
 
@@ -49,7 +49,7 @@ class EstateAgentServiceTest {
         List<EstateAgentDto> expectedDto = List.of(estateAgentDto);
 
         when(estateAgentRepository.findAll()).thenReturn(estateAgents);
-        when(agentMapper.mapAgent(estateAgent)).thenReturn(estateAgentDto);
+        when(agentMapper.toDto(estateAgent)).thenReturn(estateAgentDto);
 
         //when
         List<EstateAgentDto> foundAgents = estateAgentService.findAgent();
@@ -57,7 +57,7 @@ class EstateAgentServiceTest {
         //then
         assertEquals(expectedDto, foundAgents);
         verify(estateAgentRepository).findAll();
-        verify(agentMapper).mapAgent(estateAgent);
+        verify(agentMapper).toDto(estateAgent);
     }
 
     private static EstateAgentDto getEstateAgentDto() {
