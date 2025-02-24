@@ -1,11 +1,5 @@
 package com.aplication.homeFinder.config;
 
-import com.aplication.homeFinder.agent.respository.EstateAgentRepository;
-import com.aplication.homeFinder.agent.service.EstateAgentService;
-import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
-import com.aplication.homeFinder.creditCalculator.service.Calculator;
-import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorMapper;
-import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorService;
 import com.aplication.homeFinder.offer.repository.ClientMessageRepository;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.ExchangeClient;
@@ -20,25 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class Config {
-
-
-
-    @Bean
-    public Calculator calculator() {
-        return new Calculator();
-    }
-
-    @Bean
-    public CreditCalculatorMapper creditCalculatorMapper() {
-        return new CreditCalculatorMapper();
-    }
-
-    @Bean
-    public CreditCalculatorService creditCalculatorService(Calculator calculator,
-                                                           CreditCalculatorRepository creditCalculatorRepository,
-                                                           CreditCalculatorMapper creditCalculatorMapper) {
-        return new CreditCalculatorService(creditCalculatorRepository, calculator, creditCalculatorMapper);
-    }
 
     @Bean
     public RestTemplate restTemplate() {

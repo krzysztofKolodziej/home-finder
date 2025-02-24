@@ -16,26 +16,52 @@ public class CreditCalculator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
+
+    @Column(nullable = false)
     private int propertyValue;
+
+    @Column(nullable = false)
     private int downPayment;
+
+    @Column(nullable = false)
     private int creditAmount;
+
+    @Column(nullable = false)
     private int repaymentPeriod;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private SourceOfIncome sourceOfIncome;
+
     private int contractDurationInMonth;
+
     private boolean continuityOfEmployment;
+
+    @Column(nullable = false)
     private int monthlyNetIncome;
 
+    @Column(nullable = false)
     private int monthlyExpenditures;
+
+    @Column(nullable = false)
     private boolean delayInLoanRepayment;
+
+    @Column(nullable = false)
     private int numberOfDependents;
+
+    @Column(nullable = false)
     private int monthlyAmountOtherLoans;
+
+    @Column(nullable = false)
     private int creditCardLimit;
 
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
-    private String phoneNumber;
-    private String name;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private String name;
 }

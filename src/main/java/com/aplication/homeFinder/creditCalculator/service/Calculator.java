@@ -2,7 +2,9 @@ package com.aplication.homeFinder.creditCalculator.service;
 
 
 import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Calculator {
 
     private static final double MAX_DTI = 0.6;

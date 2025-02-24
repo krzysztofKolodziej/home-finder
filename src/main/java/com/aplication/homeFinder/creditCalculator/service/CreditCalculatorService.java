@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
+@Service
 public class CreditCalculatorService {
 
     private final CreditCalculatorRepository creditCalculatorRepository;
@@ -19,7 +20,7 @@ public class CreditCalculatorService {
     }
 
     public CreditCalculator saveCalculationWorthiness(CreditCalculatorDto creditCalculatorDto) {
-        return creditCalculatorRepository.save(creditCalculatorMapper.mapper(creditCalculatorDto));
+        return creditCalculatorRepository.save(creditCalculatorMapper.toCreditCalculator(creditCalculatorDto));
     }
 }
 

@@ -23,7 +23,7 @@ class CreditCalculatorServiceTest {
     @Mock
     private Calculator calculator;
     @Mock
-    private CreditCalculatorMapper creditCalculatorMapper;
+    private CreditCalculatorMapper creditCalculatorMapper = new CreditCalculatorMapperImpl();
     @InjectMocks
     private CreditCalculatorService creditCalculatorService;
 
@@ -49,7 +49,7 @@ class CreditCalculatorServiceTest {
         CreditCalculatorDto creditCalculatorDtoTest = getCreditCalculatorDto();
 
         when(creditCalculatorRepository.save(any(CreditCalculator.class))).thenReturn(creditCalculatorTest);
-        when(creditCalculatorMapper.mapper(creditCalculatorDtoTest)).thenReturn(creditCalculatorTest);
+        when(creditCalculatorMapper.toCreditCalculator(creditCalculatorDtoTest)).thenReturn(creditCalculatorTest);
 
         //when
         CreditCalculator creditCalculator = creditCalculatorService.saveCalculationWorthiness(creditCalculatorDtoTest);
