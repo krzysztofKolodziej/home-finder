@@ -1,4 +1,4 @@
-package com.aplication.homeFinder.errorHandler;
+package com.aplication.homeFinder.errorhandler;
 
 import org.springframework.http.HttpStatusCode;
 

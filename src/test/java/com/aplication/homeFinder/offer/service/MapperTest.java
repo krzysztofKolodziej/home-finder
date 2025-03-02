@@ -2,7 +2,7 @@ package com.aplication.homeFinder.offer.service;
 
 import com.aplication.homeFinder.offer.model.ClientMessage;
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;

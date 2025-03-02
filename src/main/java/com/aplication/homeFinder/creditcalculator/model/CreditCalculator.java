@@ -1,6 +1,6 @@
-package com.aplication.homeFinder.creditCalculator.model;
+package com.aplication.homeFinder.creditcalculator.model;
 
-import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
+import com.aplication.homeFinder.creditcalculator.service.SourceOfIncome;
 import jakarta.persistence.*;
 import lombok.*;
 

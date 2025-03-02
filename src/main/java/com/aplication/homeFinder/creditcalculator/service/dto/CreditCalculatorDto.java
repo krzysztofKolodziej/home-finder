@@ -1,6 +1,6 @@
-package com.aplication.homeFinder.creditCalculator.service.dto;
+package com.aplication.homeFinder.creditcalculator.service.dto;
 
-import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
+import com.aplication.homeFinder.creditcalculator.service.SourceOfIncome;
 import jakarta.validation.constraints.*;
 import lombok.*;
 

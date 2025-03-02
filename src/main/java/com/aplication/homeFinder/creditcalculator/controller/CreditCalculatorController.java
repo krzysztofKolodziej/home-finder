@@ -1,7 +1,7 @@
-package com.aplication.homeFinder.creditCalculator.controller;
+package com.aplication.homeFinder.creditcalculator.controller;
 
-import com.aplication.homeFinder.creditCalculator.service.CreditCalculatorService;
-import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
+import com.aplication.homeFinder.creditcalculator.service.CreditCalculatorService;
+import com.aplication.homeFinder.creditcalculator.service.dto.CreditCalculatorDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

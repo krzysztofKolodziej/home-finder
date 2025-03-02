@@ -1,7 +1,7 @@
 package com.aplication.homeFinder.offer.controller;
 
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.FilteringSchema;
 import com.aplication.homeFinder.offer.service.OfferService;

@@ -1,7 +1,7 @@
-package com.aplication.homeFinder.creditCalculator.controller;
+package com.aplication.homeFinder.creditcalculator.controller;
 
-import com.aplication.homeFinder.creditCalculator.service.SourceOfIncome;
-import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
+import com.aplication.homeFinder.creditcalculator.service.SourceOfIncome;
+import com.aplication.homeFinder.creditcalculator.service.dto.CreditCalculatorDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

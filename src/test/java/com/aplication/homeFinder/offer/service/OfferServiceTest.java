@@ -3,7 +3,7 @@ package com.aplication.homeFinder.offer.service;
 import com.aplication.homeFinder.offer.model.ClientMessage;
 import com.aplication.homeFinder.offer.model.Currency;
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
 import com.aplication.homeFinder.offer.repository.ClientMessageRepository;
 import com.aplication.homeFinder.offer.repository.OfferRepository;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;

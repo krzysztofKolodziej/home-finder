@@ -1,7 +1,7 @@
-package com.aplication.homeFinder.creditCalculator.service;
+package com.aplication.homeFinder.creditcalculator.service;
 
 
-import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
+import com.aplication.homeFinder.creditcalculator.service.dto.CreditCalculatorDto;
 import org.springframework.stereotype.Component;
 
 @Component

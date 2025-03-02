@@ -1,16 +1,18 @@
 package com.aplication.homeFinder.offer.service;
 
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
+@Component
 public class FilteringLogic {
 
     private final EntityManager em;

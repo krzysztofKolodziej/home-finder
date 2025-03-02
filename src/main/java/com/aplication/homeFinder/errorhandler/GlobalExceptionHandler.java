@@ -1,4 +1,4 @@
-package com.aplication.homeFinder.errorHandler;
+package com.aplication.homeFinder.errorhandler;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

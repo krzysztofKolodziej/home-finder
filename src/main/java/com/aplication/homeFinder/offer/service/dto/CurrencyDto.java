@@ -12,6 +12,7 @@ import java.util.List;
 public class CurrencyDto {
     private String currency;
     private List<Rates> rates;
+
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor

@@ -1,8 +1,8 @@
-package com.aplication.homeFinder.creditCalculator.service;
+package com.aplication.homeFinder.creditcalculator.service;
 
-import com.aplication.homeFinder.creditCalculator.model.CreditCalculator;
-import com.aplication.homeFinder.creditCalculator.repository.CreditCalculatorRepository;
-import com.aplication.homeFinder.creditCalculator.service.dto.CreditCalculatorDto;
+import com.aplication.homeFinder.creditcalculator.model.CreditCalculator;
+import com.aplication.homeFinder.creditcalculator.repository.CreditCalculatorRepository;
+import com.aplication.homeFinder.creditcalculator.service.dto.CreditCalculatorDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

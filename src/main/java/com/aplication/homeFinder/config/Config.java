@@ -26,11 +26,6 @@ public class Config {
     }
 
     @Bean
-    public FilteringLogic filteringLogic(EntityManager entityManager) {
-        return new FilteringLogic(entityManager);
-    }
-
-    @Bean
     public Mapper mapper() {
         return new Mapper();
     }

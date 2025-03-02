@@ -1,6 +1,6 @@
-package com.aplication.homeFinder.creditCalculator.repository;
+package com.aplication.homeFinder.creditcalculator.repository;
 
-import com.aplication.homeFinder.creditCalculator.model.CreditCalculator;
+import com.aplication.homeFinder.creditcalculator.model.CreditCalculator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
