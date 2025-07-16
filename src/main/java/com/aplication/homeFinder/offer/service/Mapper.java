@@ -80,7 +80,6 @@ public class Mapper {
         Optional.ofNullable(offer)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer not found"));
         return OfferDto.builder()
-                .id(offer.getId())
                 .kindOfProperty(offer.getKindOfProperty())
                 .price(midRate == 0.0d ? offer.getPrice() : offer.getPrice() / midRate)
                 .title(offer.getTitle())
@@ -102,7 +101,6 @@ public class Mapper {
         Optional.ofNullable(offerDetails)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "OfferDetails not found"));
         return OfferDto.builder()
-                .id(offer.getId())
                 .kindOfProperty(offer.getKindOfProperty())
                 .price(offer.getPrice())
                 .title(offer.getTitle())

@@ -2,6 +2,7 @@ package com.aplication.homeFinder.offer.service;
 
 import com.aplication.homeFinder.offer.model.ClientMessage;
 import com.aplication.homeFinder.offer.model.Currency;
+import com.aplication.homeFinder.offer.model.KindOfProperty;
 import com.aplication.homeFinder.offer.model.Offer;
 import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
 import com.aplication.homeFinder.offer.repository.ClientMessageRepository;
@@ -231,7 +232,7 @@ class OfferServiceTest {
     private static List<Offer> getOfferList() {
         Offer offerTest = Offer.builder()
                 .id(1L)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(500000d)
                 .title("Sprzedam mieszkanie")
                 .city("Wrocław")
@@ -244,7 +245,7 @@ class OfferServiceTest {
 
         Offer offerTest2 = Offer.builder()
                 .id(10L)
-                .kindOfProperty(Offer.KindOfProperty.DOM)
+                .kindOfProperty(KindOfProperty.DOM)
                 .price(5000000d)
                 .title("Sprzedam dom")
                 .city("Wrocław")
@@ -257,7 +258,7 @@ class OfferServiceTest {
 
         Offer offerTest3 = Offer.builder()
                 .id(155L)
-                .kindOfProperty(Offer.KindOfProperty.DZIALKA)
+                .kindOfProperty(KindOfProperty.DZIALKA)
                 .price(100000d)
                 .title("Sprzedam działkę budowlaną niedaleko Wrocławia")
                 .city("Wrocław")

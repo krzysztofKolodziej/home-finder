@@ -1,8 +1,9 @@
 package com.aplication.homeFinder.offer.service;
 
 import com.aplication.homeFinder.offer.model.ClientMessage;
+import com.aplication.homeFinder.offer.model.KindOfProperty;
 import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.offerdetail.OfferDetails;
+import com.aplication.homeFinder.offer.model.offerdetail.*;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDto;
@@ -222,7 +223,6 @@ class MapperTest {
         OfferDto offerDto = mapper.mapOfferDto(offerTest, MID_RATE);
 
         //then
-        assertThat(offerDto.getId()).isEqualTo(offerTest.getId());
         assertThat(offerDto.getKindOfProperty()).isEqualTo(offerTest.getKindOfProperty());
         assertThat(offerDto.getPrice()).isEqualTo(offerTest.getPrice() / MID_RATE);
         assertThat(offerDto.getTitle()).isEqualTo(offerTest.getTitle());
@@ -267,7 +267,6 @@ class MapperTest {
         OfferDto offerDto = mapper.mapOfferWithDetailsDto(offerTest);
 
         //then
-        assertThat(offerDto.getId()).isEqualTo(offerTest.getId());
         assertThat(offerDto.getKindOfProperty()).isEqualTo(offerTest.getKindOfProperty());
         assertThat(offerDto.getPrice()).isEqualTo(offerTest.getPrice());
         assertThat(offerDto.getTitle()).isEqualTo(offerTest.getTitle());
@@ -377,7 +376,7 @@ class MapperTest {
     private static OfferDto getOfferDto(OfferDetailsDto offerDetailsDtoTest) {
         return OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -392,20 +391,20 @@ class MapperTest {
         return OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
                 .rent(450d)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
     }
 
     private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDto() {
         return OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
@@ -414,7 +413,7 @@ class MapperTest {
     private static Offer getOffer() {
         return Offer.builder()
                 .id(1L)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(500000d)
                 .title("Sprzedam mieszkanie")
                 .city("Wrocław")
@@ -429,10 +428,10 @@ class MapperTest {
     private static OfferDetails getOfferDetails(OfferDetails.AdditionalInformation additionalInformationTest) {
         OfferDetails offerDetailsTest = new OfferDetails();
         offerDetailsTest.setRent(400D);
-        offerDetailsTest.setOwnershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC);
-        offerDetailsTest.setFinishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA);
-        offerDetailsTest.setParkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE);
-        offerDetailsTest.setHeating(OfferDetails.Heating.ELEKTRYCZNE);
+        offerDetailsTest.setOwnershipForm(OwnershipForm.PELNA_WLASNOSC);
+        offerDetailsTest.setFinishLevel(FinishLevel.DO_ZAMIESZKANIA);
+        offerDetailsTest.setParkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE);
+        offerDetailsTest.setHeating(Heating.ELEKTRYCZNE);
         offerDetailsTest.setContactDetails("333444555");
         offerDetailsTest.setAdditionalInformation(additionalInformationTest);
         return offerDetailsTest;
@@ -440,11 +439,11 @@ class MapperTest {
 
     private static OfferDetails.AdditionalInformation getAdditionalInformation() {
         OfferDetails.AdditionalInformation additionalInformationTest = new OfferDetails.AdditionalInformation();
-        additionalInformationTest.setMarket(OfferDetails.Market.PIERWOTNY);
-        additionalInformationTest.setAnnouncerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI);
+        additionalInformationTest.setMarket(Market.PIERWOTNY);
+        additionalInformationTest.setAnnouncerType(AnnouncerType.BIURO_NIERUCHOMOSCI);
         additionalInformationTest.setYearOfConstruction(2010);
         additionalInformationTest.setMedia("internet");
-        additionalInformationTest.setBuildingType(OfferDetails.BuildingType.APARTAMENTOWIEC);
+        additionalInformationTest.setBuildingType(BuildingType.APARTAMENTOWIEC);
         additionalInformationTest.setEquipment("pralka, lodowka");
         return additionalInformationTest;
     }

@@ -1,7 +1,7 @@
 package com.aplication.homeFinder.offer.controller;
 
-import com.aplication.homeFinder.offer.model.Offer;
-import com.aplication.homeFinder.offer.model.OfferDetails;
+import com.aplication.homeFinder.offer.model.KindOfProperty;
+import com.aplication.homeFinder.offer.model.offerdetail.*;
 import com.aplication.homeFinder.offer.service.OfferService;
 import com.aplication.homeFinder.offer.service.dto.ClientMessageDto;
 import com.aplication.homeFinder.offer.service.dto.OfferDetailsDto;
@@ -9,20 +9,21 @@ import com.aplication.homeFinder.offer.service.dto.OfferDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class OfferControllerValidationTest {
 
     @Autowired
@@ -31,6 +32,137 @@ public class OfferControllerValidationTest {
     private ObjectMapper objectMapper;
     @Autowired
     private OfferService offerService;
+    
+    // Helper methods for creating test data
+    private OfferDetailsDto.AdditionalInformation createValidAdditionalInformation() {
+        return OfferDetailsDto.AdditionalInformation.builder()
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik")
+                .build();
+    }
+    
+    private OfferDetailsDto createValidOfferDetailsDto() {
+        return OfferDetailsDto.builder()
+                .additionalInformationDto(createValidAdditionalInformation())
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
+                .contactDetails("900300100")
+                .build();
+    }
+    
+    private OfferDto createValidOfferDto() {
+        return OfferDto.builder()
+                .offerDetailsDto(createValidOfferDetailsDto())
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie")
+                .build();
+    }
+    
+    private OfferDto createOfferDtoWithModifiedField(String field, Object value) {
+        OfferDetailsDto offerDetailsDto = createValidOfferDetailsDto();
+        
+        // Handle OfferDetailsDto fields
+        if (field.startsWith("offerDetails.")) {
+            String detailField = field.substring("offerDetails.".length());
+            offerDetailsDto = createOfferDetailsDtoWithModifiedField(detailField, value);
+        }
+        
+        OfferDto.OfferDtoBuilder builder = OfferDto.builder()
+                .offerDetailsDto(offerDetailsDto)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
+                .price(600000d)
+                .title("Sprzedam")
+                .city("Wroclaw")
+                .street("Poniatowskiego")
+                .numberOfRooms(4)
+                .area(50d)
+                .pricePerMeter(12000d)
+                .floor(5)
+                .description("Sprzedam mieszkanie");
+        
+        switch (field) {
+            case "kindOfProperty": builder.kindOfProperty((KindOfProperty) value); break;
+            case "price": builder.price((Double) value); break;
+            case "title": builder.title((String) value); break;
+            case "city": builder.city((String) value); break;
+            case "street": builder.street((String) value); break;
+            case "numberOfRooms": builder.numberOfRooms((Integer) value); break;
+            case "area": builder.area((Double) value); break;
+            case "pricePerMeter": builder.pricePerMeter((Double) value); break;
+            case "floor": builder.floor((Integer) value); break;
+            case "description": builder.description((String) value); break;
+            case "offerDetailsDto": builder.offerDetailsDto((OfferDetailsDto) value); break;
+        }
+        
+        return builder.build();
+    }
+    
+    private OfferDetailsDto createOfferDetailsDtoWithModifiedField(String field, Object value) {
+        OfferDetailsDto.AdditionalInformation additionalInfo = createValidAdditionalInformation();
+        
+        // Handle AdditionalInformation fields
+        if (field.startsWith("additionalInfo.")) {
+            String additionalInfoField = field.substring("additionalInfo.".length());
+            additionalInfo = createAdditionalInformationWithModifiedField(additionalInfoField, value);
+        }
+        
+        OfferDetailsDto.OfferDetailsDtoBuilder builder = OfferDetailsDto.builder()
+                .additionalInformationDto(additionalInfo)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
+                .rent(450d)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
+                .contactDetails("900300100");
+        
+        switch (field) {
+            case "ownershipForm": builder.ownershipForm((OwnershipForm) value); break;
+            case "rent": builder.rent((Double) value); break;
+            case "finishLevel": builder.finishLevel((FinishLevel) value); break;
+            case "parkingPlace": builder.parkingPlace((ParkingPlace) value); break;
+            case "heating": builder.heating((Heating) value); break;
+            case "contactDetails": builder.contactDetails((String) value); break;
+            case "additionalInformationDto": builder.additionalInformationDto((OfferDetailsDto.AdditionalInformation) value); break;
+        }
+        
+        return builder.build();
+    }
+    
+    private OfferDetailsDto.AdditionalInformation createAdditionalInformationWithModifiedField(String field, Object value) {
+        OfferDetailsDto.AdditionalInformation.AdditionalInformationBuilder builder = OfferDetailsDto.AdditionalInformation.builder()
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .yearOfConstruction(2019)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
+                .media("internet")
+                .equipment("pralka, piekarnik");
+        
+        switch (field) {
+            case "market": builder.market((Market) value); break;
+            case "announcerType": builder.announcerType((AnnouncerType) value); break;
+            case "yearOfConstruction": builder.yearOfConstruction((Integer) value); break;
+            case "buildingType": builder.buildingType((BuildingType) value); break;
+            case "media": builder.media((String) value); break;
+            case "equipment": builder.equipment((String) value); break;
+        }
+        
+        return builder.build();
+    }
 
     @Test
     void shouldReturnBadRequestWhenFieldKindOfPropertyIsDifferThanEnum() throws Exception {
@@ -50,38 +182,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldKindOfPropertyIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
-                .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
-                .media("internet")
-                .equipment("pralka, piekarnik")
-                .build();
-
-        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
-                .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
-                .contactDetails("900300100")
-                .build();
-
-        OfferDto offerDtoTest = OfferDto.builder()
-                .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(null)
-                .price(600000d)
-                .title("Sprzedam")
-                .city("Wroclaw")
-                .street("Poniatowskiego")
-                .numberOfRooms(4)
-                .area(50d)
-                .pricePerMeter(12000d)
-                .floor(5)
-                .description("Sprzedam mieszkanie")
-                .build();
+        OfferDto offerDtoTest = createOfferDtoWithModifiedField("kindOfProperty", null);
 
         //when & then
         mockMvc.perform(post("/add")
@@ -93,40 +194,9 @@ public class OfferControllerValidationTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenFieldPriceIsGreaterOrEqualsThanZero() throws Exception {
+    void shouldReturnBadRequestWhenFieldPriceIsLessThanZero() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
-                .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
-                .media("internet")
-                .equipment("pralka, piekarnik")
-                .build();
-
-        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
-                .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
-                .contactDetails("900300100")
-                .build();
-
-        OfferDto offerDtoTest = OfferDto.builder()
-                .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
-                .price(-100000)
-                .title("Sprzedam")
-                .city("Wroclaw")
-                .street("Poniatowskiego")
-                .numberOfRooms(4)
-                .area(50d)
-                .pricePerMeter(12000d)
-                .floor(5)
-                .description("Sprzedam mieszkanie")
-                .build();
+        OfferDto offerDtoTest = createOfferDtoWithModifiedField("price", -100000d);
 
         //when & then
         mockMvc.perform(post("/add")
@@ -140,38 +210,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldTitleIsNull() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
-                .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
-                .media("internet")
-                .equipment("pralka, piekarnik")
-                .build();
-
-        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
-                .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
-                .contactDetails("900300100")
-                .build();
-
-        OfferDto offerDtoTest = OfferDto.builder()
-                .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
-                .price(600000d)
-                .title(null)
-                .city("Wroclaw")
-                .street("Poniatowskiego")
-                .numberOfRooms(4)
-                .area(50d)
-                .pricePerMeter(12000d)
-                .floor(5)
-                .description("Sprzedam mieszkanie")
-                .build();
+        OfferDto offerDtoTest = createOfferDtoWithModifiedField("title", null);
 
         //when & then
         mockMvc.perform(post("/add")
@@ -185,39 +224,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldTitleIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
-                .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
-                .media("internet")
-                .equipment("pralka, piekarnik")
-                .build();
-
-        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
-                .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
-                .contactDetails("900300100")
-                .build();
-
-        OfferDto offerDtoTest = OfferDto.builder()
-                .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
-                .price(600000d)
-                .title("    ")
-                .city("Wroclaw")
-                .street("Poniatowskiego")
-                .numberOfRooms(4)
-                .area(50d)
-                .pricePerMeter(12000d)
-                .floor(5)
-                .description("Sprzedam mieszkanie")
-                .build();
-
+        OfferDto offerDtoTest = createOfferDtoWithModifiedField("title", "    ");
 
         //when & then
         mockMvc.perform(post("/add")
@@ -233,27 +240,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldCityIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city(null)
@@ -277,38 +284,7 @@ public class OfferControllerValidationTest {
     @Test
     void shouldReturnBadRequestWhenFieldCityIsEmpty() throws Exception {
         //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
-                .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
-                .media("internet")
-                .equipment("pralka, piekarnik")
-                .build();
-
-        OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
-                .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
-                .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
-                .contactDetails("900300100")
-                .build();
-
-        OfferDto offerDtoTest = OfferDto.builder()
-                .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
-                .price(600000d)
-                .title("Sprzedam")
-                .city("   ")
-                .street("Poniatowskiego")
-                .numberOfRooms(4)
-                .area(50d)
-                .pricePerMeter(12000d)
-                .floor(5)
-                .description("Sprzedam mieszkanie")
-                .build();
+        OfferDto offerDtoTest = createOfferDtoWithModifiedField("city", "   ");
 
         //when & then
         mockMvc.perform(post("/add")
@@ -324,27 +300,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldStreetIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -369,27 +345,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldStreetIsEmpty() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -413,27 +389,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldNumberOfRoomsIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -457,27 +433,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldAreaIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -502,27 +478,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldPricePerMeterIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -547,27 +523,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldFloorIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -592,27 +568,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldDescriptionIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -637,27 +613,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldDescriptionIsEmpty() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -697,7 +673,7 @@ public class OfferControllerValidationTest {
         //given
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(null)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -722,27 +698,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldRentIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(-1000)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -780,10 +756,10 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldOwnerShipFormIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
@@ -792,15 +768,15 @@ public class OfferControllerValidationTest {
                 .additionalInformationDto(additionalInformationDtoTest)
                 .ownershipForm(null)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -838,27 +814,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFinishLevelIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
                 .finishLevel(null)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -897,27 +873,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenParkingPlaceIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
                 .parkingPlace(null)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -955,27 +931,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenHeatingIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
                 .heating(null)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1000,27 +976,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldContactDetailsIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails(null)
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1044,27 +1020,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldContactIsEmpty() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("    ")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1089,17 +1065,17 @@ public class OfferControllerValidationTest {
         //given
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(null)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1125,26 +1101,26 @@ public class OfferControllerValidationTest {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
                 .market(null)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1182,27 +1158,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenAnnouncerTypeIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
+                .market(Market.PIERWOTNY)
                 .announcerType(null)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1241,27 +1217,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldYearOfConstructionIsLessOrEqualsThanZero() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(-200)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1286,8 +1262,8 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenBuildingTypeIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
                 .buildingType(null)
                 .media("internet")
@@ -1296,17 +1272,17 @@ public class OfferControllerValidationTest {
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1344,27 +1320,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldMediaIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media(null)
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1389,27 +1365,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldMediaIsEmpty() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("    ")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1448,27 +1424,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldEquipmentIsNull() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment(null)
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1493,27 +1469,27 @@ public class OfferControllerValidationTest {
     void shouldReturnBadRequestWhenFieldEquipmentIsEmpty() throws Exception {
         //given
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("   ")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         OfferDto offerDtoTest = OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1554,19 +1530,18 @@ public class OfferControllerValidationTest {
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
         OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
         OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
+        offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidName = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name(null)
                 .email("jan.kowalski@gmail.com")
                 .phoneNumber("700599333")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", clientMessageDtoInvalidName.getIdOffer())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidName)))
                 .andExpect(status().isBadRequest())
@@ -1584,16 +1559,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidName = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("   ")
                 .email("jan.kowalski@gmail.com")
                 .phoneNumber("700599333")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message",1L )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidName)))
                 .andExpect(status().isBadRequest())
@@ -1611,16 +1585,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("  ")
                 .phoneNumber("700599333")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
@@ -1638,16 +1611,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("invalid.email")
                 .phoneNumber("700599333")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
@@ -1665,16 +1637,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidEmail = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email(null)
                 .phoneNumber("700599333")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidEmail)))
                 .andExpect(status().isBadRequest())
@@ -1692,16 +1663,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("jan@gmail.com")
                 .phoneNumber("12345abc")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
@@ -1719,16 +1689,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("jan@gmail.com")
                 .phoneNumber("   ")
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
@@ -1746,16 +1715,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidPhoneNumber = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("jan@gmail.com")
                 .phoneNumber(null)
                 .message("Jestem zaintersowany ofertą. Proszę o kontakt")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidPhoneNumber)))
                 .andExpect(status().isBadRequest())
@@ -1772,16 +1740,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidMessage = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("jan@gmail.com")
                 .phoneNumber("555222444")
                 .message(null)
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidMessage)))
                 .andExpect(status().isBadRequest())
@@ -1798,16 +1765,15 @@ public class OfferControllerValidationTest {
         OfferDto offerDto = offerService.saveOffer(offerDtoTest);
 
         ClientMessageDto clientMessageDtoInvalidMessage = ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
+                .idOffer(1L)
                 .name("Jan")
                 .email("jan@gmail.com")
                 .phoneNumber("555222444")
                 .message("   ")
-                .idOffer(1L)
                 .build();
 
         //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
+        mockMvc.perform(post("/offers/{id}/message", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientMessageDtoInvalidMessage)))
                 .andExpect(status().isBadRequest())
@@ -1815,30 +1781,10 @@ public class OfferControllerValidationTest {
                         .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Value must not be empty\"}"));
     }
 
-    @Test
-    void shouldReturnBadRequestWhenFieldMessageWithInvalidSize() throws Exception {
-        //given
-        OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = getAdditionalInformationDto();
-        OfferDetailsDto offerDetailsDtoTest = getOfferDetailsDto(additionalInformationDtoTest);
-        OfferDto offerDtoTest = getOfferDto(offerDetailsDtoTest);
-        OfferDto offerDto = offerService.saveOffer(offerDtoTest);
-
-        ClientMessageDto clientMessageDto = setMessageWithInvalidSize(offerDto);
-
-        //when & then
-        mockMvc.perform(post("/offers/{id}/message", offerDto.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clientMessageDto)))
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers
-                        .content().string("{\"status\":\"BAD_REQUEST\",\"message\":\"Maximum number of characters is 1000\"}"));
-    }
-
-
     private static OfferDto getOfferDto(OfferDetailsDto offerDetailsDtoTest) {
         return OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1854,21 +1800,21 @@ public class OfferControllerValidationTest {
     private static OfferDetailsDto getOfferDetailsDto(OfferDetailsDto.AdditionalInformation additionalInformationDtoTest) {
         return OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
     }
 
     private static OfferDetailsDto.AdditionalInformation getAdditionalInformationDto() {
         return OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
@@ -1876,27 +1822,27 @@ public class OfferControllerValidationTest {
 
     private static OfferDto setDescriptionsWithInvalidSize() {
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("pralka, piekarnik")
                 .build();
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         return OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -1967,10 +1913,10 @@ public class OfferControllerValidationTest {
 
     private static OfferDto setMediaWithInvalidSize() {
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
                         "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
                         "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
@@ -1987,17 +1933,17 @@ public class OfferControllerValidationTest {
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         return OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -2012,10 +1958,10 @@ public class OfferControllerValidationTest {
 
     private static OfferDto setEquipmentWithInvalidSize() {
         OfferDetailsDto.AdditionalInformation additionalInformationDtoTest = OfferDetailsDto.AdditionalInformation.builder()
-                .market(OfferDetails.Market.PIERWOTNY)
-                .announcerType(OfferDetails.AnnouncerType.BIURO_NIERUCHOMOSCI)
+                .market(Market.PIERWOTNY)
+                .announcerType(AnnouncerType.BIURO_NIERUCHOMOSCI)
                 .yearOfConstruction(2019)
-                .buildingType(OfferDetails.BuildingType.APARTAMENTOWIEC)
+                .buildingType(BuildingType.APARTAMENTOWIEC)
                 .media("internet")
                 .equipment("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
                         "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
@@ -2032,17 +1978,17 @@ public class OfferControllerValidationTest {
 
         OfferDetailsDto offerDetailsDtoTest = OfferDetailsDto.builder()
                 .additionalInformationDto(additionalInformationDtoTest)
-                .ownershipForm(OfferDetails.OwnershipForm.PELNA_WLASNOSC)
+                .ownershipForm(OwnershipForm.PELNA_WLASNOSC)
                 .rent(450d)
-                .finishLevel(OfferDetails.FinishLevel.DO_ZAMIESZKANIA)
-                .parkingPlace(OfferDetails.ParkingPlace.MIEJSCE_NAZIEMNE)
-                .heating(OfferDetails.Heating.ELEKTRYCZNE)
+                .finishLevel(FinishLevel.DO_ZAMIESZKANIA)
+                .parkingPlace(ParkingPlace.MIEJSCE_NAZIEMNE)
+                .heating(Heating.ELEKTRYCZNE)
                 .contactDetails("900300100")
                 .build();
 
         return OfferDto.builder()
                 .offerDetailsDto(offerDetailsDtoTest)
-                .kindOfProperty(Offer.KindOfProperty.MIESZKANIE)
+                .kindOfProperty(KindOfProperty.MIESZKANIE)
                 .price(600000d)
                 .title("Sprzedam")
                 .city("Wroclaw")
@@ -2055,23 +2001,12 @@ public class OfferControllerValidationTest {
                 .build();
     }
 
-    private static ClientMessageDto setMessageWithInvalidSize(OfferDto offerDtoTest) {
+    private static ClientMessageDto setMessageWithInvalidSize(OfferDto offerDto) {
         return ClientMessageDto.builder()
-                .idOffer(offerDtoTest.getId())
                 .name("Jan")
                 .email("jan.kowalski@gmail.com")
                 .phoneNumber("700599333")
-                .message("MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie" +
-                        "MieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanieMieszkanie")
+                .message("Mieszkanie".repeat(111)) // Generates a message > 1000 characters for validation testing
                 .build();
     }
 
@@ -2285,7 +2220,7 @@ public class OfferControllerValidationTest {
                     "ownershipForm": "PELNA_WLASNOSC",
                     "finishLevel": "DO_ZAMIESZKANIA",
                     "parkingPlace": "BRAK",
-                    "heating": "MIEJSKIE>",
+                    "heating": "MIEJSKIE",
                     "contactDetails": "800499200",
                     "additionalInformationDto": {
                       "market": "PIERWOTNY",
@@ -2317,7 +2252,7 @@ public class OfferControllerValidationTest {
                     "ownershipForm": "PELNA_WLASNOSC",
                     "finishLevel": "DO_ZAMIESZKANIA",
                     "parkingPlace": "BRAK",
-                    "heating": "MIEJSKIE>",
+                    "heating": "MIEJSKIE",
                     "contactDetails": "800499200",
                     "additionalInformationDto": {
                       "market": "PIERWOTNY",

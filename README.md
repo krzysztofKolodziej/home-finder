@@ -10,3 +10,14 @@ The project uses technologies:
 - tools: Maven, Git, Lombok 
 - database: MySQL 
 - tests: JUnit, Mockito 
+
+## Setup
+
+### Database Configuration
+1. Copy `.env.example` to `.env`
+2. Update database credentials in `.env` file:
+   ```
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
